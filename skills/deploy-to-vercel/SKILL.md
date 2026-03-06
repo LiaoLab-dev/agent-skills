@@ -14,7 +14,7 @@ The goal is to get the user into the best long-term setup: their project linked 
 
 ## Step 1: Gather Project State
 
-Run all three checks before deciding which method to use:
+Run all four checks before deciding which method to use:
 
 ```bash
 # 1. Check for a git remote
@@ -25,7 +25,22 @@ cat .vercel/project.json 2>/dev/null || cat .vercel/repo.json 2>/dev/null
 
 # 3. Check if the Vercel CLI is installed and authenticated
 vercel whoami 2>/dev/null
+
+# 4. List available teams (if authenticated)
+vercel teams list --format json 2>/dev/null
 ```
+
+### Team selection
+
+If the user belongs to multiple teams, present all available team slugs as a bulleted list and ask which one to deploy to. Once the user picks a team, proceed immediately to the next step — do not ask for additional confirmation.
+
+Pass the team slug via `--scope` on all subsequent CLI commands (`vercel deploy`, `vercel link`, `vercel inspect`, etc.):
+
+```bash
+vercel deploy [path] -y --no-wait --scope <team-slug>
+```
+
+If the project is already linked (`.vercel/project.json` or `.vercel/repo.json` exists), the `orgId` in those files determines the team — no need to ask again. If there is only one team (or just a personal account), skip the prompt and use it directly.
 
 **About the `.vercel/` directory:** A linked project has either:
 - `.vercel/project.json` — created by `vercel link` (single project linking). Contains `projectId` and `orgId`.
@@ -91,33 +106,29 @@ vercel deploy [path] --prod -y --no-wait
 
 The CLI is working but the project isn't linked yet. This is the opportunity to get the user into the best state.
 
-1. **Ask the user before linking:**
+1. **Ask the user which team to deploy to.** Present the team slugs from Step 1 as a bulleted list. If there's only one team (or just a personal account), skip this step.
+
+2. **Once a team is selected, proceed directly to linking.** Tell the user what will happen but do not ask for separate confirmation:
    ```
-   This project isn't linked to Vercel yet. I can link it now, which will
-   enable automatic deployments when you push to git. Want me to set that up?
+   Linking this project to <team name> on Vercel. This will create a Vercel
+   project to deploy to and enable automatic deployments on future git pushes.
    ```
 
-2. **If the user agrees and a git remote exists**, use repo-based linking:
+3. **If a git remote exists**, use repo-based linking with the selected team scope:
    ```bash
-   vercel link --repo
+   vercel link --repo --scope <team-slug>
    ```
    This reads the git remote URL and matches it to existing Vercel projects that deploy from that repo. It creates `.vercel/repo.json`. This is much more reliable than `vercel link` (without `--repo`), which tries to match by directory name and often fails when the local folder and Vercel project are named differently.
 
    **If there is no git remote**, fall back to standard linking:
    ```bash
-   vercel link
+   vercel link --scope <team-slug>
    ```
    This prompts the user to select or create a project. It creates `.vercel/project.json`.
 
-3. **Then deploy using the best available method:**
+4. **Then deploy using the best available method:**
    - If a git remote exists → commit and push (see git push method above)
-   - If no git remote → `vercel deploy [path] -y --no-wait`, then `vercel inspect <url>` to check status
-
-4. **If the user declines linking**, do a one-off deploy without linking:
-   ```bash
-   vercel deploy [path] -y --no-wait
-   ```
-   This still works — it will prompt for project setup inline. Use `-y` to accept defaults and `--no-wait` to return immediately. Check deployment status with `vercel inspect <url>`.
+   - If no git remote → `vercel deploy [path] -y --no-wait --scope <team-slug>`, then `vercel inspect <url>` to check status
 
 ---
 
@@ -136,13 +147,15 @@ The Vercel CLI isn't set up at all.
    ```
    The user completes auth in their browser. If running in a non-interactive environment where login is not possible, skip to the **no-auth fallback** below.
 
-3. **Link the project** (use `--repo` if a git remote exists, plain `vercel link` otherwise):
+3. **Ask which team to deploy to** — present team slugs from `vercel teams list --format json` as a bulleted list. If only one team / personal account, skip. Once selected, proceed immediately.
+
+4. **Link the project** with the selected team scope (use `--repo` if a git remote exists, plain `vercel link` otherwise):
    ```bash
-   vercel link --repo   # if git remote exists
-   vercel link          # if no git remote
+   vercel link --repo --scope <team-slug>   # if git remote exists
+   vercel link --scope <team-slug>          # if no git remote
    ```
 
-4. **Deploy** using the best available method (git push if remote exists, otherwise `vercel deploy -y --no-wait`, then `vercel inspect <url>` to check status).
+5. **Deploy** using the best available method (git push if remote exists, otherwise `vercel deploy -y --no-wait --scope <team-slug>`, then `vercel inspect <url>` to check status).
 
 ---
 
