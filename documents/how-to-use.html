@@ -1,0 +1,672 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Skill の実際の使用方法</title>
+    <link rel="stylesheet" href="../assets/css/print.css" />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family:
+          "Meiryo UI", "Meiryo", "MS PGothic", "MS Gothic", sans-serif;
+        line-height: 1.5;
+        color: #333;
+        background-color: #f5f5f5;
+        padding: 20px;
+      }
+
+      .container {
+        max-width: 210mm;
+        margin: 0 auto;
+        background: white;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        padding: 20mm;
+      }
+
+      /* ヘッダー */
+      .header {
+        border-bottom: 4px solid #667eea;
+        padding-bottom: 15px;
+        margin-bottom: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .header-title {
+        font-size: 28px;
+        font-weight: bold;
+        color: #2c3e50;
+      }
+
+      .header-info {
+        text-align: right;
+        font-size: 12px;
+        color: #7f8c8d;
+      }
+
+      /* サマリーカード */
+      .summary-cards {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 15px;
+        margin-bottom: 25px;
+      }
+
+      .summary-card {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 20px;
+        border-radius: 8px;
+        text-align: center;
+      }
+
+      .summary-card-label {
+        font-size: 12px;
+        opacity: 0.9;
+        margin-bottom: 5px;
+      }
+
+      .summary-card-value {
+        font-size: 32px;
+        font-weight: bold;
+      }
+
+      .summary-card-unit {
+        font-size: 14px;
+        opacity: 0.9;
+      }
+
+      /* セクション */
+      .section {
+        margin-bottom: 25px;
+        page-break-inside: avoid;
+      }
+
+      .section-title {
+        font-size: 18px;
+        font-weight: bold;
+        color: #2c3e50;
+        background: #f8f9fa;
+        padding: 10px 15px;
+        border-left: 4px solid #667eea;
+        margin-bottom: 15px;
+      }
+
+      /* ユースケース */
+      .usecase {
+        background: #f8f9fa;
+        border-left: 4px solid #667eea;
+        padding: 15px;
+        margin-bottom: 15px;
+        border-radius: 4px;
+        page-break-inside: avoid;
+      }
+
+      .usecase-title {
+        font-weight: bold;
+        color: #2c3e50;
+        margin-bottom: 8px;
+        font-size: 14px;
+      }
+
+      .usecase-content {
+        font-size: 13px;
+        line-height: 1.6;
+      }
+
+      .usecase-flow {
+        background: #fff;
+        border: 1px solid #ddd;
+        padding: 10px;
+        margin: 10px 0;
+        font-family: monospace;
+        font-size: 12px;
+        border-radius: 4px;
+      }
+
+      /* テーブル */
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 15px;
+        font-size: 13px;
+      }
+
+      th,
+      td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+      }
+
+      th {
+        background-color: #667eea;
+        color: white;
+        font-weight: bold;
+        font-size: 12px;
+      }
+
+      tr:nth-child(even) {
+        background-color: #f8f9fa;
+      }
+
+      /* リスト */
+      ul,
+      ol {
+        margin-left: 20px;
+        margin-bottom: 10px;
+      }
+
+      li {
+        margin-bottom: 5px;
+        font-size: 14px;
+      }
+
+      /* ステータスバッジ */
+      .badge {
+        display: inline-block;
+        padding: 3px 10px;
+        border-radius: 10px;
+        font-size: 11px;
+        font-weight: bold;
+      }
+
+      .badge-success {
+        background-color: #d4edda;
+        color: #155724;
+      }
+
+      .badge-warning {
+        background-color: #fff3cd;
+        color: #856404;
+      }
+
+      .badge-danger {
+        background-color: #f8d7da;
+        color: #721c24;
+      }
+
+      .badge-info {
+        background-color: #d1ecf1;
+        color: #0c5460;
+      }
+
+      /* コードブロック */
+      .code-block {
+        background-color: #2c3e50;
+        color: #ecf0f1;
+        padding: 10px;
+        border-radius: 4px;
+        margin: 10px 0;
+        font-family: "Courier New", monospace;
+        font-size: 11px;
+        overflow-x: auto;
+        border-left: 4px solid #667eea;
+      }
+
+      /* 参考資料 */
+      .references-section {
+        margin-top: 20px;
+        padding: 15px;
+        background-color: #f9f9f9;
+        border-left: 4px solid #667eea;
+        border-radius: 4px;
+      }
+
+      .references-title {
+        font-size: 14px;
+        font-weight: bold;
+        color: #2c3e50;
+        margin-bottom: 10px;
+      }
+
+      .references-list {
+        margin: 0 0 0 15px;
+        font-size: 11px;
+        line-height: 1.5;
+      }
+
+      .ref-item {
+        margin-bottom: 8px;
+      }
+
+      .ref-label {
+        font-weight: bold;
+        color: #333;
+      }
+
+      /* フッター */
+      .footer {
+        margin-top: 30px;
+        padding-top: 15px;
+        border-top: 1px solid #ecf0f1;
+        text-align: center;
+        color: #95a5a6;
+        font-size: 11px;
+      }
+
+      /* 編集可能 */
+      [contenteditable="true"] {
+        outline: 2px dashed transparent;
+        transition: outline 0.2s;
+      }
+
+      [contenteditable="true"]:hover {
+        outline: 2px dashed #667eea;
+      }
+
+      [contenteditable="true"]:focus {
+        outline: 2px solid #667eea;
+        background-color: #f0f7ff;
+      }
+
+      @media print {
+        body {
+          padding: 0;
+          background: white;
+        }
+
+        .container {
+          box-shadow: none;
+          padding: 0;
+        }
+
+        .summary-card {
+          -webkit-print-color-adjust: exact;
+          print-color-adjust: exact;
+        }
+
+        .code-block {
+          -webkit-print-color-adjust: exact;
+          print-color-adjust: exact;
+        }
+
+        table th {
+          -webkit-print-color-adjust: exact;
+          print-color-adjust: exact;
+        }
+
+        .section {
+          page-break-inside: avoid;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <!-- ヘッダー -->
+      <div class="header">
+        <h1 class="header-title">Skill の実際の使用方法</h1>
+        <div class="header-info">
+          <div>実践ガイド 2026年4月</div>
+          <div>対象：初心者</div>
+          <div>所要時間：15分</div>
+        </div>
+      </div>
+
+      <!-- サマリーカード -->
+      <div class="summary-cards">
+        <div class="summary-card">
+          <div class="summary-card-label">実装例</div>
+          <div class="summary-card-value">4</div>
+          <div class="summary-card-unit">ユースケース</div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-card-label">対応ツール</div>
+          <div class="summary-card-value">4+</div>
+          <div class="summary-card-unit">エージェント</div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-card-label">習得難度</div>
+          <div class="summary-card-value">⭐</div>
+          <div class="summary-card-unit">簡単</div>
+        </div>
+      </div>
+
+      <!-- ユースケース1 -->
+      <section class="section">
+        <h2 class="section-title">📌 ユースケース 1: React コンポーネント最適化</h2>
+
+        <div class="usecase">
+          <div class="usecase-title">🎯 シナリオ</div>
+          <div class="usecase-content">
+            既存の React コンポーネントが遅い。GitHub Copilot の助言を得ながら最適化したい。
+          </div>
+        </div>
+
+        <h3>対応する Skill</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Skill</th>
+              <th>説明</th>
+              <th>優先度</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>react-best-practices</strong></td>
+              <td>React/Next.js パフォーマンス最適化</td>
+              <td><span class="badge badge-danger">高</span></td>
+            </tr>
+            <tr>
+              <td>web-design-guidelines</td>
+              <td>Web UI/UX ガイドライン</td>
+              <td><span class="badge badge-warning">中</span></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="usecase-flow">
+You: "このコンポーネント遅いんです、最適化してもらえますか？
+
+↓
+
+Copilot:
+  1️⃣ react-best-practices Skill を自動起動
+  2️⃣ コード分析 → waterfalls、bundle size、re-renders をチェック
+  3️⃣ 見つかった改善点:
+     ❌ Promise.all がない（waterfall）
+     ❌ styled-components が毎回インポート
+     ❌ useCallback がない（不要な再レンダ）
+  4️⃣ 改善コード + 説明をセット提示
+        </div>
+
+        <h3>実装ステップ</h3>
+        <ol>
+          <li>VS Code で React ファイルを開く</li>
+          <li>Copilot チャットで「このコンポーネント最適化して」と指示</li>
+          <li>Copilot が意図的に react-best-practices ルールを適用</li>
+          <li>パフォーマンス改善例がコード形式で提示される</li>
+        </ol>
+      </section>
+
+      <!-- ユースケース2 -->
+      <section class="section">
+        <h2 class="section-title">📌 ユースケース 2: デプロイ自動化</h2>
+
+        <div class="usecase">
+          <div class="usecase-title">🎯 シナリオ</div>
+          <div class="usecase-content">
+            開発が終わった。アプリを Vercel にデプロイしたい。手作業でなく AI
+            に任せたい。
+          </div>
+        </div>
+
+        <h3>対応する Skill</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Skill</th>
+              <th>説明</th>
+              <th>優先度</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>deploy-to-vercel</strong></td>
+              <td>Vercel へのデプロイ自動化</td>
+              <td><span class="badge badge-danger">高</span></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="usecase-flow">
+You: "Deploy my app"
+
+↓
+
+Copilot:
+  1️⃣ deploy-to-vercel Skill を検出
+  2️⃣ デプロイ方法を自動判定:
+     - git remote + .vercel 設定 → git push
+     - CLI 認証済み → vercel deploy
+     - その他 → デプロイスクリプト実行
+  3️⃣ デプロイ実行
+  4️⃣ 完了：
+     Preview URL: https://my-app-xyz.vercel.app
+     Claim URL: https://vercel.com/claim-deployment?code=...
+        </div>
+
+        <h3>実装ステップ</h3>
+        <ol>
+          <li>Copilot チャットで「Deploy my app」と入力</li>
+          <li>Copilot が deploy-to-vercel インテント を検出</li>
+          <li>自動でデプロイフロー実行</li>
+          <li>成功時にプレビュー URL が返される</li>
+        </ol>
+      </section>
+
+      <!-- ユースケース3 -->
+      <section class="section">
+        <h2 class="section-title">📌 ユースケース 3: 複数 Skill の組み合わせ</h2>
+
+        <div class="usecase">
+          <div class="usecase-title">🎯 シナリオ</div>
+          <div class="usecase-content">
+            UI コンポーネント作成 → パフォーマンス最適化 →
+            デプロイまで一連で行いたい。
+          </div>
+        </div>
+
+        <h3>発動する Skill 群</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>順序</th>
+              <th>Skill</th>
+              <th>役割</th>
+              <th>出力例</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1️⃣</td>
+              <td>composition-patterns</td>
+              <td>コンポーネント設計</td>
+              <td>Compound Component 推奨</td>
+            </tr>
+            <tr>
+              <td>2️⃣</td>
+              <td>react-best-practices</td>
+              <td>パフォーマンス</td>
+              <td>memo() + useCallback</td>
+            </tr>
+            <tr>
+              <td>3️⃣</td>
+              <td>web-design-guidelines</td>
+              <td>UI/UX/アクセシビリティ</td>
+              <td>aria-label + focus states</td>
+            </tr>
+            <tr>
+              <td>4️⃣</td>
+              <td>deploy-to-vercel</td>
+              <td>デプロイ</td>
+              <td>URL 生成</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="usecase-flow">
+User: "Create a Button component, optimize it, and deploy"
+
+↓
+
+Copilot:
+  1️⃣ composition-patterns をロード → Compound Component 設計
+  2️⃣ react-best-practices をロード → メモ化、最適化
+  3️⃣ web-design-guidelines をロード → アクセシビリティチェック
+  4️⃣ すべてを統合したコンポーネント生成
+  5️⃣ deploy-to-vercel をロード → 自動デプロイ
+  6️⃣ プレビュー URL と Claim URL を返却
+        </div>
+
+        <h3>実装ステップ</h3>
+        <ol>
+          <li>.instructions.md で複数 Skill を有効化</li>
+          <li>Copilot に複合タスク指示を出す</li>
+          <li>複数 Skill が自動で連携</li>
+          <li>統合されたコード + デプロイURL が返される</li>
+        </ol>
+      </section>
+
+      <!-- ユースケース4 -->
+      <section class="section">
+        <h2 class="section-title">📌 ユースケース 4: チーム固有ルールの自動適用</h2>
+
+        <div class="usecase">
+          <div class="usecase-title">🎯 シナリオ</div>
+          <div class="usecase-content">
+            チーム内で「すべてのコンポーネント名は VerbNoun パターン」という規則がある。Copilot
+            にこれを自動で守らせたい。
+          </div>
+        </div>
+
+        <h3>実装方法</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>手段</th>
+              <th>方法</th>
+              <th>効果</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>.instructions.md</strong></td>
+              <td>
+                Team Naming Conventions Skill として記載
+              </td>
+              <td>永遠に適用</td>
+            </tr>
+            <tr>
+              <td><strong>README.md</strong></td>
+              <td>コーディング規則をドキュメント化</td>
+              <td>チーム内共有</td>
+            </tr>
+            <tr>
+              <td><strong>カスタム Skill</strong></td>
+              <td>チーム固有の Skill を作成</td>
+              <td>再利用可能</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="code-block">
+# .instructions.md の例
+## Team Naming Conventions (MUST)
+- Component names: VerbNoun (ShowModal, FetchUser, RenderChart)
+- Functions: camelCase with action verbs (parseJSON, validateEmail)
+- NG: Boolean-only names (Modal, data_loader)
+
+Result:
+↓
+Copilot は自動的に VerbNoun パターンのコンポーネント名を生成
+        </div>
+
+        <h3>実装ステップ</h3>
+        <ol>
+          <li>チーム Skill（team-naming-conventions など）を作成</li>
+          <li>.instructions.md に登録</li>
+          <li>Copilot 使用時に自動適用</li>
+          <li>コード レビュー時に命名規則の手直しが不要に</li>
+        </ol>
+      </section>
+
+      <!-- 使い方のコツ -->
+      <section class="section">
+        <h2 class="section-title">💡 Skill 使用のコツ</h2>
+
+        <div class="usecase">
+          <div class="usecase-title">✅ 効果的な指示文</div>
+          <ul>
+            <li>✅ 「このコンポーネント、パフォーマンス最適化してほしい」</li>
+            <li>✅ 「Deploy my app」</li>
+            <li>✅ 「Create a Button component with best practices」</li>
+            <li>❌ 「コード書いて」（非具体的）</li>
+            <li>❌ 「最適化して」（どの Skill を使うか曖昧）</li>
+          </ul>
+        </div>
+
+        <div class="usecase">
+          <div class="usecase-title">⚙️ 複数 Skill の優先度管理</div>
+          <div class="usecase-content">
+            .instructions.md で Priority を指定すると、コンフリクト時に優先度の高い Skill が優先されます。
+          </div>
+          <div class="code-block">
+## Skill Priority
+1. team-rules         # 社内ルール最優先
+2. react-best-practices
+3. web-design-guidelines
+          </div>
+        </div>
+
+        <div class="usecase">
+          <div class="usecase-title">🔄 Skill の有効/無効切り替え</div>
+          <div class="usecase-content">
+            プロジェクトによって必要な Skill が異なる場合、.instructions.md
+            でプロジェクト固有に切り替える。
+          </div>
+        </div>
+      </section>
+
+      <!-- 参考資料 -->
+      <section class="section">
+        <div class="references-section">
+          <h3 class="references-title">📚 一次情報・参考資料</h3>
+          <div class="references-list">
+            <div class="ref-item">
+              <span class="ref-label">📄 本ワークスペース参照：</span>&nbsp;
+              <code>agent-skills/README_Skills.md</code>
+              <br />
+              <small>セクション 4-6：Getting Started・実装例</small>
+            </div>
+
+            <div class="ref-item">
+              <span class="ref-label">📄 本ワークスペース参照：</span>&nbsp;
+              <code>agent-skills/skills/*/SKILL.md</code>
+              <br />
+              <small>各 Skill の使用方法・トリガー条件</small>
+            </div>
+
+            <div class="ref-item">
+              <span class="ref-label">📄 本ワークスペース参照：</span>&nbsp;
+              <code>agent-skills/AGENTS.md</code>
+              <br />
+              <small>セクション「複数エージェントでの互換性」</small>
+            </div>
+
+            <div class="ref-item">
+              <span class="ref-label">🌐 GitHub Copilot ドキュメント：</span>&nbsp;
+              <a href="https://docs.github.com/en/copilot">https://docs.github.com/en/copilot</a>
+              <br />
+              <small>Copilot チャットの使用方法</small>
+            </div>
+
+            <div class="ref-item">
+              <span class="ref-label">🌐 Agent Skills 公式サイト：</span>&nbsp;
+              <a href="https://agentskills.io/">https://agentskills.io/</a>
+              <br />
+              <small>トリガー・マッチング仕様</small>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- フッター -->
+      <div class="footer">
+        <p>
+          このドキュメントは 2026 年 4 月 3
+          日時点での情報です。定期的に更新されます。
+        </p>
+      </div>
+    </div>
+  </body>
+</html>

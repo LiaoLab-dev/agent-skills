@@ -1,0 +1,710 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>エグゼクティブ報告書（プレミアム版）</title>
+    <link rel="stylesheet" href="../assets/css/print.css" />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family:
+          "Meiryo UI", "Meiryo", "MS PGothic", "MS Gothic", sans-serif;
+        line-height: 1.7;
+        color: #1a1a1a;
+        background: #0f172a;
+        padding: 20px;
+      }
+
+      .container {
+        max-width: 210mm;
+        margin: 0 auto;
+        background: white;
+        box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5);
+      }
+
+      /* プレミアム表紙 */
+      .premium-cover {
+        background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+        color: white;
+        padding: 0;
+        min-height: 297mm;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        overflow: hidden;
+        page-break-after: always;
+      }
+
+      .premium-cover::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 400px;
+        background: radial-gradient(
+          ellipse at top,
+          rgba(99, 102, 241, 0.3) 0%,
+          transparent 70%
+        );
+      }
+
+      .cover-ornament {
+        position: absolute;
+        width: 300px;
+        height: 300px;
+        border: 2px solid rgba(99, 102, 241, 0.2);
+        border-radius: 50%;
+        top: -150px;
+        right: -150px;
+      }
+
+      .cover-ornament-2 {
+        position: absolute;
+        width: 200px;
+        height: 200px;
+        border: 2px solid rgba(99, 102, 241, 0.15);
+        border-radius: 50%;
+        bottom: -100px;
+        left: -100px;
+      }
+
+      .premium-header {
+        padding: 60px 50px 0;
+        position: relative;
+        z-index: 1;
+      }
+
+      .premium-logo {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 36px;
+        font-weight: bold;
+        margin-bottom: 20px;
+        box-shadow: 0 8px 24px rgba(99, 102, 241, 0.4);
+      }
+
+      .premium-meta {
+        font-size: 13px;
+        color: #94a3b8;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        margin-bottom: 10px;
+      }
+
+      .premium-main {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 0 50px;
+        position: relative;
+        z-index: 1;
+      }
+
+      .premium-title {
+        font-size: 56px;
+        font-weight: 700;
+        line-height: 1.2;
+        margin-bottom: 20px;
+        background: linear-gradient(135deg, #fff 0%, #94a3b8 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .premium-subtitle {
+        font-size: 20px;
+        color: #cbd5e1;
+        margin-bottom: 40px;
+        line-height: 1.6;
+      }
+
+      .premium-divider {
+        width: 100px;
+        height: 4px;
+        background: linear-gradient(90deg, #6366f1 0%, #8b5cf6 100%);
+        margin-bottom: 40px;
+      }
+
+      .premium-info-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 30px;
+        max-width: 600px;
+      }
+
+      .premium-info-item {
+        border-left: 3px solid #6366f1;
+        padding-left: 15px;
+      }
+
+      .premium-info-label {
+        font-size: 11px;
+        color: #94a3b8;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 5px;
+      }
+
+      .premium-info-value {
+        font-size: 16px;
+        color: white;
+        font-weight: 600;
+      }
+
+      .premium-footer {
+        padding: 40px 50px;
+        border-top: 1px solid rgba(148, 163, 184, 0.2);
+        position: relative;
+        z-index: 1;
+      }
+
+      .premium-footer-text {
+        font-size: 12px;
+        color: #64748b;
+      }
+
+      /* エグゼクティブサマリー */
+      .executive-summary {
+        background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+        color: white;
+        padding: 50px;
+        margin: 0;
+        page-break-inside: avoid;
+      }
+
+      .executive-title {
+        font-size: 32px;
+        font-weight: bold;
+        margin-bottom: 25px;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+      }
+
+      .executive-content {
+        font-size: 16px;
+        line-height: 1.8;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border-radius: 16px;
+        padding: 30px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+      }
+
+      /* KPIダッシュボード */
+      .kpi-dashboard {
+        padding: 50px;
+        background: #f8fafc;
+      }
+
+      .kpi-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+        margin-top: 30px;
+      }
+
+      .kpi-card {
+        background: white;
+        border-radius: 16px;
+        padding: 30px 20px;
+        text-align: center;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+        border-top: 4px solid #6366f1;
+        transition:
+          transform 0.2s,
+          box-shadow 0.2s;
+      }
+
+      .kpi-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+      }
+
+      .kpi-icon {
+        width: 50px;
+        height: 50px;
+        background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 15px;
+        font-size: 24px;
+      }
+
+      .kpi-value {
+        font-size: 42px;
+        font-weight: 700;
+        background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 8px;
+      }
+
+      .kpi-label {
+        font-size: 13px;
+        color: #64748b;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .kpi-change {
+        font-size: 12px;
+        margin-top: 8px;
+        font-weight: 600;
+      }
+
+      .kpi-change-positive {
+        color: #10b981;
+      }
+
+      .kpi-change-negative {
+        color: #ef4444;
+      }
+
+      /* セクション */
+      .premium-section {
+        padding: 50px;
+        page-break-inside: avoid;
+      }
+
+      .section-header-premium {
+        display: flex;
+        align-items: center;
+        margin-bottom: 30px;
+        padding-bottom: 20px;
+        border-bottom: 2px solid #e2e8f0;
+      }
+
+      .section-number {
+        width: 60px;
+        height: 60px;
+        background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 28px;
+        font-weight: bold;
+        color: white;
+        margin-right: 20px;
+        box-shadow: 0 4px 16px rgba(99, 102, 241, 0.3);
+      }
+
+      .section-title-premium {
+        font-size: 28px;
+        font-weight: 700;
+        color: #1e293b;
+      }
+
+      /* インサイトカード */
+      .insight-cards {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+        margin: 30px 0;
+      }
+
+      .insight-card {
+        background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+        border-radius: 16px;
+        padding: 25px;
+        border-left: 4px solid #6366f1;
+        transition: transform 0.2s;
+      }
+
+      .insight-card:hover {
+        transform: translateX(5px);
+      }
+
+      .insight-icon {
+        font-size: 32px;
+        margin-bottom: 15px;
+      }
+
+      .insight-title {
+        font-size: 16px;
+        font-weight: 600;
+        color: #1e293b;
+        margin-bottom: 10px;
+      }
+
+      .insight-text {
+        font-size: 13px;
+        color: #64748b;
+        line-height: 1.6;
+      }
+
+      /* プレミアムテーブル */
+      .premium-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        margin: 30px 0;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+      }
+
+      .premium-table thead {
+        background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+        color: white;
+      }
+
+      .premium-table th {
+        padding: 20px;
+        text-align: left;
+        font-weight: 600;
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      .premium-table td {
+        padding: 20px;
+        border-bottom: 1px solid #e2e8f0;
+        background: white;
+        font-size: 14px;
+      }
+
+      .premium-table tbody tr:hover {
+        background: #f8fafc;
+      }
+
+      .premium-table tbody tr:last-child td {
+        border-bottom: none;
+      }
+
+      /* ステータスピル */
+      .status-pill {
+        display: inline-block;
+        padding: 6px 16px;
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+      }
+
+      .pill-completed {
+        background: #d1fae5;
+        color: #065f46;
+      }
+
+      .pill-active {
+        background: #dbeafe;
+        color: #1e40af;
+      }
+
+      .pill-warning {
+        background: #fef3c7;
+        color: #92400e;
+      }
+
+      .pill-critical {
+        background: #fee2e2;
+        color: #991b1b;
+      }
+
+      /* 編集可能 */
+      [contenteditable="true"] {
+        outline: 2px dashed transparent;
+        transition: outline 0.2s;
+      }
+
+      [contenteditable="true"]:hover {
+        outline: 2px dashed #6366f1;
+      }
+
+      [contenteditable="true"]:focus {
+        outline: 2px solid #6366f1;
+        background-color: #f0f4ff;
+      }
+
+      @media print {
+        body {
+          padding: 0;
+          background: white;
+        }
+
+        .container {
+          box-shadow: none;
+        }
+
+        * {
+          -webkit-print-color-adjust: exact !important;
+          print-color-adjust: exact !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <!-- プレミアム表紙 -->
+      <div class="premium-cover">
+        <div class="cover-ornament"></div>
+        <div class="cover-ornament-2"></div>
+
+        <div class="premium-header">
+          <div class="premium-logo">🚀</div>
+          <div class="premium-meta" contenteditable="true">
+            Executive Report 2026
+          </div>
+        </div>
+
+        <div class="premium-main">
+          <h1 class="premium-title" contenteditable="true">
+            新システム開発<br />エグゼクティブ<br />サマリー
+          </h1>
+          <div class="premium-divider"></div>
+          <p class="premium-subtitle" contenteditable="true">
+            2026年3月度における戦略的プロジェクト進捗報告<br />クラウドベース次世代業務システムの開発状況
+          </p>
+
+          <div class="premium-info-grid">
+            <div class="premium-info-item">
+              <div class="premium-info-label">Report Period</div>
+              <div class="premium-info-value" contenteditable="true">
+                2026年3月
+              </div>
+            </div>
+            <div class="premium-info-item">
+              <div class="premium-info-label">Project Status</div>
+              <div class="premium-info-value" contenteditable="true">
+                On Track
+              </div>
+            </div>
+            <div class="premium-info-item">
+              <div class="premium-info-label">Report Date</div>
+              <div class="premium-info-value" contenteditable="true">
+                March 31, 2026
+              </div>
+            </div>
+            <div class="premium-info-item">
+              <div class="premium-info-label">Author</div>
+              <div class="premium-info-value" contenteditable="true">
+                山田 太郎
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="premium-footer">
+          <p class="premium-footer-text" contenteditable="true">
+            株式会社〇〇〇〇 | 開発部 第一チーム | Confidential
+          </p>
+        </div>
+      </div>
+
+      <!-- エグゼクティブサマリー -->
+      <div class="executive-summary">
+        <h2 class="executive-title">Executive Summary</h2>
+        <div class="executive-content" contenteditable="true">
+          <p style="margin-bottom: 15px">
+            本プロジェクトは2026年1月に開始され、現在までに計画通りの進捗を維持しています。全体進捗率75%を達成し、主要なマイルストーンである要件定義および基本設計フェーズを予定通り完了しました。
+          </p>
+          <p>
+            現在は詳細設計フェーズが85%完了し、並行して実装フェーズが開始されています。一部の技術的課題が確認されていますが、リスク管理プロセスに従って適切に対応しています。8月の本番リリースに向けて、引き続き品質とスケジュールの両立を図ってまいります。
+          </p>
+        </div>
+      </div>
+
+      <!-- KPIダッシュボード -->
+      <div class="kpi-dashboard">
+        <div class="section-header-premium">
+          <div class="section-number">📊</div>
+          <h2 class="section-title-premium">Key Performance Indicators</h2>
+        </div>
+
+        <div class="kpi-grid">
+          <div class="kpi-card">
+            <div class="kpi-icon">📈</div>
+            <div class="kpi-value" contenteditable="true">75%</div>
+            <div class="kpi-label">Overall Progress</div>
+            <div class="kpi-change kpi-change-positive">
+              ↑ 12% from last month
+            </div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-icon">✅</div>
+            <div class="kpi-value" contenteditable="true">48</div>
+            <div class="kpi-label">Completed Tasks</div>
+            <div class="kpi-change kpi-change-positive">
+              ↑ 15 from last month
+            </div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-icon">⚡</div>
+            <div class="kpi-value" contenteditable="true">92%</div>
+            <div class="kpi-label">Quality Score</div>
+            <div class="kpi-change kpi-change-positive">
+              ↑ 4% from last month
+            </div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-icon">⏱️</div>
+            <div class="kpi-value" contenteditable="true">98%</div>
+            <div class="kpi-label">On-Time Delivery</div>
+            <div class="kpi-change kpi-change-positive">→ Maintained</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- インサイトセクション -->
+      <div class="premium-section">
+        <div class="section-header-premium">
+          <div class="section-number">💡</div>
+          <h2 class="section-title-premium">Key Insights</h2>
+        </div>
+
+        <div class="insight-cards">
+          <div class="insight-card">
+            <div class="insight-icon">🎯</div>
+            <h3 class="insight-title" contenteditable="true">戦略的成果</h3>
+            <p class="insight-text" contenteditable="true">
+              基本設計フェーズを予定より3日早く完了。クライアントからの高評価を獲得し、追加予算の承認を取得。
+            </p>
+          </div>
+          <div class="insight-card">
+            <div class="insight-icon">⚠️</div>
+            <h3 class="insight-title" contenteditable="true">リスク管理</h3>
+            <p class="insight-text" contenteditable="true">
+              外部API連携の技術的課題を早期に特定。代替案を準備し、スケジュール影響を最小限に抑制。
+            </p>
+          </div>
+          <div class="insight-card">
+            <div class="insight-icon">🚀</div>
+            <h3 class="insight-title" contenteditable="true">次のステップ</h3>
+            <p class="insight-text" contenteditable="true">
+              4月は実装フェーズに注力。外部パートナーとの協業を開始し、開発速度を25%向上させる計画。
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- プロジェクトステータス -->
+      <div class="premium-section" style="background: #f8fafc">
+        <div class="section-header-premium">
+          <div class="section-number">📋</div>
+          <h2 class="section-title-premium">Project Status Overview</h2>
+        </div>
+
+        <table class="premium-table">
+          <thead>
+            <tr>
+              <th>Phase</th>
+              <th>Timeline</th>
+              <th style="text-align: center">Progress</th>
+              <th style="text-align: center">Budget</th>
+              <th style="text-align: center">Status</th>
+            </tr>
+          </thead>
+          <tbody contenteditable="true">
+            <tr>
+              <td><strong>要件定義</strong></td>
+              <td>2026/01 - 2026/02</td>
+              <td style="text-align: center">100%</td>
+              <td style="text-align: center">100%</td>
+              <td style="text-align: center">
+                <span class="status-pill pill-completed">Completed</span>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>基本設計</strong></td>
+              <td>2026/02 - 2026/03</td>
+              <td style="text-align: center">100%</td>
+              <td style="text-align: center">98%</td>
+              <td style="text-align: center">
+                <span class="status-pill pill-completed">Completed</span>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>詳細設計</strong></td>
+              <td>2026/03 - 2026/04</td>
+              <td style="text-align: center">85%</td>
+              <td style="text-align: center">82%</td>
+              <td style="text-align: center">
+                <span class="status-pill pill-active">In Progress</span>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>実装</strong></td>
+              <td>2026/04 - 2026/06</td>
+              <td style="text-align: center">45%</td>
+              <td style="text-align: center">40%</td>
+              <td style="text-align: center">
+                <span class="status-pill pill-active">In Progress</span>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>テスト</strong></td>
+              <td>2026/06 - 2026/07</td>
+              <td style="text-align: center">0%</td>
+              <td style="text-align: center">0%</td>
+              <td style="text-align: center">
+                <span class="status-pill pill-warning">Pending</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- リスクマネジメント -->
+      <div class="premium-section">
+        <div class="section-header-premium">
+          <div class="section-number">⚠️</div>
+          <h2 class="section-title-premium">Risk Management</h2>
+        </div>
+
+        <div class="insight-cards">
+          <div class="insight-card" style="border-left-color: #ef4444">
+            <div class="insight-icon">🔴</div>
+            <h3 class="insight-title" style="color: #ef4444">Critical Risk</h3>
+            <p class="insight-text" contenteditable="true">
+              <strong>外部API連携:</strong>
+              技術的課題が確認。4/10までに検証完了予定。影響度: 高
+            </p>
+          </div>
+          <div class="insight-card" style="border-left-color: #f59e0b">
+            <div class="insight-icon">🟡</div>
+            <h3 class="insight-title" style="color: #f59e0b">Medium Risk</h3>
+            <p class="insight-text" contenteditable="true">
+              <strong>リソース確保:</strong>
+              外部パートナー契約を推進中。4/15までに解決予定。
+            </p>
+          </div>
+          <div class="insight-card" style="border-left-color: #10b981">
+            <div class="insight-icon">🟢</div>
+            <h3 class="insight-title" style="color: #10b981">Under Control</h3>
+            <p class="insight-text" contenteditable="true">
+              <strong>その他のリスク:</strong>
+              適切に管理されており、プロジェクトへの影響は限定的。
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- フッター -->
+      <div style="padding: 50px; text-align: center; background: #f8fafc">
+        <p style="color: #64748b; font-size: 13px" contenteditable="true">
+          本報告書の内容は機密情報を含みます。承認された関係者以外への配布を禁じます。<br />
+          © 2026 株式会社〇〇〇〇 All Rights Reserved.
+        </p>
+      </div>
+    </div>
+  </body>
+</html>

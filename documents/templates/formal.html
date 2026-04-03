@@ -1,0 +1,611 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>正式報告書（フォーマル版）</title>
+    <link rel="stylesheet" href="../assets/css/print.css" />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family:
+          "Meiryo UI", "Meiryo", "MS PGothic", "MS Gothic", sans-serif;
+        line-height: 1.8;
+        color: #000;
+        background-color: #f5f5f5;
+        padding: 20px;
+      }
+
+      .container {
+        max-width: 210mm;
+        margin: 0 auto;
+        background: white;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .page {
+        padding: 25mm 20mm;
+        min-height: 297mm;
+        background: white;
+        page-break-after: always;
+      }
+
+      .page:last-child {
+        page-break-after: auto;
+      }
+
+      /* 表紙 */
+      .cover-page {
+        display: flex;
+        flex-direction: column;
+        min-height: 297mm;
+        padding: 0;
+        position: relative;
+      }
+
+      .cover-header {
+        text-align: right;
+        padding: 25mm 20mm 0 20mm;
+        font-size: 12px;
+        color: #666;
+      }
+
+      .cover-main {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: 0 40mm;
+      }
+
+      .cover-category {
+        font-size: 14px;
+        color: #666;
+        margin-bottom: 30px;
+        letter-spacing: 2px;
+      }
+
+      .cover-title {
+        font-size: 28px;
+        font-weight: bold;
+        color: #000;
+        margin-bottom: 10px;
+        padding: 0 20px 15px;
+        border-bottom: 2px solid #000;
+      }
+
+      .cover-subtitle {
+        font-size: 16px;
+        color: #333;
+        margin-top: 20px;
+      }
+
+      .cover-info-table {
+        margin-top: 60px;
+        width: 100%;
+        max-width: 450px;
+        border-collapse: collapse;
+        text-align: left;
+      }
+
+      .cover-info-table th,
+      .cover-info-table td {
+        border: 1px solid #000;
+        padding: 12px 15px;
+        font-size: 14px;
+      }
+
+      .cover-info-table th {
+        background-color: #f0f0f0;
+        font-weight: bold;
+        width: 120px;
+      }
+
+      /* 章番号付きセクション */
+      .chapter {
+        margin-bottom: 35px;
+        page-break-inside: avoid;
+      }
+
+      .chapter-number {
+        font-size: 24px;
+        font-weight: bold;
+        color: #000;
+        margin-bottom: 15px;
+        padding-bottom: 8px;
+        border-bottom: 2px solid #000;
+      }
+
+      .chapter-title {
+        display: inline;
+        margin-left: 15px;
+      }
+
+      .chapter-content {
+        margin-top: 20px;
+        text-indent: 1em;
+        text-align: justify;
+      }
+
+      /* サブセクション */
+      .subsection {
+        margin: 25px 0 20px 20px;
+      }
+
+      .subsection-title {
+        font-size: 16px;
+        font-weight: bold;
+        color: #000;
+        margin-bottom: 12px;
+        padding-left: 10px;
+        border-left: 4px solid #333;
+      }
+
+      .subsection-content {
+        margin-left: 15px;
+        text-indent: 1em;
+      }
+
+      /* テーブル（フォーマル版） */
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+        font-size: 13px;
+        page-break-inside: avoid;
+      }
+
+      table caption {
+        caption-side: top;
+        text-align: left;
+        font-weight: bold;
+        margin-bottom: 8px;
+        font-size: 14px;
+      }
+
+      th,
+      td {
+        border: 1px solid #000;
+        padding: 10px 12px;
+        text-align: left;
+      }
+
+      th {
+        background-color: #e8e8e8;
+        font-weight: bold;
+      }
+
+      /* 箇条書き */
+      ul,
+      ol {
+        margin: 15px 0 15px 40px;
+      }
+
+      li {
+        margin-bottom: 8px;
+        text-align: justify;
+      }
+
+      /* 図表キャプション */
+      .figure {
+        margin: 25px 0;
+        text-align: center;
+        page-break-inside: avoid;
+      }
+
+      .figure img {
+        max-width: 100%;
+        height: auto;
+        border: 1px solid #ccc;
+      }
+
+      .figure-caption {
+        margin-top: 8px;
+        font-size: 13px;
+        font-weight: bold;
+        color: #333;
+      }
+
+      /* 承認欄 */
+      .approval-section {
+        margin-top: 40px;
+        page-break-inside: avoid;
+      }
+
+      .approval-table {
+        width: 100%;
+        border-collapse: collapse;
+        border: 2px solid #000;
+      }
+
+      .approval-table th,
+      .approval-table td {
+        border: 1px solid #000;
+        padding: 25px 15px;
+        text-align: center;
+      }
+
+      .approval-table th {
+        background-color: #f0f0f0;
+        font-weight: bold;
+        width: 100px;
+      }
+
+      /* フッター */
+      .formal-footer {
+        position: absolute;
+        bottom: 20mm;
+        left: 20mm;
+        right: 20mm;
+        text-align: center;
+        font-size: 11px;
+        color: #666;
+        padding-top: 10px;
+        border-top: 1px solid #ccc;
+      }
+
+      /* 編集可能 */
+      [contenteditable="true"] {
+        outline: 2px dashed transparent;
+        transition: outline 0.2s;
+      }
+
+      [contenteditable="true"]:hover {
+        outline: 2px dashed #667eea;
+      }
+
+      [contenteditable="true"]:focus {
+        outline: 2px solid #667eea;
+        background-color: #f0f7ff;
+      }
+
+      @media print {
+        body {
+          padding: 0;
+          background: white;
+        }
+
+        .container {
+          box-shadow: none;
+        }
+
+        .page {
+          padding: 0;
+        }
+
+        .chapter,
+        .subsection,
+        table,
+        .figure,
+        .approval-section {
+          page-break-inside: avoid;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <!-- 表紙 -->
+      <div class="page cover-page">
+        <div class="cover-header" contenteditable="true">
+          管理番号: DOC-2026-0331-001
+        </div>
+
+        <div class="cover-main">
+          <p class="cover-category" contenteditable="true">業務報告書</p>
+          <h1 class="cover-title" contenteditable="true">
+            新システム開発プロジェクト<br />進捗報告書
+          </h1>
+          <p class="cover-subtitle" contenteditable="true">
+            2026年3月度 月次報告
+          </p>
+
+          <table class="cover-info-table">
+            <tr>
+              <th>報告日</th>
+              <td contenteditable="true">2026年3月31日</td>
+            </tr>
+            <tr>
+              <th>報告者</th>
+              <td contenteditable="true">山田 太郎</td>
+            </tr>
+            <tr>
+              <th>所属</th>
+              <td contenteditable="true">開発部 第一チーム</td>
+            </tr>
+            <tr>
+              <th>承認者</th>
+              <td contenteditable="true">開発部長 佐藤 次郎</td>
+            </tr>
+            <tr>
+              <th>機密区分</th>
+              <td contenteditable="true">社外秘</td>
+            </tr>
+          </table>
+        </div>
+
+        <div class="formal-footer">
+          <p contenteditable="true">株式会社〇〇〇〇 開発部</p>
+        </div>
+      </div>
+
+      <!-- 第1章 概要 -->
+      <div class="page">
+        <section class="chapter">
+          <h2 class="chapter-number">
+            1.<span class="chapter-title">概要</span>
+          </h2>
+          <div class="chapter-content" contenteditable="true">
+            <p>
+              本報告書は、2026年3月度における新システム開発プロジェクトの進捗状況、成果、課題、および今後の予定について報告するものである。本プロジェクトは、既存システムの老朽化に伴う業務システムの刷新を目的としており、2026年1月より開始している。
+            </p>
+            <p style="margin-top: 1em">
+              3月度においては、基本設計フェーズが完了し、詳細設計フェーズに移行している。全体として計画通りに進行しており、主要なマイルストーンは達成されている。
+            </p>
+          </div>
+        </section>
+
+        <section class="chapter">
+          <h2 class="chapter-number">
+            2.<span class="chapter-title">プロジェクト目的</span>
+          </h2>
+          <div class="chapter-content">
+            <div class="subsection">
+              <h3 class="subsection-title">2.1 背景</h3>
+              <div class="subsection-content" contenteditable="true">
+                現行システムは10年以上前に構築されたものであり、以下の課題が顕在化している。
+              </div>
+              <ul contenteditable="true">
+                <li>保守性の低下によるシステム改修コストの増大</li>
+                <li>業務量増加に伴うパフォーマンスの低下</li>
+                <li>テレワーク環境への対応不足</li>
+                <li>データ分析機能の不足による意思決定の遅延</li>
+              </ul>
+            </div>
+
+            <div class="subsection">
+              <h3 class="subsection-title">2.2 プロジェクトの目的</h3>
+              <div class="subsection-content" contenteditable="true">
+                上記の課題を解決するため、新しいクラウドベースの業務システムを開発し、業務効率化とデータ活用の促進を図る。
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- 第3章 進捗状況 -->
+      <div class="page">
+        <section class="chapter">
+          <h2 class="chapter-number">
+            3.<span class="chapter-title">進捗状況</span>
+          </h2>
+
+          <div class="subsection">
+            <h3 class="subsection-title">3.1 全体進捗</h3>
+            <div class="subsection-content" contenteditable="true">
+              2026年3月末時点での全体進捗率は75%であり、計画に対して順調に推移している。各フェーズの進捗状況を表1に示す。
+            </div>
+
+            <table>
+              <caption>
+                表1: フェーズ別進捗状況
+              </caption>
+              <thead>
+                <tr>
+                  <th>フェーズ</th>
+                  <th>計画期間</th>
+                  <th>進捗率</th>
+                  <th>ステータス</th>
+                </tr>
+              </thead>
+              <tbody contenteditable="true">
+                <tr>
+                  <td>要件定義</td>
+                  <td>2026/01 - 2026/02</td>
+                  <td>100%</td>
+                  <td>完了</td>
+                </tr>
+                <tr>
+                  <td>基本設計</td>
+                  <td>2026/02 - 2026/03</td>
+                  <td>100%</td>
+                  <td>完了</td>
+                </tr>
+                <tr>
+                  <td>詳細設計</td>
+                  <td>2026/03 - 2026/04</td>
+                  <td>60%</td>
+                  <td>進行中</td>
+                </tr>
+                <tr>
+                  <td>実装</td>
+                  <td>2026/04 - 2026/06</td>
+                  <td>20%</td>
+                  <td>進行中</td>
+                </tr>
+                <tr>
+                  <td>テスト</td>
+                  <td>2026/06 - 2026/07</td>
+                  <td>0%</td>
+                  <td>未着手</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="subsection">
+            <h3 class="subsection-title">3.2 主要成果</h3>
+            <div class="subsection-content" contenteditable="true">
+              3月度における主要な成果は以下の通りである。
+            </div>
+            <ol contenteditable="true">
+              <li>基本設計書v1.0の完成および承認取得（3月5日）</li>
+              <li>詳細設計の着手および進行（3月10日開始）</li>
+              <li>開発環境の整備完了（3月15日）</li>
+              <li>プロトタイプのデモンストレーション実施（3月20日）</li>
+              <li>クライアントとの定例会議を4回実施</li>
+            </ol>
+          </div>
+        </section>
+      </div>
+
+      <!-- 第4章 課題と対応 -->
+      <div class="page">
+        <section class="chapter">
+          <h2 class="chapter-number">
+            4.<span class="chapter-title">課題と対応策</span>
+          </h2>
+
+          <div class="subsection">
+            <h3 class="subsection-title">4.1 現在の課題</h3>
+            <div class="subsection-content" contenteditable="true">
+              プロジェクト推進にあたり、以下の課題が確認されている。各課題に対する対応策を表2に示す。
+            </div>
+
+            <table>
+              <caption>
+                表2: 課題一覧と対応策
+              </caption>
+              <thead>
+                <tr>
+                  <th style="width: 30%">課題</th>
+                  <th style="width: 15%">影響度</th>
+                  <th style="width: 35%">対応策</th>
+                  <th style="width: 20%">期限</th>
+                </tr>
+              </thead>
+              <tbody contenteditable="true">
+                <tr>
+                  <td>経験豊富な開発者の確保が困難</td>
+                  <td>中</td>
+                  <td>外部パートナー企業との協業を検討。4月中に契約予定</td>
+                  <td>2026/04/15</td>
+                </tr>
+                <tr>
+                  <td>クライアントからの追加要望発生</td>
+                  <td>中</td>
+                  <td>変更管理プロセスを厳格化し、影響度評価を実施</td>
+                  <td>継続</td>
+                </tr>
+                <tr>
+                  <td>既存システムとのデータ連携の技術的課題</td>
+                  <td>高</td>
+                  <td>技術検証を前倒しで実施。必要に応じて設計変更を検討</td>
+                  <td>2026/04/10</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="subsection">
+            <h3 class="subsection-title">4.2 リスク管理</h3>
+            <div class="subsection-content" contenteditable="true">
+              リスク管理として、週次でのリスクレビュー会議を実施している。また、重要な技術要素については早期にPoC（概念実証）を実施し、リスクの低減を図っている。
+            </div>
+          </div>
+        </section>
+
+        <section class="chapter">
+          <h2 class="chapter-number">
+            5.<span class="chapter-title">今後の予定</span>
+          </h2>
+          <div class="chapter-content" contenteditable="true">
+            4月度は以下のスケジュールで進行する予定である。
+          </div>
+
+          <table>
+            <caption>
+              表3: 4月度の予定
+            </caption>
+            <thead>
+              <tr>
+                <th style="width: 20%">日付</th>
+                <th style="width: 50%">マイルストーン</th>
+                <th style="width: 30%">担当</th>
+              </tr>
+            </thead>
+            <tbody contenteditable="true">
+              <tr>
+                <td>4月5日</td>
+                <td>詳細設計完了</td>
+                <td>設計チーム</td>
+              </tr>
+              <tr>
+                <td>4月10日</td>
+                <td>実装フェーズ キックオフミーティング</td>
+                <td>全員</td>
+              </tr>
+              <tr>
+                <td>4月15日</td>
+                <td>第一次実装完了（基本機能）</td>
+                <td>開発チーム</td>
+              </tr>
+              <tr>
+                <td>4月25日</td>
+                <td>中間レビュー実施</td>
+                <td>全員</td>
+              </tr>
+              <tr>
+                <td>4月30日</td>
+                <td>月次報告会</td>
+                <td>プロジェクトマネージャー</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+      </div>
+
+      <!-- 承認・確認ページ -->
+      <div class="page">
+        <section class="approval-section">
+          <h2 class="chapter-number">承認・確認</h2>
+
+          <table class="approval-table">
+            <tr>
+              <th>作成者</th>
+              <td contenteditable="true">山田 太郎</td>
+              <td>印</td>
+            </tr>
+            <tr>
+              <th>確認者</th>
+              <td contenteditable="true">鈴木 一郎<br />（チームリーダー）</td>
+              <td>印</td>
+            </tr>
+            <tr>
+              <th>承認者</th>
+              <td contenteditable="true">佐藤 次郎<br />（開発部長）</td>
+              <td>印</td>
+            </tr>
+          </table>
+        </section>
+
+        <section class="chapter" style="margin-top: 50px">
+          <h2 class="chapter-number">
+            6.<span class="chapter-title">補足事項</span>
+          </h2>
+          <div class="chapter-content" contenteditable="true">
+            <p>
+              本報告書に関する質問や追加情報の要求については、以下までご連絡ください。
+            </p>
+            <p style="margin-top: 1em">
+              連絡先: 開発部 第一チーム<br />
+              メール: dev-team1@example.com<br />
+              内線: 1234
+            </p>
+          </div>
+        </section>
+
+        <div class="formal-footer">
+          <p>本書の内容は機密情報を含むため、取り扱いには十分注意すること</p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

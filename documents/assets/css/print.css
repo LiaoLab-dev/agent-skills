@@ -1,0 +1,295 @@
+/* PDF印刷最適化スタイルシート */
+
+@media print {
+  /* ページ設定 */
+  @page {
+    size: A4;
+    margin: 15mm 20mm;
+  }
+
+  @page :first {
+    margin: 0;
+  }
+
+  /* ページヘッダー・フッター */
+  @page :left {
+    @bottom-left {
+      content: "機密情報";
+      font-size: 9pt;
+      color: #999;
+    }
+  }
+
+  @page :right {
+    @bottom-right {
+      content: counter(page) " / " counter(pages);
+      font-size: 9pt;
+      color: #999;
+    }
+  }
+
+  /* 基本設定 */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    background: white;
+    font-family: "Meiryo UI", "Meiryo", "MS PGothic", "MS Gothic", sans-serif;
+    font-size: 11pt;
+    line-height: 1.5;
+  }
+
+  .container {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+    box-shadow: none;
+    background: white;
+  }
+
+  .page {
+    padding: 0;
+    margin: 0;
+    min-height: 0;
+    page-break-after: always;
+    page-break-inside: avoid;
+  }
+
+  .page:last-child {
+    page-break-after: auto;
+  }
+
+  /* 表紙 */
+  .cover-page {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    page-break-after: always;
+  }
+
+  .logo-placeholder {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .cover-title {
+    font-size: 32pt;
+    page-break-after: avoid;
+  }
+
+  .cover-subtitle {
+    font-size: 16pt;
+  }
+
+  .cover-info {
+    page-break-inside: avoid;
+  }
+
+  /* セクション */
+  .section {
+    page-break-inside: avoid;
+    margin-bottom: 20pt;
+  }
+
+  .section-header {
+    page-break-after: avoid;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .section-icon {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .section-title {
+    font-size: 18pt;
+  }
+
+  /* テーブル */
+  table {
+    page-break-inside: avoid;
+    font-size: 10pt;
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  thead {
+    display: table-header-group;
+  }
+
+  tbody {
+    display: table-row-group;
+  }
+
+  th {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    background-color: #667eea !important;
+    color: white !important;
+    padding: 8pt;
+  }
+
+  td {
+    padding: 6pt;
+  }
+
+  tr {
+    page-break-inside: avoid;
+  }
+
+  /* リスト */
+  ul,
+  ol {
+    page-break-inside: avoid;
+    margin-left: 15pt;
+  }
+
+  li {
+    page-break-inside: avoid;
+    margin-bottom: 4pt;
+  }
+
+  /* ステータスバッジ */
+  .status-badge {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    border: 1px solid #ccc;
+  }
+
+  .status-on-track {
+    background-color: #d4edda !important;
+    color: #155724 !important;
+  }
+
+  .status-at-risk {
+    background-color: #fff3cd !important;
+    color: #856404 !important;
+  }
+
+  .status-delayed {
+    background-color: #f8d7da !important;
+    color: #721c24 !important;
+  }
+
+  /* サマリーボックス */
+  .summary-box {
+    page-break-inside: avoid;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    background-color: #f8f9fa !important;
+    border-left: 4pt solid #667eea !important;
+  }
+
+  /* プログレスバー */
+  .progress-bar {
+    page-break-inside: avoid;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .progress-bar-fill {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    background: #667eea !important;
+  }
+
+  /* 画像 */
+  .image-container {
+    page-break-inside: avoid;
+    margin: 10pt 0;
+  }
+
+  .image-container img {
+    max-width: 100%;
+    height: auto;
+    max-height: 200mm;
+    object-fit: contain;
+  }
+
+  .image-caption {
+    font-size: 9pt;
+    color: #666;
+    margin-top: 5pt;
+  }
+
+  /* フッター */
+  .page-footer {
+    page-break-inside: avoid;
+    margin-top: 20pt;
+    font-size: 9pt;
+  }
+
+  /* 編集用のアウトラインを非表示 */
+  [contenteditable="true"] {
+    outline: none;
+  }
+
+  [contenteditable="true"]:hover,
+  [contenteditable="true"]:focus {
+    outline: none;
+    background-color: transparent;
+  }
+
+  /* リンクの処理 */
+  a[href]:after {
+    content: " (" attr(href) ")";
+    font-size: 9pt;
+    color: #666;
+  }
+
+  /* 不要な要素を非表示 */
+  .no-print {
+    display: none !important;
+  }
+
+  /* 見出しの孤立を防ぐ */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    page-break-after: avoid;
+    page-break-inside: avoid;
+  }
+
+  /* 段落の孤立を防ぐ */
+  p {
+    orphans: 3;
+    widows: 3;
+  }
+
+  /* グラデーション背景の代替 */
+  @supports not (print-color-adjust: exact) {
+    .logo-placeholder,
+    .section-icon,
+    .progress-bar-fill {
+      background: #667eea !important;
+    }
+  }
+}
+
+/* 画面表示時の印刷プレビュー補助 */
+@media screen {
+  .print-preview-mode {
+    background: #f5f5f5;
+  }
+
+  .print-preview-mode .container {
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  }
+
+  .print-preview-mode .page {
+    margin-bottom: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  }
+}

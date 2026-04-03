@@ -1,0 +1,880 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GitHub での Skill 共有・配布ガイド</title>
+    <link rel="stylesheet" href="../assets/css/print.css" />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family:
+          "Meiryo UI", "Meiryo", "MS PGothic", "MS Gothic", sans-serif;
+        line-height: 1.8;
+        color: #000;
+        background-color: #f5f5f5;
+        padding: 20px;
+      }
+
+      .container {
+        max-width: 210mm;
+        margin: 0 auto;
+        background: white;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .page {
+        padding: 25mm 20mm;
+        min-height: 297mm;
+        background: white;
+        page-break-after: always;
+      }
+
+      .page:last-child {
+        page-break-after: auto;
+      }
+
+      /* 表紙 */
+      .cover-page {
+        display: flex;
+        flex-direction: column;
+        min-height: 297mm;
+        padding: 0;
+        position: relative;
+      }
+
+      .cover-header {
+        text-align: right;
+        padding: 25mm 20mm 0 20mm;
+        font-size: 12px;
+        color: #666;
+      }
+
+      .cover-main {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: 0 40mm;
+      }
+
+      .cover-category {
+        font-size: 14px;
+        color: #666;
+        margin-bottom: 30px;
+        letter-spacing: 2px;
+      }
+
+      .cover-title {
+        font-size: 28px;
+        font-weight: bold;
+        color: #000;
+        margin-bottom: 10px;
+        padding: 0 20px 15px;
+        border-bottom: 2px solid #000;
+      }
+
+      .cover-subtitle {
+        font-size: 16px;
+        color: #333;
+        margin-top: 20px;
+      }
+
+      .cover-info-table {
+        margin-top: 60px;
+        width: 100%;
+        max-width: 450px;
+        border-collapse: collapse;
+        text-align: left;
+      }
+
+      .cover-info-table th,
+      .cover-info-table td {
+        border: 1px solid #000;
+        padding: 12px 15px;
+        font-size: 14px;
+      }
+
+      .cover-info-table th {
+        background-color: #f0f0f0;
+        font-weight: bold;
+        width: 120px;
+      }
+
+      /* 章番号付きセクション */
+      .chapter {
+        margin-bottom: 35px;
+        page-break-inside: avoid;
+      }
+
+      .chapter-number {
+        font-size: 24px;
+        font-weight: bold;
+        color: #000;
+        margin-bottom: 15px;
+        padding-bottom: 8px;
+        border-bottom: 2px solid #000;
+      }
+
+      .chapter-title {
+        display: inline;
+        margin-left: 15px;
+      }
+
+      .chapter-content {
+        margin-top: 20px;
+        text-indent: 1em;
+        text-align: justify;
+      }
+
+      /* サブセクション */
+      .subsection {
+        margin: 25px 0 20px 20px;
+      }
+
+      .subsection-title {
+        font-size: 16px;
+        font-weight: bold;
+        color: #000;
+        margin-bottom: 12px;
+        padding-left: 10px;
+        border-left: 4px solid #333;
+      }
+
+      .subsection-content {
+        margin-left: 15px;
+        text-indent: 1em;
+      }
+
+      /* テーブル（フォーマル版） */
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+        font-size: 13px;
+        page-break-inside: avoid;
+      }
+
+      table caption {
+        caption-side: top;
+        text-align: left;
+        font-weight: bold;
+        margin-bottom: 8px;
+        font-size: 14px;
+      }
+
+      th,
+      td {
+        border: 1px solid #000;
+        padding: 10px 12px;
+        text-align: left;
+      }
+
+      th {
+        background-color: #e8e8e8;
+        font-weight: bold;
+      }
+
+      /* 箇条書き */
+      ul,
+      ol {
+        margin: 15px 0 15px 40px;
+      }
+
+      li {
+        margin-bottom: 8px;
+        text-align: justify;
+      }
+
+      /* コードブロック */
+      .code-block {
+        background-color: #f5f5f5;
+        border-left: 4px solid #333;
+        padding: 15px;
+        margin: 15px 0;
+        font-family: "Courier New", monospace;
+        font-size: 12px;
+        overflow-x: auto;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+      }
+
+      /* ファイルツリー */
+      .file-tree {
+        background-color: #f5f5f5;
+        border-left: 4px solid #333;
+        padding: 15px;
+        margin: 15px 0;
+        font-family: "Courier New", monospace;
+        font-size: 12px;
+        overflow-x: auto;
+        white-space: pre;
+      }
+
+      /* 参考資料セクション */
+      .references-section {
+        margin-top: 40px;
+        page-break-inside: avoid;
+        background-color: #f9f9f9;
+        padding: 15px;
+        border-left: 4px solid #666;
+      }
+
+      .references-title {
+        font-size: 16px;
+        font-weight: bold;
+        color: #000;
+        margin-bottom: 12px;
+      }
+
+      .references-list {
+        margin: 0 0 0 20px;
+        font-size: 12px;
+        line-height: 1.6;
+      }
+
+      .ref-item {
+        margin-bottom: 10px;
+      }
+
+      .ref-label {
+        font-weight: bold;
+        color: #333;
+      }
+
+      /* フッター */
+      .formal-footer {
+        position: absolute;
+        bottom: 20mm;
+        left: 20mm;
+        right: 20mm;
+        text-align: center;
+        font-size: 11px;
+        color: #666;
+        padding-top: 10px;
+        border-top: 1px solid #ccc;
+      }
+
+      /* 編集可能 */
+      [contenteditable="true"] {
+        outline: 2px dashed transparent;
+        transition: outline 0.2s;
+      }
+
+      [contenteditable="true"]:hover {
+        outline: 2px dashed #667eea;
+      }
+
+      [contenteditable="true"]:focus {
+        outline: 2px solid #667eea;
+        background-color: #f0f7ff;
+      }
+
+      @media print {
+        body {
+          padding: 0;
+          background: white;
+        }
+
+        .container {
+          box-shadow: none;
+        }
+
+        .page {
+          padding: 0;
+        }
+
+        .chapter,
+        .subsection,
+        table,
+        .references-section {
+          page-break-inside: avoid;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <!-- 表紙 -->
+      <div class="page cover-page">
+        <div class="cover-header">
+          作成日：2026年4月3日
+        </div>
+
+        <div class="cover-main">
+          <p class="cover-category">配布ガイド</p>
+          <h1 class="cover-title">
+            GitHub での Skill<br />
+            共有・配布ガイド
+          </h1>
+          <p class="cover-subtitle">
+            チーム内・OSS コミュニティでの Skill 配布方法
+          </p>
+
+          <table class="cover-info-table">
+            <tr>
+              <th>対象</th>
+              <td>Skill 作成者・配布者</td>
+            </tr>
+            <tr>
+              <th>難易度</th>
+              <td>中級</td>
+            </tr>
+            <tr>
+              <th>所要時間</th>
+              <td>20分</td>
+            </tr>
+            <tr>
+              <th>前提知識</th>
+              <td>Git・GitHub の基本</td>
+            </tr>
+            <tr>
+              <th>機密区分</th>
+              <td>公開</td>
+            </tr>
+          </table>
+        </div>
+
+        <div class="formal-footer">
+          <p>このドキュメントは AGENTS.md および GitHub 公式ドキュメントに基づいています</p>
+        </div>
+      </div>
+
+      <!-- 第1章 リポジトリ構成 -->
+      <div class="page">
+        <section class="chapter">
+          <h2 class="chapter-number">
+            1.<span class="chapter-title">リポジトリの推奨構成</span>
+          </h2>
+          <div class="chapter-content">
+            <p>
+              GitHub 上で Skill を効果的に共有・管理するためには、統一されたディレクトリ構成が重要です。以下は推奨される構成です。
+            </p>
+          </div>
+
+          <div class="subsection">
+            <h3 class="subsection-title">1.1 公開リポジトリのディレクトリレイアウト</h3>
+            <div class="file-tree">
+agent-skills/
+├── skills/
+│   ├── react-best-practices/
+│   │   ├── SKILL.md              # 必須
+│   │   ├── metadata.json         # 推奨
+│   │   ├── AGENTS.md             # 推奨
+│   │   ├── README.md             # 推奨
+│   │   ├── rules/                # オプション
+│   │   │   ├── async-*.md
+│   │   │   ├── bundle-*.md
+│   │   │   └── ...
+│   │   └── scripts/              # オプション
+│   │       ├── deploy.sh
+│   │       └── validate.sh
+│   │
+│   ├── deploy-to-vercel/
+│   │   ├── SKILL.md
+│   │   ├── scripts/
+│   │   │   └── deploy.sh
+│   │   └── resources/
+│   │       ├── deploy-codex.sh
+│   │       └── deploy.sh
+│   │
+│   └── composition-patterns/
+│       ├── SKILL.md
+│       └── rules/
+│
+├── packages/                     # パッケージ化用
+│   └── react-best-practices-build/
+│       ├── package.json
+│       └── build.ts
+│
+├── documents/                    # ドキュメント
+│   ├── README.md
+│   └── assets/
+│       ├── diagrams/
+│       └── images/
+│
+├── README.md                     # リポジトリ概要
+├── AGENTS.md                     # Skill 作成ガイド
+├── package.json                  # 全体の package.json
+└── .gitignore
+            </div>
+          </div>
+
+          <div class="subsection">
+            <h3 class="subsection-title">1.2 各フォルダの役割</h3>
+            <table>
+              <caption>表1：ディレクトリ別の役割</caption>
+              <thead>
+                <tr>
+                  <th style="width: 20%">フォルダ名</th>
+                  <th style="width: 20%">必須</th>
+                  <th style="width: 60%">説明</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>skills/</code></td>
+                  <td>✅</td>
+                  <td>すべての Skill が格納されるルートディレクトリ</td>
+                </tr>
+                <tr>
+                  <td><code>skills/[skill-name]/</code></td>
+                  <td>✅</td>
+                  <td>個別 Skill のディレクトリ（kebab-case で命名）</td>
+                </tr>
+                <tr>
+                  <td><code>rules/</code></td>
+                  <td>推奨</td>
+                  <td>複雑な Skill の場合、ルール ファイルを分割</td>
+                </tr>
+                <tr>
+                  <td><code>scripts/</code></td>
+                  <td>オプション</td>
+                  <td>Skill から呼び出される実行スクリプト</td>
+                </tr>
+                <tr>
+                  <td><code>packages/</code></td>
+                  <td>オプション</td>
+                  <td>ビルドツール・パッケージング用</td>
+                </tr>
+                <tr>
+                  <td><code>documents/</code></td>
+                  <td>推奨</td>
+                  <td>このドキュメント群など、ドキュメント専用</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+
+      <!-- 第2章 パッケージング -->
+      <div class="page">
+        <section class="chapter">
+          <h2 class="chapter-number">
+            2.<span class="chapter-title">Skill のパッケージング（Zip 化）</span>
+          </h2>
+          <div class="chapter-content">
+            <p>
+              Skill を配布するには、フォルダ全体を Zip ファイルに圧縮します。以下の手順に従ってください。
+            </p>
+          </div>
+
+          <div class="subsection">
+            <h3 class="subsection-title">2.1 Zip ファイル作成手順</h3>
+            <ol>
+              <li>
+                <strong>ターミナルで skills ディレクトリへ移動</strong>
+                <div class="code-block">
+cd agent-skills/skills
+                </div>
+              </li>
+              <li>
+                <strong>個別 Skill を Zip 化</strong>
+                <div class="code-block">
+# macOS / Linux
+zip -r react-best-practices.zip react-best-practices/
+
+# Windows PowerShell
+Compress-Archive -Path react-best-practices -DestinationPath react-best-practices.zip
+
+# 確認
+ls -lh react-best-practices.zip
+                </div>
+              </li>
+              <li>
+                <strong>複数 Skill をまとめて Zip 化</strong>
+                <div class="code-block">
+# すべての Skill を 1 つの Zip に
+zip -r agent-skills.zip react-best-practices/ deploy-to-vercel/ composition-patterns/
+
+# ファイルサイズ確認（大きすぎないか）
+du -sh agent-skills.zip
+                </div>
+              </li>
+            </ol>
+          </div>
+
+          <div class="subsection">
+            <h3 class="subsection-title">2.2 Zip ファイルの確認</h3>
+            <div class="code-block">
+# Zip 内容を確認（解凍せずに）
+unzip -l react-best-practices.zip
+
+# 出力例:
+# Archive: react-best-practices.zip
+#   Length      Date    Time    Name
+# ---------  ---------- -----   ----
+#      1234  2026-04-03 10:00   react-best-practices/SKILL.md
+#      5678  2026-04-03 10:00   react-best-practices/metadata.json
+#      ...
+            </div>
+          </div>
+
+          <div class="subsection">
+            <h3 class="subsection-title">2.3 ベストプラクティス</h3>
+            <table>
+              <thead>
+                <tr>
+                  <th style="width: 30%">項目</th>
+                  <th style="width: 70%">推奨方法</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>ファイルサイズ</strong></td>
+                  <td>Skill 1 つで 1 MB 以下を目安（スクリプトと rules は別途確認）</td>
+                </tr>
+                <tr>
+                  <td><strong>最上位フォルダ</strong></td>
+                  <td>Zip 解凍後、skill-name/ フォルダが最上位になること</td>
+                </tr>
+                <tr>
+                  <td><strong>ファイル名</strong></td>
+                  <td>Zip 名 = skill ディレクトリ名（例：react-best-practices.zip）</td>
+                </tr>
+                <tr>
+                  <td><strong>除外ファイル</strong></td>
+                  <td>node_modules, .git, __pycache__ などは除外</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+
+      <!-- 第3章 GitHub へのアップロード -->
+      <div class="page">
+        <section class="chapter">
+          <h2 class="chapter-number">
+            3.<span class="chapter-title">GitHub へのアップロード・公開</span>
+          </h2>
+          <div class="chapter-content">
+            <p>
+              Skill を GitHub に公開し、チーム内やコミュニティで共有するための手順です。
+            </p>
+          </div>
+
+          <div class="subsection">
+            <h3 class="subsection-title">3.1 新規リポジトリ作成</h3>
+            <ol>
+              <li>
+                <strong>GitHub で新規リポジトリ作成</strong>
+                <div>
+                  GitHub にログイン → 「New repository」 → リポジトリ名を入力
+                  <br />
+                  例）<code>agent-skills</code>
+                </div>
+              </li>
+              <li>
+                <strong>ローカルで初期化</strong>
+                <div class="code-block">
+cd agent-skills
+
+# リポジトリ初期化
+git init
+
+# 最初のコミット
+git add .
+git commit -m "Initial commit: Add agent skills"
+
+# リモート設定
+git remote add origin https://github.com/[username]/agent-skills.git
+
+# ブランチ名を main に変更（GitHub がデフォルト）
+git branch -M main
+
+# 公開
+git push -u origin main
+                </div>
+              </li>
+            </ol>
+          </div>
+
+          <div class="subsection">
+            <h3 class="subsection-title">3.2 Releases タブでの Zip 配布</h3>
+            <ol>
+              <li>
+                <strong>GitHub リポジトリの「Releases」タブを開く</strong>
+              </li>
+              <li>
+                <strong>「Create a new release」をクリック</strong>
+              </li>
+              <li>
+                <strong>タグ名と説明を入力</strong>
+                <div class="code-block">
+Tag version: v1.0.0
+Release title: React Best Practices v1.0.0
+Description:
+  ## 変更内容
+  - 初版リリース
+  - 65個のパフォーマンスルールを収録
+  - CLI の自動検証機能を実装
+                </div>
+              </li>
+              <li>
+                <strong>Zip ファイルをアップロード</strong>
+                <div>
+                  「Attach binaries」エリアに react-best-practices.zip をドラッグアンドドロップ
+                </div>
+              </li>
+              <li>
+                <strong>「Publish release」をクリック</strong>
+              </li>
+            </ol>
+          </div>
+
+          <div class="subsection">
+            <h3 class="subsection-title">3.3 README.md での公開</h3>
+            <div class="subsection-content">
+              <p>
+                リポジトリの README.md にインストール方法と使用方法を明記します。
+              </p>
+            </div>
+            <div class="code-block">
+# Agent Skills - React Best Practices
+
+React/Next.js パフォーマンス最適化ガイド（65 ルール）
+
+## インストール方法
+
+### CLI を使用
+```bash
+npm install -g agent-skills
+agent-skills install react-best-practices
+```
+
+### 手動ダウンロード
+1. [Releases](releases) から最新版をダウンロード
+2. Zip を解凍
+3. ~/.claude/skills/ にコピー
+
+## 使用方法
+
+Copilot チャット内で:
+```
+「このコンポーネントパフォーマンス最適化して」
+```
+
+Copilot が自動的に react-best-practices Skill を起動します。
+
+## サポート
+- 問題報告：[Issues](issues)
+- 質問：[Discussions](discussions)
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- 第4章 インストール方法のドキュメント -->
+      <div class="page">
+        <section class="chapter">
+          <h2 class="chapter-number">
+            4.<span class="chapter-title">ユーザー向けインストール手順</span>
+          </h2>
+          <div class="chapter-content">
+            <p>
+              配布したい Skill のインストール方法を、初心者向けに説明します。
+            </p>
+          </div>
+
+          <div class="subsection">
+            <h3 class="subsection-title">4.1 方法1：CLI を使用（最も簡単）</h3>
+            <div class="code-block">
+# グローバルにインストール
+npm install -g agent-skills
+
+# パッケージをインストール
+agent-skills install react-best-practices
+
+# 確認
+agent-skills list
+# 出力: react-best-practices (v1.0.0)
+            </div>
+          </div>
+
+          <div class="subsection">
+            <h3 class="subsection-title">4.2 方法2：手動ダウンロード</h3>
+            <ol>
+              <li>GitHub Releases から react-best-practices.zip をダウンロード</li>
+              <li>Zip を解凍
+                <div class="code-block">
+unzip react-best-practices.zip
+            </div>
+              </li>
+              <li>.claude/skills/ にコピー
+                <div class="code-block">
+# macOS / Linux
+cp -r react-best-practices ~/.claude/skills/
+
+# Windows PowerShell
+Copy-Item -Recurse -Path react-best-practices -Destination $env:USERPROFILE\.claude\skills\
+            </div>
+              </li>
+              <li>VS Code を再起動して確認</li>
+            </ol>
+          </div>
+
+          <div class="subsection">
+            <h3 class="subsection-title">4.3 方法3：GitHub から直接クローン</h3>
+            <div class="code-block">
+# リポジトリをクローン
+git clone https://github.com/[username]/agent-skills.git
+
+# Skill フォルダをコピー
+cp -r agent-skills/skills/react-best-practices ~/.claude/skills/
+            </div>
+          </div>
+        </section>
+
+        <section class="chapter">
+          <h2 class="chapter-number">
+            5.<span class="chapter-title">ベストプラクティス・まとめ</span>
+          </h2>
+          <div class="chapter-content">
+            <p>
+              Skill を効果的に配布するためのポイントをまとめました。
+            </p>
+          </div>
+
+          <table>
+            <caption>表2：配布時のチェックリスト</caption>
+            <thead>
+              <tr>
+                <th style="width: 30%">項目</th>
+                <th style="width: 20%">確認状態</th>
+                <th style="width: 50%">説明</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>SKILL.md が完備</td>
+                <td>✅</td>
+                <td>name, description, usage が明確</td>
+              </tr>
+              <tr>
+                <td>metadata.json を含める</td>
+                <td>✅</td>
+                <td>version, author, license を記載</td>
+              </tr>
+              <tr>
+                <td>README.md にインストール方法</td>
+                <td>✅</td>
+                <td>複数の方法（CLI・手動）を提示</td>
+              </tr>
+              <tr>
+                <td>Zip ファイルサイズは妥当</td>
+                <td>✅</td>
+                <td>1 Skill = 1 MB 以下が目安</td>
+              </tr>
+              <tr>
+                <td>GitHub Releases に配置</td>
+                <td>✅</td>
+                <td>バージョン管理と履歴が明確</td>
+              </tr>
+              <tr>
+                <td>LICENSE ファイルを含める</td>
+                <td>✅</td>
+                <td>MIT, Apache 2.0 など明示</td>
+              </tr>
+              <tr>
+                <td>CONTRIBUTING.md（オプション）</td>
+                <td>推奨</td>
+                <td>コントリビューション方法を記載</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+      </div>
+
+      <!-- 参考資料ページ -->
+      <div class="page">
+        <section class="references-section">
+          <h2 class="references-title">📚 一次情報・参考資料</h2>
+          <div class="references-list">
+            <div class="ref-item">
+              <span class="ref-label">📄 本ワークスペース参照：</span>&nbsp;
+              <code>agent-skills/AGENTS.md</code>
+              <br />
+              <small>セクション「Creating a New Skill」「Zip パッケージを作成」</small>
+            </div>
+
+            <div class="ref-item">
+              <span class="ref-label">📄 本ワークスペース参照：</span>&nbsp;
+              <code>agent-skills/README.md</code>
+              <br />
+              <small>Installation・Usage セクション</small>
+            </div>
+
+            <div class="ref-item">
+              <span class="ref-label">📄 本ワークスペース参照：</span>&nbsp;
+              <code>agent-skills/skills/*/metadata.json</code>
+              <br />
+              <small>各 Skill の公式メタデータ形式</small>
+            </div>
+
+            <div class="ref-item">
+              <span class="ref-label">🌐 GitHub 公式ドキュメント（リポジトリ作成）：</span>&nbsp;
+              <a href="https://docs.github.com/en/repositories/creating-and-managing-repositories">https://docs.github.com/en/repositories/creating-and-managing-repositories</a>
+              <br />
+              <small>GitHub リポジトリの作成・管理方法</small>
+            </div>
+
+            <div class="ref-item">
+              <span class="ref-label">🌐 GitHub 公式ドキュメント（Releases）：</span>&nbsp;
+              <a href="https://docs.github.com/en/repositories/releasing-projects-on-github">https://docs.github.com/en/repositories/releasing-projects-on-github</a>
+              <br />
+              <small>Release の作成・配布方法</small>
+            </div>
+
+            <div class="ref-item">
+              <span class="ref-label">🌐 Agent Skills 公式サイト：</span>&nbsp;
+              <a href="https://agentskills.io/">https://agentskills.io/</a>
+              <br />
+              <small>標準フォーマット仕様</small>
+            </div>
+
+            <div class="ref-item">
+              <span class="ref-label">🌐 Vercel Agent Skills（実装例）：</span>&nbsp;
+              <a href="https://github.com/vercel-labs/agent-skills">https://github.com/vercel-labs/agent-skills</a>
+              <br />
+              <small>リポジトリ構成・配布方法の実例</small>
+            </div>
+          </div>
+        </section>
+
+        <section class="chapter" style="margin-top: 40px">
+          <h2 class="chapter-number">
+            6.<span class="chapter-title">次のステップ</span>
+          </h2>
+          <div class="chapter-content">
+            <p>
+              GitHub での Skill 配布方法を習得しました。次は以下のドキュメントをご参照ください：
+            </p>
+            <ul>
+              <li>
+                <strong>implementation-examples.html</strong>
+                ：具体的な Skill 実装例の詳細解析
+              </li>
+              <li>
+                <strong>quick-start.html</strong>
+                ：初心者向けカスタム Skill 作成チュートリアル
+              </li>
+            </ul>
+          </div>
+        </section>
+
+        <div class="formal-footer">
+          <p>このドキュメントは 2026 年 4 月 3 日時点での情報です。定期的に更新されます。</p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

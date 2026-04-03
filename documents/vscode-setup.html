@@ -1,0 +1,854 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>VS Code での Skill 設定ガイド</title>
+    <link rel="stylesheet" href="../assets/css/print.css" />
+    <style>
+      /* 画面表示用スタイル */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family:
+          "Meiryo UI", "Meiryo", "MS PGothic", "MS Gothic", sans-serif;
+        line-height: 1.6;
+        color: #333;
+        background-color: #f5f5f5;
+        padding: 20px;
+      }
+
+      .container {
+        max-width: 210mm;
+        margin: 0 auto;
+        background: white;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .page {
+        padding: 20mm;
+        min-height: 297mm;
+        background: white;
+        page-break-after: always;
+      }
+
+      .page:last-child {
+        page-break-after: auto;
+      }
+
+      /* 表紙 */
+      .cover-page {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        min-height: 297mm;
+      }
+
+      .logo-placeholder {
+        width: 150px;
+        height: 150px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 40px;
+      }
+
+      .cover-title {
+        font-size: 36px;
+        font-weight: bold;
+        color: #2c3e50;
+        margin-bottom: 20px;
+        border-bottom: 4px solid #667eea;
+        padding-bottom: 10px;
+      }
+
+      .cover-subtitle {
+        font-size: 18px;
+        color: #7f8c8d;
+        margin-bottom: 60px;
+      }
+
+      .cover-info {
+        text-align: left;
+        width: 100%;
+        max-width: 400px;
+        margin-top: 60px;
+      }
+
+      .cover-info-item {
+        display: flex;
+        justify-content: space-between;
+        padding: 15px 0;
+        border-bottom: 1px solid #ecf0f1;
+        font-size: 16px;
+      }
+
+      .cover-info-label {
+        font-weight: bold;
+        color: #2c3e50;
+      }
+
+      .cover-info-value {
+        color: #34495e;
+      }
+
+      /* セクション共通 */
+      .section {
+        margin-bottom: 40px;
+      }
+
+      .section-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 3px solid #667eea;
+      }
+
+      .section-icon {
+        width: 40px;
+        height: 40px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: bold;
+        font-size: 18px;
+        margin-right: 15px;
+      }
+
+      .section-title {
+        font-size: 24px;
+        font-weight: bold;
+        color: #2c3e50;
+      }
+
+      .section-content {
+        padding: 10px 0;
+      }
+
+      /* 概要ボックス */
+      .summary-box {
+        background: #f8f9fa;
+        border-left: 4px solid #667eea;
+        padding: 20px;
+        margin: 20px 0;
+        border-radius: 4px;
+      }
+
+      .summary-box h3 {
+        color: #2c3e50;
+        margin-bottom: 10px;
+      }
+
+      /* テーブル */
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+      }
+
+      th,
+      td {
+        border: 1px solid #ddd;
+        padding: 12px;
+        text-align: left;
+      }
+
+      th {
+        background-color: #667eea;
+        color: white;
+        font-weight: bold;
+      }
+
+      tr:nth-child(even) {
+        background-color: #f8f9fa;
+      }
+
+      /* コードブロック */
+      .code-block {
+        background-color: #2c3e50;
+        color: #ecf0f1;
+        padding: 15px;
+        border-radius: 4px;
+        margin: 15px 0;
+        font-family: "Courier New", monospace;
+        font-size: 12px;
+        overflow-x: auto;
+        border-left: 4px solid #667eea;
+      }
+
+      /* リスト */
+      ul,
+      ol {
+        margin-left: 20px;
+        margin-bottom: 15px;
+      }
+
+      li {
+        margin-bottom: 8px;
+      }
+
+      strong {
+        color: #2c3e50;
+      }
+
+      /* プログレスバー */
+      .progress-bar {
+        width: 100%;
+        height: 30px;
+        background-color: #ecf0f1;
+        border-radius: 15px;
+        overflow: hidden;
+        margin: 10px 0;
+      }
+
+      .progress-bar-fill {
+        height: 100%;
+        background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: bold;
+        font-size: 14px;
+      }
+
+      /* ステップリスト */
+      .step-list {
+        margin-left: 0;
+      }
+
+      .step-item {
+        background: #f8f9fa;
+        border-left: 4px solid #667eea;
+        padding: 15px;
+        margin-bottom: 15px;
+        border-radius: 4px;
+      }
+
+      .step-number {
+        font-size: 20px;
+        font-weight: bold;
+        color: #667eea;
+        margin-bottom: 5px;
+      }
+
+      /* ファイルツリー */
+      .file-tree {
+        background: #f5f5f5;
+        border: 1px solid #ddd;
+        padding: 15px;
+        margin: 15px 0;
+        border-radius: 4px;
+        font-family: monospace;
+        font-size: 12px;
+        white-space: pre;
+      }
+
+      /* 参考資料セクション */
+      .references-section {
+        margin-top: 40px;
+        background-color: #f9f9f9;
+        padding: 15px;
+        border-left: 4px solid #667eea;
+        border-radius: 4px;
+      }
+
+      .references-title {
+        font-size: 16px;
+        font-weight: bold;
+        color: #2c3e50;
+        margin-bottom: 12px;
+      }
+
+      .references-list {
+        margin: 0 0 0 20px;
+        font-size: 12px;
+        line-height: 1.6;
+      }
+
+      .ref-item {
+        margin-bottom: 10px;
+      }
+
+      .ref-label {
+        font-weight: bold;
+        color: #333;
+      }
+
+      /* フッター */
+      .page-footer {
+        margin-top: 40px;
+        padding-top: 20px;
+        border-top: 1px solid #ecf0f1;
+        text-align: center;
+        color: #95a5a6;
+        font-size: 12px;
+      }
+
+      /* 編集可能要素のマーカー */
+      [contenteditable="true"] {
+        outline: 2px dashed transparent;
+        transition: outline 0.2s;
+      }
+
+      [contenteditable="true"]:hover {
+        outline: 2px dashed #667eea;
+      }
+
+      [contenteditable="true"]:focus {
+        outline: 2px solid #667eea;
+        background-color: #f0f7ff;
+      }
+
+      @media print {
+        body {
+          padding: 0;
+          background: white;
+        }
+
+        .container {
+          box-shadow: none;
+        }
+
+        .cover-title {
+          -webkit-print-color-adjust: exact;
+          print-color-adjust: exact;
+        }
+
+        table th {
+          -webkit-print-color-adjust: exact;
+          print-color-adjust: exact;
+        }
+
+        .code-block {
+          -webkit-print-color-adjust: exact;
+          print-color-adjust: exact;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <!-- 表紙 -->
+      <div class="page cover-page">
+        <div class="logo-placeholder">⚙️</div>
+        <h1 class="cover-title">VS Code での Skill 設定ガイド</h1>
+        <p class="cover-subtitle">
+          Agent Skills を VS Code に統合し、GitHub Copilot・Claude Code を活用する方法
+        </p>
+
+        <div class="cover-info">
+          <div class="cover-info-item">
+            <span class="cover-info-label">対象者:</span>
+            <span class="cover-info-value">初心者</span>
+          </div>
+          <div class="cover-info-item">
+            <span class="cover-info-label">所要時間:</span>
+            <span class="cover-info-value">20分</span>
+          </div>
+          <div class="cover-info-item">
+            <span class="cover-info-label">対象ツール:</span>
+            <span class="cover-info-value">VS Code・GitHub Copilot</span>
+          </div>
+          <div class="cover-info-item">
+            <span class="cover-info-label">更新日:</span>
+            <span class="cover-info-value">2026年4月3日</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- セクション1：セットアップ前の確認 -->
+      <div class="page">
+        <section class="section">
+          <div class="section-header">
+            <div class="section-icon">✅</div>
+            <h2 class="section-title">セットアップ前の確認</h2>
+          </div>
+          <div class="section-content">
+            <div class="summary-box">
+              <h3>環境確認チェックリスト</h3>
+              <p>
+                以下の環境が整っていることを確認してから進めてください。
+              </p>
+            </div>
+
+            <h3>必須環境</h3>
+            <table>
+              <thead>
+                <tr>
+                  <th>項目</th>
+                  <th>確認方法</th>
+                  <th>最小要件</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>VS Code</td>
+                  <td>
+                    <code>code --version</code>
+                  </td>
+                  <td>v1.80 以上</td>
+                </tr>
+                <tr>
+                  <td>GitHub Copilot 拡張機能</td>
+                  <td>VS Code 拡張機能タブで確認</td>
+                  <td>最新版</td>
+                </tr>
+                <tr>
+                  <td>GitHub アカウント</td>
+                  <td>VS Code でサインイン</td>
+                  <td>有効なアカウント</td>
+                </tr>
+                <tr>
+                  <td>インターネット接続</td>
+                  <td>ブラウザで確認</td>
+                  <td>常に接続</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <h3>確認手順</h3>
+            <ol>
+              <li>
+                <strong>VS Code のバージョン確認</strong>
+                <div class="code-block">
+# ターミナルで実行
+code --version
+
+# 出力例: 1.90.0
+# v 1.80 以上であれば OK
+                </div>
+              </li>
+              <li>
+                <strong>GitHub Copilot の拡張機能確認</strong>
+                <div>
+                  VS Code を開く → 左サイドバーの「拡張機能」アイコン →
+                  「copilot」で検索 → 「GitHub Copilot」があれば OK
+                </div>
+              </li>
+              <li>
+                <strong>GitHub へのサインイン</strong>
+                <div>
+                  VS Code 左下のアカウントアイコン →
+                  「Sign in with GitHub」をクリック
+                </div>
+              </li>
+            </ol>
+          </div>
+        </section>
+      </div>
+
+      <!-- セクション2：Skill ディレクトリの設定 -->
+      <div class="page">
+        <section class="section">
+          <div class="section-header">
+            <div class="section-icon">📁</div>
+            <h2 class="section-title">Skill ディレクトリの設定</h2>
+          </div>
+          <div class="section-content">
+            <div class="summary-box">
+              <h3>Skill をどこに配置するか</h3>
+              <p>
+                VS Code が Skill ファイルを認識するための推奨ディレクトリ構成を説明します。
+              </p>
+            </div>
+
+            <h3>推奨ディレクトリ構成</h3>
+            <div class="file-tree">
+home/
+├── .claude/
+│   ├── skills/
+│   │   ├── react-best-practices/
+│   │   │   ├── SKILL.md
+│   │   │   ├── metadata.json
+│   │   │   └── AGENTS.md
+│   │   ├── deploy-to-vercel/
+│   │   │   ├── SKILL.md
+│   │   │   └── scripts/
+│   │   └── composition-patterns/
+│   │       ├── SKILL.md
+│   │       └── rules/
+│   └── .instructions.md
+│
+└── projects/
+    └── my-project/
+            </div>
+
+            <h3>ディレクトリ配置のステップ</h3>
+            <ul class="step-list">
+              <li class="step-item">
+                <div class="step-number">Step 1</div>
+                <strong>.claude ディレクトリを作成</strong>
+                <div class="code-block">
+# macOS / Linux
+mkdir -p ~/.claude/skills
+
+# Windows PowerShell
+New-Item -Path $env:USERPROFILE\.claude\skills -ItemType Directory
+                </div>
+              </li>
+              <li class="step-item">
+                <div class="step-number">Step 2</div>
+                <strong>agent-skills をコピー</strong>
+                <div class="code-block">
+# agent-skills リポジトリから skills をコピー
+cp -r agent-skills/skills/* ~/.claude/skills/
+
+# 確認
+ls ~/.claude/skills/
+# 出力例:
+# react-best-practices/ deploy-to-vercel/ composition-patterns/
+                </div>
+              </li>
+              <li class="step-item">
+                <div class="step-number">Step 3</div>
+                <strong>VS Code で認識確認</strong>
+                <div>
+                  VS Code を開く → コマンドパレット（Ctrl+Shift+P）→
+                  「Copilot: Open Slash Commands」を実行 →
+                  登録された Skill が表示されるかチェック
+                </div>
+              </li>
+            </ul>
+          </div>
+        </section>
+      </div>
+
+      <!-- セクション3：.instructions.md の設定 -->
+      <div class="page">
+        <section class="section">
+          <div class="section-header">
+            <div class="section-icon">📝</div>
+            <h2 class="section-title">.instructions.md の設定</h2>
+          </div>
+          <div class="section-content">
+            <div class="summary-box">
+              <h3>.instructions.md とは</h3>
+              <p>
+                VS Code でエージェント（GitHub Copilot・Claude Code）の動作を永続的にカスタマイズするファイルです。ユーザーの好みやコーディング規則をエージェントに永遠に教え続けます。
+              </p>
+            </div>
+
+            <h3>推奨される .instructions.md の内容</h3>
+            <div class="code-block">
+# Agent Skill Preferences
+
+## Always use these skills:
+1. react-best-practices
+2. composition-patterns
+3. web-design-guidelines
+
+## Coding Standards
+- Follow TypeScript strict mode
+- Use functional components with hooks
+- Prefer composition over inheritance
+- Add JSDoc comments for exports
+
+## Code Style
+- Use 2 spaces for indentation
+- Follow Prettier formatting
+- Add type annotations for all functions
+- Use semantic HTML elements
+
+## Performance
+- Always optimize for bundle size
+- Implement code splitting
+- Consider Lighthouse scores
+- Profile before optimizing
+            </div>
+
+            <h3>設定ファイルの作成手順</h3>
+            <ol>
+              <li>
+                <strong>テキストエディタで作成</strong>
+                <div class="code-block">
+# ~/.claude/.instructions.md を新規作成
+# 上のテンプレートをコピー＆ペースト
+                </div>
+              </li>
+              <li>
+                <strong>プロジェクト全体に適用</strong>
+                <div>
+                  VS Code でプロジェクトを開く →
+                  <code>.vscode/settings.json</code> で指定
+                </div>
+              </li>
+              <li>
+                <strong>VS Code の認識確認</strong>
+                <div>
+                  Copilot チャット →
+                  「@instructions」でファイルが参照されているかチェック
+                </div>
+              </li>
+            </ol>
+
+            <h3>プロジェクト固有のファイル配置</h3>
+            <div class="file-tree">
+my-project/
+├── .vscode/
+│   └── settings.json
+├── .instructions.md      ← プロジェクト固有の指示
+├── src/
+│   └── components/
+├── package.json
+└── README.md
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- セクション4：AGENTS.md の活用 -->
+      <div class="page">
+        <section class="section">
+          <div class="section-header">
+            <div class="section-icon">🤖</div>
+            <h2 class="section-title">AGENTS.md の活用</h2>
+          </div>
+          <div class="section-content">
+            <div class="summary-box">
+              <h3>AGENTS.md の役割</h3>
+              <p>
+                各 Skill に含まれる
+                <code>AGENTS.md</code>
+                は、AI エージェント向けの詳細ドキュメントです。SKILL.md だけでなく、AGENTS.md も読み込まれることがあります。
+              </p>
+            </div>
+
+            <h3>参照方法</h3>
+            <table>
+              <thead>
+                <tr>
+                  <th>場面</th>
+                  <th>参照先</th>
+                  <th>詳細</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>初回のSkill化作</td>
+                  <td>SKILL.md のみ</td>
+                  <td>軽量な起動・判定</td>
+                </tr>
+                <tr>
+                  <td>Skill を実際に使用</td>
+                  <td>SKILL.md + AGENTS.md</td>
+                  <td>詳細ルール・例まで参照</td>
+                </tr>
+                <tr>
+                  <td>複雑な問題を解決</td>
+                  <td>AGENTS.md の詳細セクション</td>
+                  <td>高度なパターン・ケース</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <h3>AGENTS.md の確認方法</h3>
+            <ol>
+              <li>
+                <strong>ローカルで確認</strong>
+                <div class="code-block">
+# Skill の AGENTS.md を確認
+cat ~/.claude/skills/react-best-practices/AGENTS.md
+
+# VS Code で直接開く
+code ~/.claude/skills/react-best-practices/AGENTS.md
+                </div>
+              </li>
+              <li>
+                <strong>Copilot チャット内で参照</strong>
+                <div>
+                  Copilot チャット →
+                  「@symbols react-best-practices」で Skill 内の記号を検索
+                </div>
+              </li>
+              <li>
+                <strong>Skill ディレクトリをワークスペースに追加</strong>
+                <div class="code-block">
+# VS Code で開く
+code ~/.claude/skills/react-best-practices/
+
+# AGENTS.md、rules/ などの内容を直接参照可能
+                </div>
+              </li>
+            </ol>
+          </div>
+        </section>
+      </div>
+
+      <!-- セクション5：複数 Skill の統合管理 -->
+      <div class="page">
+        <section class="section">
+          <div class="section-header">
+            <div class="section-icon">🔗</div>
+            <h2 class="section-title">複数 Skill の統合管理</h2>
+          </div>
+          <div class="section-content">
+            <div class="summary-box">
+              <h3>複数 Skill を効果的に運用するコツ</h3>
+              <p>
+                複数の Skill を同時に使用する場合の優先度管理と、コンフリクト回避について説明します。
+              </p>
+            </div>
+
+            <h3>Skill 優先度の設定</h3>
+            <div class="code-block">
+# ~/.claude/.instructions.md での優先度設定例
+
+## Skill Priority (from highest to lowest)
+1. team-naming-conventions  # 社内ルール最優先
+2. react-best-practices     # Vercel ガイドライン
+3. web-design-guidelines    # UI/UX ガイドライン
+4. composition-patterns     # コンポーネント設計
+
+## Conflict Resolution
+- When multiple skills recommend different approaches,
+  apply team-naming-conventions first
+            </div>
+
+            <h3>複数 Skill 運用のベストプラクティス</h3>
+            <table>
+              <thead>
+                <tr>
+                  <th style="width: 30%">項目</th>
+                  <th style="width: 70%">推奨方法</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>有効/無効の切り替え</strong></td>
+                  <td>
+                    .instructions.md で「Always use」と「Optional」に分ける
+                  </td>
+                </tr>
+                <tr>
+                  <td><strong>バージョン管理</strong></td>
+                  <td>
+                    各 Skill の metadata.json で version を確認、要件に応じて更新
+                  </td>
+                </tr>
+                <tr>
+                  <td><strong>テスト・検証</strong></td>
+                  <td>
+                    新規 Skill 追加後、簡単なタスクで動作確認
+                  </td>
+                </tr>
+                <tr>
+                  <td><strong>ドキュメント管理</strong></td>
+                  <td>
+                    README.md にチーム内で利用している Skill リストを記載
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <h3>トラブルシューティング</h3>
+            <div class="summary-box">
+              <h3>Skill が認識されない場合</h3>
+              <ol>
+                <li>SKILL.md の frontmatter を確認（name, description が必須）</li>
+                <li>ディレクトリ構造が正しいか確認</li>
+                <li>VS Code を再起動してキャッシュをクリア</li>
+                <li>
+                  <code>~/.claude/skills/</code> の権限を確認
+                </li>
+              </ol>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- セクション6：参考資料 -->
+      <div class="page">
+        <section class="section">
+          <div class="section-header">
+            <div class="section-icon">📚</div>
+            <h2 class="section-title">参考資料・引用元</h2>
+          </div>
+          <div class="section-content">
+            <div class="references-section">
+              <h3 class="references-title">📚 一次情報・参考資料</h3>
+              <div class="references-list">
+                <div class="ref-item">
+                  <span class="ref-label">📄 本ワークスペース参照：</span>&nbsp;
+                  <code>agent-skills/AGENTS.md</code>
+                  <br />
+                  <small>セクション「Creating a New Skill」：ディレクトリ構成、命名規則</small>
+                </div>
+
+                <div class="ref-item">
+                  <span class="ref-label">📄 本ワークスペース参照：</span>&nbsp;
+                  <code>agent-skills/README_Skills.md</code>
+                  <br />
+                  <small>セクション 4：Getting Started - Skill の使い方</small>
+                </div>
+
+                <div class="ref-item">
+                  <span class="ref-label">📄 本ワークスペース参照：</span>&nbsp;
+                  <code>agent-skills/skills/[skill-name]/SKILL.md</code>
+                  <br />
+                  <small>各 Skill の frontmatter 形式の実装例</small>
+                </div>
+
+                <div class="ref-item">
+                  <span class="ref-label">🌐 GitHub Copilot 公式ドキュメント：</span>&nbsp;
+                  <a href="https://docs.github.com/en/copilot/setting-up-github-copilot">https://docs.github.com/en/copilot/setting-up-github-copilot</a>
+                  <br />
+                  <small>GitHub Copilot の VS Code インストール・設定</small>
+                </div>
+
+                <div class="ref-item">
+                  <span class="ref-label">🌐 VS Code ユーザー設定ドキュメント：</span>&nbsp;
+                  <a href="https://code.visualstudio.com/docs/getstarted/settings">https://code.visualstudio.com/docs/getstarted/settings</a>
+                  <br />
+                  <small>.instructions.md・settings.json の設定方法</small>
+                </div>
+
+                <div class="ref-item">
+                  <span class="ref-label">🌐 Agent Skills 公式サイト：</span>&nbsp;
+                  <a href="https://agentskills.io/">https://agentskills.io/</a>
+                  <br />
+                  <small>標準フォーマット仕様、YAML frontmatter 形式</small>
+                </div>
+              </div>
+            </div>
+
+            <h3 style="margin-top: 30px">次のステップ</h3>
+            <ol>
+              <li>
+                <strong>how-to-use.html</strong> で Skill の実践的な使用方法を学ぶ
+              </li>
+              <li>
+                <strong>implementation-examples.html</strong> で具体的な Skill 例を確認
+              </li>
+              <li>
+                <strong>quick-start.html</strong> で カスタム Skill 作成に挑戦
+              </li>
+            </ol>
+          </div>
+        </section>
+
+        <div class="page-footer">
+          <p>
+            このドキュメントは 2026 年 4 月 3
+            日時点での情報です。定期的に更新されます。
+          </p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
