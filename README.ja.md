@@ -6,17 +6,19 @@ AIコーディングエージェント向けのスキル集です。スキルは
 
 ## 目次
 
-- [利用可能なスキル](#利用可能なスキル)
-  - [react-best-practices](#react-best-practices)
-  - [web-design-guidelines](#web-design-guidelines)
-  - [react-native-guidelines](#react-native-guidelines)
-  - [composition-patterns](#composition-patterns)
-  - [vercel-deploy-claimable](#vercel-deploy-claimable)
-- [インストール](#インストール)
-- [使用方法](#使用方法)
-- [スキルの構造](#スキルの構造)
-- [参考情報](#参考情報)
-- [ライセンス](#ライセンス)
+- [エージェントスキル](#エージェントスキル)
+  - [目次](#目次)
+  - [利用可能なスキル](#利用可能なスキル)
+    - [react-best-practices](#react-best-practices)
+    - [web-design-guidelines](#web-design-guidelines)
+    - [react-native-guidelines](#react-native-guidelines)
+    - [composition-patterns](#composition-patterns)
+    - [vercel-deploy-claimable](#vercel-deploy-claimable)
+  - [インストール](#インストール)
+  - [使用方法](#使用方法)
+  - [スキルの構造](#スキルの構造)
+  - [参考情報](#参考情報)
+  - [ライセンス](#ライセンス)
 
 ## 利用可能なスキル
 

@@ -51,15 +51,15 @@
       }
 
       .logo-placeholder {
-        width: 150px;
-        height: 150px;
+        width: 250px;
+        height: 250px;
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         border-radius: 10px;
         display: flex;
         align-items: center;
         justify-content: center;
         color: white;
-        font-size: 24px;
+        font-size: 80px;
         font-weight: bold;
         margin-bottom: 40px;
       }
@@ -188,8 +188,8 @@
         font-family: "Courier New", monospace;
         font-size: 12px;
         overflow-x: auto;
-        border-left: 4px solid #667eea;
-      }
+        border-left: 4px solid #667eea;        white-space: pre-wrap;
+        word-wrap: break-word;      }
 
       /* リスト */
       ul,
@@ -349,7 +349,8 @@
         <div class="logo-placeholder">⚙️</div>
         <h1 class="cover-title">VS Code での Skill 設定ガイド</h1>
         <p class="cover-subtitle">
-          Agent Skills を VS Code に統合し、GitHub Copilot・Claude Code を活用する方法
+          Agent Skills をVS Code に統合し、<br />
+          GitHub Copilot・Claude Code を活用する方法
         </p>
 
         <div class="cover-info">
@@ -470,8 +471,8 @@ code --version
 
             <h3>推奨ディレクトリ構成</h3>
             <div class="file-tree">
-home/
-├── .claude/
+my-project/
+├── .github/
 │   ├── skills/
 │   │   ├── react-best-practices/
 │   │   │   ├── SKILL.md
@@ -483,23 +484,25 @@ home/
 │   │   └── composition-patterns/
 │   │       ├── SKILL.md
 │   │       └── rules/
-│   └── .instructions.md
-│
-└── projects/
-    └── my-project/
+│   ├── workflows/
+│   └── ISSUE_TEMPLATE/
+├── .vscode/
+│   └── settings.json
+├── src/
+└── package.json
             </div>
 
             <h3>ディレクトリ配置のステップ</h3>
             <ul class="step-list">
               <li class="step-item">
                 <div class="step-number">Step 1</div>
-                <strong>.claude ディレクトリを作成</strong>
+                <strong>.github ディレクトリを作成</strong>
                 <div class="code-block">
 # macOS / Linux
-mkdir -p ~/.claude/skills
+mkdir -p .github/skills
 
 # Windows PowerShell
-New-Item -Path $env:USERPROFILE\.claude\skills -ItemType Directory
+New-Item -Path .github\skills -ItemType Directory
                 </div>
               </li>
               <li class="step-item">
@@ -507,10 +510,10 @@ New-Item -Path $env:USERPROFILE\.claude\skills -ItemType Directory
                 <strong>agent-skills をコピー</strong>
                 <div class="code-block">
 # agent-skills リポジトリから skills をコピー
-cp -r agent-skills/skills/* ~/.claude/skills/
+cp -r agent-skills/skills/* .github/skills/
 
 # 確認
-ls ~/.claude/skills/
+ls .github/skills/
 # 出力例:
 # react-best-practices/ deploy-to-vercel/ composition-patterns/
                 </div>
@@ -529,84 +532,260 @@ ls ~/.claude/skills/
         </section>
       </div>
 
-      <!-- セクション3：.instructions.md の設定 -->
+      <!-- セクション3：copilot-instructions.md の設定 -->
       <div class="page">
         <section class="section">
           <div class="section-header">
             <div class="section-icon">📝</div>
-            <h2 class="section-title">.instructions.md の設定</h2>
+            <h2 class="section-title">copilot-instructions.md の設定</h2>
           </div>
           <div class="section-content">
             <div class="summary-box">
-              <h3>.instructions.md とは</h3>
+              <h3>copilot-instructions.md とは</h3>
               <p>
-                VS Code でエージェント（GitHub Copilot・Claude Code）の動作を永続的にカスタマイズするファイルです。ユーザーの好みやコーディング規則をエージェントに永遠に教え続けます。
+                GitHub Copilot に与える「プロジェクト専用の指示書」です。プロジェクトコンテキスト（アーキテクチャ、コーディング規則、技術スタックなど）を定義することで、Copilot を「優秀なバイト」から「頼れる専属アシスタント」へと育て上げます。<code>.github</code> ディレクトリに配置するだけで自動認識されます。
               </p>
             </div>
 
-            <h3>推奨される .instructions.md の内容</h3>
+            <h3>copilot-instructions.md の構成（7つの要素）</h3>
             <div class="code-block">
-# Agent Skill Preferences
+# GitHub Copilot Instructions for Project X
 
-## Always use these skills:
-1. react-best-practices
-2. composition-patterns
-3. web-design-guidelines
+## 1. 前提条件
 
-## Coding Standards
-- Follow TypeScript strict mode
-- Use functional components with hooks
-- Prefer composition over inheritance
-- Add JSDoc comments for exports
+- **回答は必ず日本語でしてください。**
+- コードの変更をする際、変更量が 200 行を超える可能性が高い場合は、事前に「この指示では変更量が 200 行を超える可能性がありますが、実行しますか?」と確認をとってください。
+- 何か大きい変更を加える場合、まず何をするのか計画を立てた上で提案してください。
 
-## Code Style
-- Use 2 spaces for indentation
-- Follow Prettier formatting
-- Add type annotations for all functions
-- Use semantic HTML elements
+## 2. プロジェクト概要
 
-## Performance
-- Always optimize for bundle size
-- Implement code splitting
-- Consider Lighthouse scores
-- Profile before optimizing
+**Agent Skills Documentation Portal** は、初心者向けに Agent Skills と GitHub Copilot の統合、設定方法、実装例を解説するドキュメンテーションサイトです。
+
+- **目的**: 開発者が GitHub Copilot + Agent Skills を効率的に導入・活用できるようにサポート
+- **対象ユーザー**: Agent Skills 初心者、GitHub Copilot ユーザー
+
+## 3. 技術スタック
+
+| カテゴリ | 使用技術 |
+|--------|---------|
+| **フロントエンド** | HTML5, CSS3, Flexbox, Glassmorphism |
+| **出力形式** | A4 最適化 HTML (印刷・PDF対応) |
+| **主要ライブラリ** | VS Code API, GitHub Copilot API |
+| **設定ファイル形式** | YAML frontmatter, Markdown |
+
+## 4. ディレクトリ構成
+
+```
+.github/
+├── skills/                   # Agent Skills ディレクトリ
+│   ├── react-best-practices/
+│   ├── deploy-to-vercel/
+│   └── composition-patterns/
+├── copilot-instructions.md   # このファイル
+└── workflows/
+```
+
+## 5. アーキテクチャ・設計指針
+
+- **SKILL.md フォーマット**: YAML frontmatter + Markdown の標準形式を厳密に守る
+- **ドキュメント構造**: A4 ページで管理し、セクションは明確に分割
+- **一次情報の強調**: すべてのドキュメントに引用元・参考資料を明記
+- **Visual Hierarchy**: CSS グラディエント、セクションアイコン、テーブル レイアウトで情報を階層化
+
+## 6. テスト・検証ポリシー
+
+- **ブラウザ確認**: http://localhost:8000 で各 HTML ドキュメントをレンダリング確認
+- **コンテンツ検証**: 
+  - すべての内部リンク(.github/skills など)が正しいか確認
+  - Qiita 記事、GitHub 公式ドキュメントなど引用元の正確性チェック
+- **スタイル確認**: 印刷プレビューでも正常にレンダリングされるか確認
+
+## 7. アンチパターン（避けるべき記述）
+
+- ❌ 不正確なコマンド例 → ✅ macOS/Linux/Windows すべての正確なコマンド記載
+- ❌ 不正確なコマンド例 → ✅ Linux/Windows すべての正確なコマンド記載
+- ❌ 一次情報なしの説明 → ✅ 必ず引用元を明記
+- ❌ .instructions.md という古い名称 → ✅ copilot-instructions.md を使用
             </div>
 
             <h3>設定ファイルの作成手順</h3>
             <ol>
               <li>
-                <strong>テキストエディタで作成</strong>
+                <strong>ファイルを作成</strong>
                 <div class="code-block">
-# ~/.claude/.instructions.md を新規作成
-# 上のテンプレートをコピー＆ペースト
-                </div>
-              </li>
-              <li>
-                <strong>プロジェクト全体に適用</strong>
-                <div>
-                  VS Code でプロジェクトを開く →
-                  <code>.vscode/settings.json</code> で指定
+# .github/copilot-instructions.md を新規作成
+# ファイル配置: .github/copilot-instructions.md
+# 特別な設定不要、配置するだけで自動認識されます
                 </div>
               </li>
               <li>
                 <strong>VS Code の認識確認</strong>
                 <div>
-                  Copilot チャット →
+                  Copilot チャット → 
                   「@instructions」でファイルが参照されているかチェック
+                  <br />
+                  もしくは Copilot がプロジェクトコンテキストを参照し始めるので、提案内容に反映されているか確認
+                </div>
+              </li>
+              <li>
+                <strong>反復改善</strong>
+                <div>
+                  使用しながら、Copilot の提案がプロジェクト要件と合致しているか様子を見ます。
+                  必要に応じてファイルを更新・追加します。
                 </div>
               </li>
             </ol>
 
-            <h3>プロジェクト固有のファイル配置</h3>
+            <h3>ファイル配置例</h3>
             <div class="file-tree">
 my-project/
+├── .github/
+│   ├── skills/             # Agent Skills
+│   │   ├── react-best-practices/
+│   │   ├── deploy-to-vercel/
+│   │   └── composition-patterns/
+│   ├── copilot-instructions.md   ← プロジェクト指示書
+│   └── workflows/
 ├── .vscode/
 │   └── settings.json
-├── .instructions.md      ← プロジェクト固有の指示
+├── .instructions.md        ← 個別・レガシー用（廃止推奨）
 ├── src/
-│   └── components/
-├── package.json
-└── README.md
+└── package.json
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- セクション3.5：Skill 読み込みパスのカスタマイズ -->
+      <div class="page">
+        <section class="section">
+          <div class="section-header">
+            <div class="section-icon">⚙️</div>
+            <h2 class="section-title">Skill 読み込みパスのカスタマイズ</h2>
+          </div>
+          <div class="section-content">
+            <div class="summary-box">
+              <h3>chat.agentSkillsLocations 設定</h3>
+              <p>
+                GitHub Copilot が Skill を検索する優先順位を カスタマイズしたい場合は、<code>.vscode/settings.json</code> の <code>chat.agentSkillsLocations</code> で パス一覧を直接指定できます。推奨は <code>${workspaceFolder}/.github/skills</code> を最優先に設定することです。
+              </p>
+            </div>
+
+            <h3>設定方法</h3>
+            <p><strong>1. プロジェクトの .vscode/settings.json を開く</strong></p>
+            <div class="code-block">
+my-project/
+├── .vscode/
+│   └── settings.json      ← ここに追記
+├── .github/
+│   └── skills/            ← Skill をこの位置に配置
+├── src/
+└── package.json
+            </div>
+
+            <p style="margin-top: 15px"><strong>2. chat.agentSkillsLocations を設定</strong></p>
+            <div class="code-block">
+// .vscode/settings.json
+{
+  "chat.agentSkillsLocations": [
+    "${workspaceFolder}/.github/skills"
+  ]
+}
+            </div>
+
+            <h3>パス指定の種類</h3>
+            <table>
+              <thead>
+                <tr>
+                  <th>指定方法</th>
+                  <th>意味</th>
+                  <th>例</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>${workspaceFolder}</code></td>
+                  <td>プロジェクトルート</td>
+                  <td><code>${workspaceFolder}/.github/skills</code></td>
+                </tr>
+                <tr>
+                  <td><code>${userHome}</code></td>
+                  <td>ホームディレクトリ（フォールバック用）</td>
+                  <td><code>${userHome}/.claude/skills</code></td>
+                </tr>
+                <tr>
+                  <td>絶対パス</td>
+                  <td>フルパス指定</td>
+                  <td><code>/Users/myname/projects/skills</code></td>
+                </tr>
+              </tbody>
+            </table>
+
+            <h3>優先順位</h3>
+            <p>複数のパスを指定した場合、上から順に検索されます：</p>
+            <div class="code-block">
+【GitHub Copilot 推奨】
+1. ${workspaceFolder}/.github/skills  ← チーム共有（最優先）
+   ↓ （見つからなければ）
+2. ${userHome}/.claude/skills          ← 個人用（フォールバック）
+            </div>
+
+            <h3>推奨構成</h3>
+            <p>.github/skills に Skill を配置</p>
+            <div class="code-block">
+【推奨ディレクトリ構成】
+my-project/
+├── .github/
+│   ├── skills/
+│   │   ├── react-best-practices/
+│   │   │   ├── SKILL.md
+│   │   │   ├── metadata.json
+│   │   │   └── AGENTS.md
+│   │   ├── deploy-to-vercel/
+│   │   │   ├── SKILL.md
+│   │   │   └── scripts/
+│   │   └── composition-patterns/
+│   │       ├── SKILL.md
+│   │       └── rules/
+│   ├── workflows/
+│   ├── ISSUE_TEMPLATE/
+│   └── copilot-instructions.md
+├── .vscode/
+│   └── settings.json
+├── src/
+└── package.json
+
+【settings.json の設定】
+{
+  "chat.agentSkillsLocations": [
+    "${workspaceFolder}/.github/skills"
+  ]
+}
+
+理由: 
+  • Git で管理でき、チーム全員が同じ Skill を使用可能
+  • GitHub 標準の設定位置（workflows, ISSUE_TEMPLATE と同じ）
+  • Vercel や大規模プロジェクトの推奨パターン
+            </div>
+
+            <p style="margin-top: 15px"><strong>フォールバック設定：</strong> 個人用グローバル Skill（オプション）</p>
+            <div class="code-block">
+【個人開発用のグローバル設定】
+複数プロジェクト間で共有する個人用 Skill が必要な場合：
+
+1. ホームディレクトリに配置
+   ~/.claude/skills/
+   
+2. .vscode/settings.json に追加
+   {
+     "chat.agentSkillsLocations": [
+       "${workspaceFolder}/.github/skills",
+       "${userHome}/.claude/skills"
+     ]
+   }
+
+推奨: .github/skills をメイン構成に、~/.claude/skills は
+フォールバック・個人用のみとしてください。
             </div>
           </div>
         </section>
@@ -663,10 +842,10 @@ my-project/
                 <strong>ローカルで確認</strong>
                 <div class="code-block">
 # Skill の AGENTS.md を確認
-cat ~/.claude/skills/react-best-practices/AGENTS.md
+cat .github/skills/react-best-practices/AGENTS.md
 
 # VS Code で直接開く
-code ~/.claude/skills/react-best-practices/AGENTS.md
+code .github/skills/react-best-practices/AGENTS.md
                 </div>
               </li>
               <li>
@@ -680,7 +859,7 @@ code ~/.claude/skills/react-best-practices/AGENTS.md
                 <strong>Skill ディレクトリをワークスペースに追加</strong>
                 <div class="code-block">
 # VS Code で開く
-code ~/.claude/skills/react-best-practices/
+code .github/skills/react-best-practices/
 
 # AGENTS.md、rules/ などの内容を直接参照可能
                 </div>
@@ -707,7 +886,7 @@ code ~/.claude/skills/react-best-practices/
 
             <h3>Skill 優先度の設定</h3>
             <div class="code-block">
-# ~/.claude/.instructions.md での優先度設定例
+# .github/copilot-instructions.md での優先度設定例
 
 ## Skill Priority (from highest to lowest)
 1. team-naming-conventions  # 社内ルール最優先
@@ -732,7 +911,7 @@ code ~/.claude/skills/react-best-practices/
                 <tr>
                   <td><strong>有効/無効の切り替え</strong></td>
                   <td>
-                    .instructions.md で「Always use」と「Optional」に分ける
+                    copilot-instructions.md または AGENTS.md で「Always use」と「Optional」に分ける
                   </td>
                 </tr>
                 <tr>
@@ -761,10 +940,10 @@ code ~/.claude/skills/react-best-practices/
               <h3>Skill が認識されない場合</h3>
               <ol>
                 <li>SKILL.md の frontmatter を確認（name, description が必須）</li>
-                <li>ディレクトリ構造が正しいか確認</li>
+                <li>ディレクトリ構造が正しいか確認（.github/skills/ に配置）</li>
                 <li>VS Code を再起動してキャッシュをクリア</li>
                 <li>
-                  <code>~/.claude/skills/</code> の権限を確認
+                  <code>.vscode/settings.json</code> の <code>chat.agentSkillsLocations</code> が正しく設定されているか確認
                 </li>
               </ol>
             </div>
@@ -815,7 +994,7 @@ code ~/.claude/skills/react-best-practices/
                   <span class="ref-label">🌐 VS Code ユーザー設定ドキュメント：</span>&nbsp;
                   <a href="https://code.visualstudio.com/docs/getstarted/settings">https://code.visualstudio.com/docs/getstarted/settings</a>
                   <br />
-                  <small>.instructions.md・settings.json の設定方法</small>
+                  <small>copilot-instructions.md・settings.json の設定方法</small>
                 </div>
 
                 <div class="ref-item">
@@ -823,6 +1002,15 @@ code ~/.claude/skills/react-best-practices/
                   <a href="https://agentskills.io/">https://agentskills.io/</a>
                   <br />
                   <small>標準フォーマット仕様、YAML frontmatter 形式</small>
+                </div>
+
+                <div class="ref-item">
+                  <span class="ref-label">📝 Qiita 記事：</span>&nbsp;
+                  <a href="https://qiita.com/TooMe/items/230a730ce0387c77e822">
+                    【最新版】GitHub Copilotを使っている人は全員"SKILL.md"も導入してください
+                  </a>
+                  <br />
+                  <small>chat.agentSkillsLocations による読み込みパス指定、.github/skills 構成例</small>
                 </div>
               </div>
             </div>

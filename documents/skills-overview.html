@@ -202,6 +202,8 @@
         font-family: "Courier New", monospace;
         font-size: 12px;
         overflow-x: auto;
+        white-space: pre-wrap;
+        word-wrap: break-word;
       }
 
       /* 図表キャプション */
@@ -257,15 +259,12 @@
 
       /* フッター */
       .formal-footer {
-        position: absolute;
-        bottom: 20mm;
-        left: 20mm;
-        right: 20mm;
         text-align: center;
         font-size: 11px;
         color: #666;
         padding-top: 10px;
         border-top: 1px solid #ccc;
+        margin-top: auto;
       }
 
       /* 編集可能 */
@@ -319,10 +318,10 @@
           <p class="cover-category">初心者向けガイド</p>
           <h1 class="cover-title">
             Agent Skillsとは<br />
-            〜 AI コーディングエージェント拡張ガイド 〜
+            AIコーディングエージェント拡張ガイド
           </h1>
           <p class="cover-subtitle">
-            GitHub Copilot・Claude Code・Cursor などの能力を拡張する
+            GitHub Copilot/Claude Code/Cursor などの能力を拡張する
           </p>
 
           <table class="cover-info-table">
@@ -336,7 +335,7 @@
             </tr>
             <tr>
               <th>対象ツール</th>
-              <td>GitHub Copilot・Claude Code・Cursor など</td>
+              <td>GitHub Copilot/Claude Code/Cursor など</td>
             </tr>
             <tr>
               <th>更新日</th>
@@ -441,15 +440,26 @@
               </p>
             </div>
             <div class="code-block">
-SKILL.md:
+【SKILL.md の定義】
   name: deploy-to-vercel
-  description: "Deploy my app"  ← この説明が「起動トリガー」
+  description: "Deploy my app"
+                 ↑
+             （トリガードキュメント）
 
-ユーザーが「Deploy my app」と言う
-  ↓
-Copilot が deploy-to-vercel Skill を自動でロード
-  ↓
-デプロイ処理開始
+【ユーザーの指示】
+  User: "Deploy my app"
+
+【Copilot の動作フロー】
+  1. 指示を受け取る
+     ↓
+  2. "Deploy my app" テキストと照合
+     ↓
+  3. deploy-to-vercel Skill の
+     description にマッチ！
+     ↓
+  4. Skill を自動ロード
+     ↓
+  5. デプロイ処理開始
             </div>
           </div>
 
@@ -496,6 +506,35 @@ Copilot が deploy-to-vercel Skill を自動でロード
                 </tr>
               </tbody>
             </table>
+          </div>
+
+          <div class="subsection">
+            <h3 class="subsection-title">2.4 VS Code での読み込み位置カスタマイズ</h3>
+            <div class="subsection-content">
+              <p>
+                VS Code（GitHub Copilot）では、デフォルトで <code>~/.claude/skills/</code> から Skill を検索しますが、<code>.vscode/settings.json</code> の <code>chat.agentSkillsLocations</code> 設定で任意の位置を指定できます。
+              </p>
+            </div>
+            <div class="subsection-content">
+              <p><strong>例：</strong> リポジトリの <code>.github/skills</code> から読み込む場合</p>
+            </div>
+            <div class="code-block">
+// .vscode/settings.json
+{
+  "chat.agentSkillsLocations": [
+    "${workspaceFolder}/.github/skills",
+    "${userHome}/.claude/skills"
+  ]
+}
+            </div>
+            <div class="subsection-content">
+              <p><strong>メリット：</strong></p>
+              <ul style="margin-left: 20px">
+                <li>✅ リポジトリ内の Skill を Git で管理可能</li>
+                <li>✅ チーム全員が同じ Skill を使用</li>
+                <li>✅ 任意のディレクトリ構成に対応</li>
+              </ul>
+            </div>
           </div>
         </section>
       </div>
@@ -746,6 +785,15 @@ Copilot:
               <a href="https://github.com/vercel-labs/agent-skills">https://github.com/vercel-labs/agent-skills</a>
               <br />
               <small>実装例、React Best Practices、Deploy to Vercel などの実績のある Skill 集</small>
+            </div>
+
+            <div class="ref-item">
+              <span class="ref-label">📝 Qiita 記事：</span>&nbsp;
+              <a href="https://qiita.com/TooMe/items/230a730ce0387c77e822">
+                【最新版】GitHub Copilotを使っている人は全員"SKILL.md"も導入してください
+              </a>
+              <br />
+              <small>chat.agentSkillsLocations 設定、SKILL.md と AGENTS.md の使い分け、実装例</small>
             </div>
           </div>
         </section>

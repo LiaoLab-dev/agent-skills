@@ -1,0 +1,1465 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Agent Skills 完全ガイド</title>
+    <link rel="stylesheet" href="../assets/css/print.css" />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family:
+          "Meiryo UI", "Meiryo", "MS PGothic", "MS Gothic", sans-serif;
+        line-height: 1.8;
+        color: #2d3748;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 20px;
+      }
+
+      .container {
+        max-width: 1000px;
+        margin: 0 auto;
+        background: white;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        border-radius: 16px;
+        overflow: hidden;
+      }
+
+      /* ===== ヒーロー表紙 ===== */
+      .hero-cover {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 80px 40px;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+        min-height: 500px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        page-break-after: always;
+      }
+
+      .hero-cover::before {
+        content: "";
+        position: absolute;
+        top: -50%;
+        right: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(
+          circle,
+          rgba(255, 255, 255, 0.1) 0%,
+          transparent 70%
+        );
+        animation: rotate 20s linear infinite;
+      }
+
+      @keyframes rotate {
+        from {
+          transform: rotate(0deg);
+        }
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      .hero-badge {
+        display: inline-block;
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
+        padding: 10px 25px;
+        border-radius: 25px;
+        font-size: 14px;
+        letter-spacing: 1px;
+        margin-bottom: 25px;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        position: relative;
+        z-index: 1;
+      }
+
+      .hero-title {
+        font-size: 56px;
+        font-weight: bold;
+        margin-bottom: 20px;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        position: relative;
+        z-index: 1;
+      }
+
+      .hero-subtitle {
+        font-size: 22px;
+        opacity: 0.95;
+        margin-bottom: 50px;
+        position: relative;
+        z-index: 1;
+        line-height: 1.5;
+      }
+
+      .hero-stats {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+        max-width: 700px;
+        margin: 0 auto;
+        position: relative;
+        z-index: 1;
+      }
+
+      .hero-stat {
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 12px;
+        padding: 25px;
+        transition: all 0.3s ease;
+      }
+
+      .hero-stat:hover {
+        background: rgba(255, 255, 255, 0.25);
+        transform: translateY(-5px);
+      }
+
+      .hero-stat-value {
+        font-size: 42px;
+        font-weight: bold;
+        display: block;
+        margin-bottom: 8px;
+      }
+
+      .hero-stat-label {
+        font-size: 13px;
+        opacity: 0.9;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      /* ===== メインコンテンツ ===== */
+      .page {
+        padding: 50px 40px;
+        page-break-after: always;
+      }
+
+      .page:last-child {
+        page-break-after: auto;
+      }
+
+      /* ===== セクションヘッダー ===== */
+      .section-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 35px;
+        margin-top: 30px;
+        padding-bottom: 15px;
+        border-bottom: 3px solid #667eea;
+      }
+
+      .section-icon {
+        width: 60px;
+        height: 60px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 32px;
+        margin-right: 20px;
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        flex-shrink: 0;
+      }
+
+      .section-title {
+        font-size: 32px;
+        font-weight: bold;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      /* ===== スキルカード ===== */
+      .skills-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 25px;
+        margin: 30px 0;
+      }
+
+      .skill-card {
+        background: linear-gradient(145deg, #f8f9fa, #ffffff);
+        border-radius: 16px;
+        padding: 30px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+        border: 1px solid #e9ecef;
+        transition: all 0.3s ease;
+        page-break-inside: avoid;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .skill-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+      }
+
+      .skill-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 16px 40px rgba(0, 0, 0, 0.15);
+      }
+
+      .skill-number {
+        display: inline-block;
+        width: 40px;
+        height: 40px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border-radius: 50%;
+        text-align: center;
+        line-height: 40px;
+        font-weight: bold;
+        font-size: 20px;
+        margin-bottom: 15px;
+      }
+
+      .skill-title {
+        font-size: 20px;
+        font-weight: bold;
+        color: #2d3748;
+        margin-bottom: 12px;
+      }
+
+      .skill-badge {
+        display: inline-block;
+        background: #e9ecef;
+        color: #667eea;
+        padding: 6px 14px;
+        border-radius: 6px;
+        font-size: 11px;
+        font-weight: bold;
+        margin-bottom: 15px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .skill-description {
+        color: #646e7f;
+        font-size: 14px;
+        line-height: 1.7;
+        margin-bottom: 20px;
+      }
+
+      .skill-features {
+        list-style: none;
+          font-size: 13px;
+        color: #646e7f;
+      }
+
+      .skill-features li {
+        padding: 6px 0;
+        padding-left: 25px;
+        position: relative;
+      }
+
+      .skill-features li::before {
+        content: "✓";
+        position: absolute;
+        left: 0;
+        color: #667eea;
+        font-weight: bold;
+      }
+
+      /* ===== テーブル ===== */
+      .table-wrapper {
+        overflow-x: auto;
+        margin: 25px 0;
+        page-break-inside: avoid;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        background: white;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        overflow: hidden;
+      }
+
+      th {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 16px;
+        text-align: left;
+        font-weight: bold;
+        font-size: 14px;
+      }
+
+      td {
+        padding: 14px 16px;
+        border-bottom: 1px solid #e9ecef;
+        font-size: 13px;
+      }
+
+      tr:last-child td {
+        border-bottom: none;
+      }
+
+      tr:nth-child(even) {
+        background: #f8f9fa;
+      }
+
+      tbody tr:hover {
+        background: #f0f2f5;
+      }
+
+      /* ===== 優先度バッジ ===== */
+      .priority-high {
+        color: #c92a2a;
+        font-weight: bold;
+      }
+
+      .priority-medium {
+        color: #f59f00;
+        font-weight: bold;
+      }
+
+      .priority-low {
+        color: #5c940d;
+        font-weight: bold;
+      }
+
+      /* ===== チェックリスト ===== */
+      .checklist {
+        background: #f8f9fa;
+        border-left: 4px solid #667eea;
+        padding: 20px 25px;
+        border-radius: 8px;
+        margin: 20px 0;
+        page-break-inside: avoid;
+      }
+
+      .checklist-item {
+        display: flex;
+        align-items: center;
+        padding: 10px 0;
+        font-size: 14px;
+        color: #2d3748;
+      }
+
+      .checklist-item input[type="checkbox"] {
+        margin-right: 12px;
+        width: 18px;
+        height: 18px;
+        cursor: pointer;
+      }
+
+      /* ===== 情報ボックス ===== */
+      .info-box {
+        background: linear-gradient(145deg, #e3f2fd, #f3e5f5);
+        border-left: 4px solid #667eea;
+        padding: 20px;
+        border-radius: 8px;
+        margin: 20px 0;
+        page-break-inside: avoid;
+      }
+
+      .info-box strong {
+        color: #667eea;
+      }
+
+      /* ===== コード例 ===== */
+      .code-block {
+        background: #2d3748;
+        color: #a0aec0;
+        padding: 15px;
+        border-radius: 8px;
+        overflow-x: auto;
+        margin: 15px 0;
+        font-family: "Courier New", monospace;
+        font-size: 12px;
+        page-break-inside: avoid;
+      }
+
+      .code-label {
+        color: #fbbf24;
+        font-weight: bold;
+        margin-bottom: 8px;
+        display: block;
+      }
+
+      /* ===== ロードマップ ===== */
+      .roadmap {
+        position: relative;
+        padding: 20px 0;
+        margin: 30px 0;
+      }
+
+      .roadmap-item {
+        display: flex;
+        margin-bottom: 25px;
+        page-break-inside: avoid;
+      }
+
+      .roadmap-week {
+        width: 80px;
+        flex-shrink: 0;
+      }
+
+      .roadmap-week-label {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 8px 16px;
+        border-radius: 6px;
+        font-weight: bold;
+        text-align: center;
+        font-size: 13px;
+      }
+
+      .roadmap-content {
+        flex: 1;
+        margin-left: 20px;
+        padding-left: 20px;
+        border-left: 2px solid #667eea;
+      }
+
+      .roadmap-title {
+        font-weight: bold;
+        color: #2d3748;
+        margin-bottom: 8px;
+      }
+
+      .roadmap-task {
+        color: #646e7f;
+        font-size: 13px;
+        line-height: 1.6;
+      }
+
+      /* ===== 印刷対応 ===== */
+      @media print {
+        body {
+          background: white;
+          padding: 0;
+        }
+
+        .container {
+          box-shadow: none;
+          border-radius: 0;
+          max-width: 100%;
+        }
+
+        .page {
+          page-break-after: always;
+          min-height: 297mm;
+        }
+
+        .page:last-child {
+          page-break-after: auto;
+          min-height: auto;
+        }
+
+        .skill-card:hover {
+          transform: none;
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .hero-stats {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+        }
+      }
+
+      /* ===== レスポンシブ ===== */
+      @media (max-width: 768px) {
+        .hero-title {
+          font-size: 36px;
+        }
+
+        .hero-subtitle {
+          font-size: 18px;
+        }
+
+        .hero-stats {
+          grid-template-columns: 1fr;
+          gap: 15px;
+        }
+
+        .section-title {
+          font-size: 24px;
+        }
+
+        .skills-grid {
+          grid-template-columns: 1fr;
+        }
+
+        table {
+          font-size: 12px;
+        }
+
+        th,
+        td {
+          padding: 10px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <!-- ===== ヒーロー表紙 ===== -->
+      <div class="hero-cover">
+        <span class="hero-badge">📚 学習・開発ガイド</span>
+        <h1 class="hero-title">Agent Skills 完全ガイド</h1>
+        <p class="hero-subtitle">
+          Vercel Labs エージェントスキル完全マニュアル<br />
+          6つのスキル × 実践的なガイド
+        </p>
+        <div class="hero-stats">
+          <div class="hero-stat">
+            <span class="hero-stat-value">6</span>
+            <span class="hero-stat-label">スキル</span>
+          </div>
+          <div class="hero-stat">
+            <span class="hero-stat-value">200+</span>
+            <span class="hero-stat-label">ルール</span>
+          </div>
+          <div class="hero-stat">
+            <span class="hero-stat-value">40+</span>
+            <span class="hero-stat-label">フレームワーク</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== ページ1: スキル概要 ===== -->
+      <div class="page">
+        <div class="section-header">
+          <div class="section-icon">🎯</div>
+          <h2 class="section-title">6つのスキル 完全比較</h2>
+        </div>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>スキル名</th>
+                <th>用途</th>
+                <th>優先度</th>
+                <th>ルール数</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="skill-number">1</td>
+                <td><strong>React Best Practices</strong></td>
+                <td>React/Next.js パフォーマンス最適化</td>
+                <td><span class="priority-high">🔴 高</span></td>
+                <td>65個</td>
+              </tr>
+              <tr>
+                <td class="skill-number">2</td>
+                <td><strong>Composition Patterns</strong></td>
+                <td>スケーラブルなコンポーネント設計</td>
+                <td><span class="priority-medium">🟡 中</span></td>
+                <td>20+個</td>
+              </tr>
+              <tr>
+                <td class="skill-number">3</td>
+                <td><strong>Web Design Guidelines</strong></td>
+                <td>UI/UX/アクセシビリティ監査</td>
+                <td><span class="priority-high">🔴 高</span></td>
+                <td>100+個</td>
+              </tr>
+              <tr>
+                <td class="skill-number">4</td>
+                <td><strong>React Native Skills</strong></td>
+                <td>モバイルアプリ パフォーマンス</td>
+                <td><span class="priority-medium">🟡 中</span></td>
+                <td>30+個</td>
+              </tr>
+              <tr>
+                <td class="skill-number">5</td>
+                <td><strong>Deploy to Vercel</strong></td>
+                <td>Vercel へのデプロイ自動化</td>
+                <td><span class="priority-high">🔴 高</span></td>
+                <td>40+ フレームワーク</td>
+              </tr>
+              <tr>
+                <td class="skill-number">6</td>
+                <td><strong>Vercel CLI with Tokens</strong></td>
+                <td>CI/CD トークン認証管理</td>
+                <td><span class="priority-low">🟢 低</span></td>
+                <td>完全ガイド</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="info-box">
+          <strong>💡 ヒント:</strong> すべてのスキルをインストールする必要はありません。
+          プロジェクト要件に応じて、優先度の高いスキルから始めることをお勧めします。
+        </div>
+      </div>
+
+      <!-- ===== ページ2-7: スキルの詳細 ===== -->
+      <div class="page">
+        <div class="section-header">
+          <div class="section-icon">⚡</div>
+          <h2 class="section-title">スキル1: React Best Practices</h2>
+        </div>
+
+        <div class="skills-grid">
+          <div class="skill-card">
+            <span class="skill-number">1️⃣</span>
+            <h3 class="skill-title">React Best Practices</h3>
+            <span class="skill-badge">優先度: 高</span>
+            <p class="skill-description">
+              Vercel エンジニアリングによる React と Next.js
+              のパフォーマンス最適化ガイドラインです。
+            </p>
+            <ul class="skill-features">
+              <li>ルール数: 65個（8カテゴリー）</li>
+              <li>Waterfalls 排除（CRITICAL）</li>
+              <li>バンドルサイズ最適化（CRITICAL）</li>
+              <li>サーバー/クライアント最適化</li>
+              <li>再レンダリング最適化</li>
+            </ul>
+          </div>
+        </div>
+
+        <h3 style="margin-top: 30px; margin-bottom: 20px; color: #2d3748">
+          📊 8つのカテゴリー
+        </h3>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>優先度</th>
+                <th>カテゴリー</th>
+                <th>説明</th>
+                <th>インパクト</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1</td>
+                <td><strong>Waterfalls 排除</strong></td>
+                <td>非同期処理の逐次実行を排除</td>
+                <td><span class="priority-high">CRITICAL</span></td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td><strong>Bundle 最適化</strong></td>
+                <td>バンドルサイズの最小化</td>
+                <td><span class="priority-high">CRITICAL</span></td>
+              </tr>
+              <tr>
+                <td>3</td>
+                <td><strong>Server パフォーマンス</strong></td>
+                <td>サーバー側の処理最適化</td>
+                <td><span class="priority-medium">HIGH</span></td>
+              </tr>
+              <tr>
+                <td>4</td>
+                <td><strong>Client データ取得</strong></td>
+                <td>クライアント側 API 呼び出し最適化</td>
+                <td><span class="priority-medium">MEDIUM-HIGH</span></td>
+              </tr>
+              <tr>
+                <td>5</td>
+                <td><strong>Re-render 最適化</strong></td>
+                <td>不要な再レンダリング排除</td>
+                <td><span class="priority-medium">MEDIUM</span></td>
+              </tr>
+              <tr>
+                <td>6</td>
+                <td><strong>Rendering パフォーマンス</strong></td>
+                <td>DOM レンダリング最適化</td>
+                <td><span class="priority-medium">MEDIUM</span></td>
+              </tr>
+              <tr>
+                <td>7</td>
+                <td><strong>JavaScript 最適化</strong></td>
+                <td>JS コード実行効率化</td>
+                <td><span class="priority-low">LOW-MEDIUM</span></td>
+              </tr>
+              <tr>
+                <td>8</td>
+                <td><strong>Advanced パターン</strong></td>
+                <td>高度な最適化テクニック</td>
+                <td><span class="priority-low">LOW</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 style="margin-top: 30px; margin-bottom: 15px; color: #2d3748">
+          ✅ 使用場面
+        </h3>
+        <ul class="skill-features" style="margin-left: 20px">
+          <li>新しい React コンポーネント/Next.js ページを作成する</li>
+          <li>データ取得の実装（クライアント/サーバー側）</li>
+          <li>パフォーマンス問題についてコードをレビューする</li>
+          <li>バンドルサイズや読み込み時間を最適化したい</li>
+        </ul>
+      </div>
+
+      <!-- ===== ページ3: Composition Patterns ===== -->
+      <div class="page">
+        <div class="section-header">
+          <div class="section-icon">🧩</div>
+          <h2 class="section-title">スキル2: Composition Patterns</h2>
+        </div>
+
+        <div class="skills-grid">
+          <div class="skill-card">
+            <span class="skill-number">2️⃣</span>
+            <h3 class="skill-title">Composition Patterns</h3>
+            <span class="skill-badge">優先度: 中</span>
+            <p class="skill-description">
+              スケーラビリティを備えた React
+              コンポジションパターン。複合コンポーネント、ステート昇格を通じてブール型プロップの増殖を回避します。
+            </p>
+            <ul class="skill-features">
+              <li>ルール数: 20+個（4カテゴリー）</li>
+              <li>ブール型プロップ削減</li>
+              <li>複合コンポーネントパターン</li>
+              <li>状態管理ベストプラクティス</li>
+              <li>React 19 新 API 対応</li>
+            </ul>
+          </div>
+        </div>
+
+        <h3 style="margin-top: 30px; margin-bottom: 15px; color: #2d3748">
+          🚨 解決する問題
+        </h3>
+        <div class="info-box">
+          <strong>❌ ブール型プロップ増殖の悪例:</strong><br />
+          <code style="color: #c92a2a"
+            >&lt;Button variant="primary" size="lg" disabled={disabled}
+            loading={isLoading} icon="..." /&gt;</code
+          ><br />
+          → テストケースが 2^n に増加、保守困難
+        </div>
+
+        <div class="info-box" style="background: linear-gradient(145deg, #e8f5e9, #f1f8e9);">
+          <strong style="color: #5c940d">✅ 複合パターンの良例:</strong><br />
+          <code style="color: #5c940d">&lt;Button&gt;<br/>
+            &nbsp;&nbsp;&lt;Button.Icon /&gt;<br/>
+            &nbsp;&nbsp;&lt;Button.Label&gt;Click&lt;/Button.Label&gt;<br/>
+            &lt;/Button&gt;</code><br/>
+          → シンプル、柔軟、テスト容易
+        </div>
+
+        <h3 style="margin-top: 30px; margin-bottom: 20px; color: #2d3748">
+          📋 4つのカテゴリー
+        </h3>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>優先度</th>
+                <th>カテゴリー</th>
+                <th>説明</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="priority-high">HIGH</span></td>
+                <td><strong>Component Architecture</strong></td>
+                <td>
+                  コンポーネント設計の基本原則、ブール型プロップ回避
+                </td>
+              </tr>
+              <tr>
+                <td><span class="priority-medium">MEDIUM</span></td>
+                <td><strong>State Management</strong></td>
+                <td>複合コンポーネント内の状態管理効率化</td>
+              </tr>
+              <tr>
+                <td><span class="priority-medium">MEDIUM</span></td>
+                <td><strong>Implementation Patterns</strong></td>
+                <td>実装時の具体的パターン（明示的バリアント等）</td>
+              </tr>
+              <tr>
+                <td><span class="priority-medium">MEDIUM</span></td>
+                <td><strong>React 19 APIs</strong></td>
+                <td>React 19 以降の新機能対応</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 style="margin-top: 30px; margin-bottom: 15px; color: #2d3748">
+          ✅ 使用場面
+        </h3>
+        <ul class="skill-features" style="margin-left: 20px">
+          <li>多くのブール型プロップを持つコンポーネントをリファクタリングする</li>
+          <li>再利用可能なコンポーネントライブラリを構築する</li>
+          <li>柔軟なコンポーネント API を設計する</li>
+        </ul>
+      </div>
+
+      <!-- ===== ページ4: Web Design Guidelines ===== -->
+      <div class="page">
+        <div class="section-header">
+          <div class="section-icon">🎨</div>
+          <h2 class="section-title">スキル3: Web Design Guidelines</h2>
+        </div>
+
+        <div class="skills-grid">
+          <div class="skill-card">
+            <span class="skill-number">3️⃣</span>
+            <h3 class="skill-title">Web Design Guidelines</h3>
+            <span class="skill-badge">優先度: 高</span>
+            <p class="skill-description">
+              UI コードが Web インターフェースのベストプラクティスに準拠しているか監査。アクセシビリティ、パフォーマンス、UX をカバーする 100+
+              ルール。
+            </p>
+            <ul class="skill-features">
+              <li>ルール数: 100+個（11監査領域）</li>
+              <li>アクセシビリティ（A11y）対応</li>
+              <li>キーボードナビゲーション</li>
+              <li>パフォーマンス最適化</li>
+              <li>ダークモード対応</li>
+            </ul>
+          </div>
+        </div>
+
+        <h3 style="margin-top: 30px; margin-bottom: 20px; color: #2d3748">
+          🔍 11の監査領域
+        </h3>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>監査領域</th>
+                <th>説明</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1</td>
+                <td><strong>アクセシビリティ</strong></td>
+                <td>ARIA ラベル、セマンティック HTML、スクリーンリーダー対応</td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td><strong>フォーカス状態</strong></td>
+                <td>見えるフォーカスインジケーター、focus-visible</td>
+              </tr>
+              <tr>
+                <td>3</td>
+                <td><strong>フォーム</strong></td>
+                <td>入力検証、エラーハンドリング、ラベル関連付け</td>
+              </tr>
+              <tr>
+                <td>4</td>
+                <td><strong>アニメーション</strong></td>
+                <td>prefers-reduced-motion 対応、GPU 加速</td>
+              </tr>
+              <tr>
+                <td>5</td>
+                <td><strong>タイポグラフィ</strong></td>
+                <td>スマートクォート、省略記号、正確な表記</td>
+              </tr>
+              <tr>
+                <td>6</td>
+                <td><strong>画像</strong></td>
+                <td>alt 属性、遅延ロード、最適なフォーマット</td>
+              </tr>
+              <tr>
+                <td>7</td>
+                <td><strong>パフォーマンス</strong></td>
+                <td>仮想化、content-visibility、リソースヒント</td>
+              </tr>
+              <tr>
+                <td>8</td>
+                <td><strong>ナビゲーション</strong></td>
+                <td>URL が状態を反映、ディープリンク対応</td>
+              </tr>
+              <tr>
+                <td>9</td>
+                <td><strong>ダークモード</strong></td>
+                <td>color-scheme、prefers-color-scheme 対応</td>
+              </tr>
+              <tr>
+                <td>10</td>
+                <td><strong>タッチ/インタラクション</strong></td>
+                <td>touch-action、48x48px タップターゲット</td>
+              </tr>
+              <tr>
+                <td>11</td>
+                <td><strong>ロケール/i18n</strong></td>
+                <td>Intl API、多言語対応</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 style="margin-top: 30px; margin-bottom: 15px; color: #2d3748">
+          ✅ 使用場面
+        </h3>
+        <ul class="skill-features" style="margin-left: 20px">
+          <li>UI をレビューして改善提案してほしい</li>
+          <li>アクセシビリティをチェックしてほしい</li>
+          <li>デザインの品質監査が必要</li>
+          <li>UX をベストプラクティスに対して確認したい</li>
+        </ul>
+      </div>
+
+      <!-- ===== ページ5: React Native & Deploy ===== -->
+      <div class="page">
+        <div class="section-header">
+          <div class="section-icon">📱</div>
+          <h2 class="section-title">スキル4: React Native Skills</h2>
+        </div>
+
+        <div class="skills-grid">
+          <div class="skill-card">
+            <span class="skill-number">4️⃣</span>
+            <h3 class="skill-title">React Native Skills</h3>
+            <span class="skill-badge">優先度: 中</span>
+            <p class="skill-description">
+              React Native と Expo
+              アプリケーションの包括的なベストプラクティス。パフォーマンス、アーキテクチャ、プラットフォーム固有パターン対応。
+            </p>
+            <ul class="skill-features">
+              <li>ルール数: 30+個（8カテゴリー）</li>
+              <li>リスト表示最適化（FlashList）</li>
+              <li>アニメーション（Reanimated）</li>
+              <li>ネイティブナビゲーター</li>
+              <li>UI パターン・状態管理</li>
+            </ul>
+          </div>
+        </div>
+
+        <h3 style="margin-top: 30px; margin-bottom: 20px; color: #2d3748">
+          📊 8つのカテゴリー
+        </h3>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>優先度</th>
+                <th>カテゴリー</th>
+                <th>説明</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="priority-high">CRITICAL</span></td>
+                <td><strong>List Performance</strong></td>
+                <td>大規模リスト処理の最適化（FlashList、メモ化）</td>
+              </tr>
+              <tr>
+                <td><span class="priority-high">HIGH</span></td>
+                <td><strong>Animation</strong></td>
+                <td>Reanimated、GPU 加速アニメーション</td>
+              </tr>
+              <tr>
+                <td><span class="priority-high">HIGH</span></td>
+                <td><strong>Navigation</strong></td>
+                <td>ネイティブスタック、タブナビゲーション</td>
+              </tr>
+              <tr>
+                <td><span class="priority-high">HIGH</span></td>
+                <td><strong>UI Patterns</strong></td>
+                <td>expo-image、Pressable、セーフエリア</td>
+              </tr>
+              <tr>
+                <td><span class="priority-medium">MEDIUM</span></td>
+                <td><strong>State Management</strong></td>
+                <td>Zustand、購読最小化</td>
+              </tr>
+              <tr>
+                <td><span class="priority-medium">MEDIUM</span></td>
+                <td><strong>Rendering</strong></td>
+                <td>レンダリング最適化、Text ネスト</td>
+              </tr>
+              <tr>
+                <td><span class="priority-medium">MEDIUM</span></td>
+                <td><strong>Monorepo</strong></td>
+                <td>ネイティブ依存関係管理</td>
+              </tr>
+              <tr>
+                <td><span class="priority-low">LOW</span></td>
+                <td><strong>Configuration</strong></td>
+                <td>フォント、インポート設定</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 style="margin-top: 30px; margin-bottom: 15px; color: #2d3748">
+          ✅ 使用場面
+        </h3>
+        <ul class="skill-features" style="margin-left: 20px">
+          <li>React Native または Expo アプリを構築する</li>
+          <li>モバイルパフォーマンスを最適化したい</li>
+          <li>大規模リスト表示を高速化したい</li>
+          <li>ネイティブモジュール/API を使用する</li>
+        </ul>
+      </div>
+
+      <!-- ===== ページ6: Deploy ===== -->
+      <div class="page">
+        <div class="section-header">
+          <div class="section-icon">🚀</div>
+          <h2 class="section-title">スキル5 & 6: Deploy & CLI</h2>
+        </div>
+
+        <div class="skills-grid">
+          <div class="skill-card">
+            <span class="skill-number">5️⃣</span>
+            <h3 class="skill-title">Deploy to Vercel</h3>
+            <span class="skill-badge">優先度: 高</span>
+            <p class="skill-description">
+              アプリケーション/Web サイトを Vercel
+              に即座にデプロイ。40+フレームワークを自動検出、preview と production をサポート。
+            </p>
+            <ul class="skill-features">
+              <li>40+フレームワーク自動検出</li>
+              <li>Preview URL + Claim リンク</li>
+              <li>node_modules 除外で高速化</li>
+              <li>静的 HTML も自動処理</li>
+            </ul>
+          </div>
+
+          <div class="skill-card">
+            <span class="skill-number">6️⃣</span>
+            <h3 class="skill-title">Vercel CLI with Tokens</h3>
+            <span class="skill-badge">優先度: 低</span>
+            <p class="skill-description">
+              トークン認証を使用した Vercel CLI
+              管理。CI/CD パイプライン統合、GitHub Actions / GitLab CI 対応。
+            </p>
+            <ul class="skill-features">
+              <li>対話型ログイン不要</li>
+              <li>CI/CD 環境完全対応</li>
+              <li>環境変数自動管理</li>
+              <li>GitHub/GitLab 統合</li>
+            </ul>
+          </div>
+        </div>
+
+        <h3 style="margin-top: 30px; margin-bottom: 20px; color: #2d3748">
+          📊 対応フレームワーク（Deploy to Vercel）
+        </h3>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>フレームワーク</th>
+                <th>検出方法</th>
+                <th>Output Directory</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Next.js</strong></td>
+                <td>package.json に "next"</td>
+                <td>.next/</td>
+              </tr>
+              <tr>
+                <td><strong>React (Vite)</strong></td>
+                <td>package.json に "vite"</td>
+                <td>dist/</td>
+              </tr>
+              <tr>
+                <td><strong>Vue.js</strong></td>
+                <td>package.json に "vue"</td>
+                <td>dist/</td>
+              </tr>
+              <tr>
+                <td><strong>Angular</strong></td>
+                <td>package.json に "@angular/core"</td>
+                <td>dist/{name}/</td>
+              </tr>
+              <tr>
+                <td><strong>Svelte</strong></td>
+                <td>package.json に "svelte"</td>
+                <td>build/</td>
+              </tr>
+              <tr>
+                <td><strong>Astro</strong></td>
+                <td>package.json に "astro"</td>
+                <td>dist/</td>
+              </tr>
+              <tr>
+                <td><strong>Nuxt</strong></td>
+                <td>package.json に "nuxt"</td>
+                <td>.nuxt/</td>
+              </tr>
+              <tr>
+                <td><strong>Gatsby</strong></td>
+                <td>package.json に "gatsby"</td>
+                <td>public/</td>
+              </tr>
+              <tr>
+                <td colspan="3" style="text-align: center; font-style: italic"
+                  >... その他 30+ フレームワーク</td
+                >
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ===== ページ7: 実装ロードマップ ===== -->
+      <div class="page">
+        <div class="section-header">
+          <div class="section-icon">📈</div>
+          <h2 class="section-title">推奨実装ロードマップ</h2>
+        </div>
+
+        <p style="color: #646e7f; margin-bottom: 30px; font-size: 14px">
+          以下のロードマップに従い、段階的にスキルを導入することをお勧めします。
+        </p>
+
+        <div class="roadmap">
+          <div class="roadmap-item">
+            <div class="roadmap-week">
+              <div class="roadmap-week-label">Week 1</div>
+            </div>
+            <div class="roadmap-content">
+              <div class="roadmap-title">📚 パフォーマンス基盤</div>
+              <div class="roadmap-task">
+                ✓ React Best Practices を全体読み<br />
+                ✓ Waterfalls 排除（async-parallel）をプロジェクトに適用<br />
+                ✓ バンドルサイズ測定（Lighthouse）
+              </div>
+            </div>
+          </div>
+
+          <div class="roadmap-item">
+            <div class="roadmap-week">
+              <div class="roadmap-week-label">Week 2</div>
+            </div>
+            <div class="roadmap-content">
+              <div class="roadmap-title">🧩 コンポーネント設計</div>
+              <div class="roadmap-task">
+                ✓ Composition Patterns の複合パターン学習<br />
+                ✓ 既存コンポーネントでブール型プロップが多い場合はリファクタリング<br />
+                ✓ コンポーネントライブラリの基礎構築
+              </div>
+            </div>
+          </div>
+
+          <div class="roadmap-item">
+            <div class="roadmap-week">
+              <div class="roadmap-week-label">Week 3</div>
+            </div>
+            <div class="roadmap-content">
+              <div class="roadmap-title">🎨 UI/アクセシビリティの監査</div>
+              <div class="roadmap-task">
+                ✓ Web Design Guidelines の 11 領域をいくつか確認<br />
+                ✓ キーボードアクセシビリティ確認<br />
+                ✓ a11y 監査ツール導入（WAVE、axe DevTools）
+              </div>
+            </div>
+          </div>
+
+          <div class="roadmap-item">
+            <div class="roadmap-week">
+              <div class="roadmap-week-label">Week 4</div>
+            </div>
+            <div class="roadmap-content">
+              <div class="roadmap-title">🚀 デプロイ & 自動化</div>
+              <div class="roadmap-task">
+                ✓ Deploy to Vercel で preview デプロイ試行<br />
+                ✓ Vercel CLI with Tokens で CI/CD セットアップ<br />
+                ✓ GitHub Actions/GitLab CI で本番自動デプロイ
+              </div>
+            </div>
+          </div>
+
+          <div class="roadmap-item">
+            <div class="roadmap-week">
+              <div class="roadmap-week-label">Month 2</div>
+            </div>
+            <div class="roadmap-content">
+              <div class="roadmap-title">📱 モバイル/追加最適化</div>
+              <div class="roadmap-task">
+                ✓ React Native Skills で モバイル最適化（必要に応じて）<br />
+                ✓ FlashList 導入、Reanimated アニメーション実装<br />
+                ✓ 継続的なパフォーマンス改善
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="info-box" style="margin-top: 40px">
+          <strong>💡 ヒント:</strong> 各ロードマップステップの後に、Lighthouse
+          や WebVitals で測定し、改善効果を確認することをお勧めします。
+        </div>
+      </div>
+
+      <!-- ===== ページ8: チェックリスト ===== -->
+      <div class="page">
+        <div class="section-header">
+          <div class="section-icon">✅</div>
+          <h2 class="section-title">インストール & 導入チェックリスト</h2>
+        </div>
+
+        <h3 style="margin-top: 20px; margin-bottom: 15px; color: #2d3748">
+          🔧 インストール手順
+        </h3>
+
+        <div class="code-block">
+          <span class="code-label">// ワンコマンドですべてのスキルをインストール</span>
+          npx skills add vercel-labs/agent-skills
+        </div>
+
+        <h3 style="margin-top: 30px; margin-bottom: 15px; color: #2d3748">
+          📋 スキル導入前チェック
+        </h3>
+
+        <div class="checklist">
+          <div class="checklist-item">
+            <input type="checkbox" id="check1" />
+            <label for="check1">プロジェクトが Git で管理されているか確認</label>
+          </div>
+          <div class="checklist-item">
+            <input type="checkbox" id="check2" />
+            <label for="check2">package.json が存在し、dependencies が記載されている</label>
+          </div>
+          <div class="checklist-item">
+            <input type="checkbox" id="check3" />
+            <label for="check3">主要フレームワーク（React/Next.js など）が導入されている</label>
+          </div>
+          <div class="checklist-item">
+            <input type="checkbox" id="check4" />
+            <label for="check4">ローカルでの開発環境がセットアップされている</label>
+          </div>
+          <div class="checklist-item">
+            <input type="checkbox" id="check5" />
+            <label for="check5">CI/CD がある場合は環境変数が設定されている</label>
+          </div>
+        </div>
+
+        <h3 style="margin-top: 30px; margin-bottom: 15px; color: #2d3748">
+          🎯 優先度別導入ガイド
+        </h3>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>優先度</th>
+                <th>スキル</th>
+                <th>導入条件</th>
+                <th>推奨タイミング</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="priority-high">🔴 必須</span></td>
+                <td><strong>React Best Practices</strong></td>
+                <td>React または Next.js プロジェクト</td>
+                <td>プロジェクト開始時</td>
+              </tr>
+              <tr>
+                <td><span class="priority-high">🔴 推奨</span></td>
+                <td><strong>Deploy to Vercel</strong></td>
+                <td>アプリをデプロイする予定</td>
+                <td>Week 4</td>
+              </tr>
+              <tr>
+                <td><span class="priority-high">🔴 推奨</span></td>
+                <td><strong>Web Design Guidelines</strong></td>
+                <td>UI/UX に関心がある</td>
+                <td>Week 3</td>
+              </tr>
+              <tr>
+                <td><span class="priority-medium">🟡 選択</span></td>
+                <td><strong>Composition Patterns</strong></td>
+                <td>コンポーネント数が 50+ 以上</td>
+                <td>Week 2（または後で）</td>
+              </tr>
+              <tr>
+                <td><span class="priority-medium">🟡 選択</span></td>
+                <td><strong>React Native Skills</strong></td>
+                <td>モバイルアプリを開発</td>
+                <td>Month 2</td>
+              </tr>
+              <tr>
+                <td><span class="priority-low">🟢 オプション</span></td>
+                <td><strong>Vercel CLI with Tokens</strong></td>
+                <td>CI/CD パイプライン構築が必要</td>
+                <td>Week 4 後</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 style="margin-top: 30px; margin-bottom: 15px; color: #2d3748">
+          🚀 導入後の推奨ステップ
+        </h3>
+
+        <div class="checklist">
+          <div class="checklist-item">
+            <input type="checkbox" id="check6" />
+            <label for="check6">各スキルのドキュメントを読む（30分/スキル）</label>
+          </div>
+          <div class="checklist-item">
+            <input type="checkbox" id="check7" />
+            <label for="check7">ローカルで 1 つのルールを適用してみる</label>
+          </div>
+          <div class="checklist-item">
+            <input type="checkbox" id="check8" />
+            <label for="check8">パフォーマンス改善を測定（Lighthouse、WebVitals）</label>
+          </div>
+          <div class="checklist-item">
+            <input type="checkbox" id="check9" />
+            <label for="check9">チームに共有し、ベストプラクティスを定着させる</label>
+          </div>
+          <div class="checklist-item">
+            <input type="checkbox" id="check10" />
+            <label for="check10">定期的に見直し、新しいルールを適用</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== 最後のページ ===== -->
+      <div class="page">
+        <div class="section-header">
+          <div class="section-icon">📖</div>
+          <h2 class="section-title">さらに詳しく学ぶ</h2>
+        </div>
+
+        <h3 style="margin-top: 30px; margin-bottom: 20px; color: #2d3748">
+          🔗 参照リンク
+        </h3>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>リソース</th>
+                <th>URL / 説明</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Agent Skills 公式</strong></td>
+                <td>https://agentskills.io/</td>
+              </tr>
+              <tr>
+                <td><strong>GitHub リポジトリ</strong></td>
+                <td>https://github.com/vercel-labs/agent-skills</td>
+              </tr>
+              <tr>
+                <td><strong>Vercel ドキュメント</strong></td>
+                <td>https://vercel.com/docs</td>
+              </tr>
+              <tr>
+                <td><strong>Next.js ドキュメント</strong></td>
+                <td>https://nextjs.org/docs</td>
+              </tr>
+              <tr>
+                <td><strong>React ドキュメント</strong></td>
+                <td>https://react.dev</td>
+              </tr>
+              <tr>
+                <td><strong>React Native ドキュメント</strong></td>
+                <td>https://reactnative.dev</td>
+              </tr>
+              <tr>
+                <td><strong>Web Accessibility</strong></td>
+                <td>https://www.w3.org/WAI/</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 style="margin-top: 30px; margin-bottom: 20px; color: #2d3748">
+          ❓ よくある質問
+        </h3>
+
+        <div style="margin-bottom: 25px">
+          <h4 style="color: #2d3748; margin-bottom: 8px">
+            Q: 6 つすべてのスキルを導入する必要があるか？
+          </h4>
+          <p style="color: #646e7f; font-size: 14px">
+            いいえ。優先度に基づいて選択してください。最小限ラインは
+            React Best Practices + Deploy to Vercel から始めることをお勧めします。
+          </p>
+        </div>
+
+        <div style="margin-bottom: 25px">
+          <h4 style="color: #2d3748; margin-bottom: 8px">
+            Q: スキル間に依存関係または競合があるか？
+          </h4>
+          <p style="color: #646e7f; font-size: 14px">
+            いいえ。各スキルは独立しており、複数のスキルを同時に活用できます。むしろ、複数スキルの組み合わせで最大の効果が発揮されます。
+          </p>
+        </div>
+
+        <div style="margin-bottom: 25px">
+          <h4 style="color: #2d3748; margin-bottom: 8px">
+            Q: スキルなしで AI エージェントは動くのか？
+          </h4>
+          <p style="color: #646e7f; font-size: 14px">
+            はい。スキルはオプション機能です。ただし、スキルを追加することで、エージェントがより精度の高い提案をしてくれます。
+          </p>
+        </div>
+
+        <div style="margin-bottom: 25px">
+          <h4 style="color: #2d3748; margin-bottom: 8px">
+            Q: 自分でカスタムスキルを作成できるか？
+          </h4>
+          <p style="color: #646e7f; font-size: 14px">
+            はい。Agent Skills フォーマットに従うことで、カスタムスキルを作成・配布できます。
+          </p>
+        </div>
+
+        <div
+          style="
+            margin-top: 50px;
+            padding: 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 12px;
+            color: white;
+            text-align: center;
+          "
+        >
+          <h3 style="margin-bottom: 15px; color: white">
+            🚀 今すぐ始めましょう！
+          </h3>
+          <p style="margin-bottom: 20px; opacity: 0.95">
+            以下のコマンドで、すべての Agent Skills をインストール：
+          </p>
+          <div
+            style="
+              background: rgba(0, 0, 0, 0.2);
+              padding: 15px;
+              border-radius: 8px;
+              font-family: monospace;
+              font-size: 14px;
+              letter-spacing: 0.5px;
+            "
+          >
+            npx skills add vercel-labs/agent-skills
+          </div>
+          <p style="margin-top: 20px; font-size: 13px; opacity: 0.9">
+            本ドキュメント作成日: 2026年4月3日
+          </p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
