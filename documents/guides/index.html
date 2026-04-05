@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agent Skills ガイド一覧</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 3rem;
+        }
+        
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .guides-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .guide-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            color: white;
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .guide-card:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.4);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .guide-card .icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .guide-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            line-height: 1.4;
+        }
+        
+        .guide-card p {
+            font-size: 0.95rem;
+            opacity: 0.9;
+            flex-grow: 1;
+            margin-bottom: 1rem;
+        }
+        
+        .guide-card .cta {
+            display: inline-block;
+            margin-top: auto;
+            padding: 0.75rem 1.5rem;
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+        
+        .guide-card:hover .cta {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        .other-guides {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            padding: 2rem;
+            color: white;
+            margin-top: 3rem;
+        }
+        
+        .other-guides h2 {
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+        
+        .other-guides ul {
+            list-style: none;
+        }
+        
+        .other-guides li {
+            margin-bottom: 1rem;
+        }
+        
+        .other-guides a {
+            color: #a8dadc;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .other-guides a:hover {
+            color: white;
+            text-decoration: underline;
+        }
+        
+        .back-link {
+            display: inline-block;
+            margin-bottom: 2rem;
+            color: white;
+            text-decoration: none;
+            opacity: 0.8;
+            transition: opacity 0.3s ease;
+        }
+        
+        .back-link:hover {
+            opacity: 1;
+            text-decoration: underline;
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            body {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../index.html" class="back-link">← ホームに戻る</a>
+        
+        <div class="header">
+            <h1>📚 Agent Skills ガイド</h1>
+            <p>Vercel Agent Skills の包括的なガイドとドキュメント</p>
+        </div>
+        
+        <div class="guides-grid">
+            <a href="overview.html" class="guide-card">
+                <div class="icon">🎯</div>
+                <h3>完全ガイド</h3>
+                <p>全6つのAgent Skillsの統合ガイド。200個以上のベストプラクティスと40+フレームワークのサポート情報</p>
+                <div class="cta">ガイドを表示</div>
+            </a>
+            
+            <a href="how-to-use.html" class="guide-card">
+                <div class="icon">🚀</div>
+                <h3>使用方法</h3>
+                <p>Agent Skillsのセットアップと基本的な使用方法を学びます</p>
+                <div class="cta">詳細を読む</div>
+            </a>
+            
+            <a href="quick-start.html" class="guide-card">
+                <div class="icon">⚡</div>
+                <h3>クイックスタート</h3>
+                <p>最初の5分で始められるステップバイステップガイド</p>
+                <div class="cta">今すぐ開始</div>
+            </a>
+            
+            <a href="implementation-examples.html" class="guide-card">
+                <div class="icon">💻</div>
+                <h3>実装例</h3>
+                <p>実践的なコード例とパターンの実装ガイド</p>
+                <div class="cta">コード例を見る</div>
+            </a>
+            
+            <a href="vscode-setup.html" class="guide-card">
+                <div class="icon">⚙️</div>
+                <h3>VS Code セットアップ</h3>
+                <p>VS Code環境での正しいセットアップとカスタマイズ方法</p>
+                <div class="cta">セットアップガイド</div>
+            </a>
+            
+            <a href="skills-overview.html" class="guide-card">
+                <div class="icon">🎓</div>
+                <h3>スキルズ概要</h3>
+                <p>各スキルの概要と相互関係を理解します</p>
+                <div class="cta">概要を確認</div>
+            </a>
+        </div>
+        
+        <div class="other-guides">
+            <h2>GitHub リソース</h2>
+            <ul>
+                <li><a href="github-distribution.html">📦 GitHub での配布方法</a></li>
+                <li><a href="../index.html">🏠 ホームページ</a></li>
+                <li><a href="../quick-start/">🚀 クイックスタートフォルダ</a></li>
+                <li><a href="../legacy/">📚 アーカイブされたドキュメント</a></li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

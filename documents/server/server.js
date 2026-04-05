@@ -31,15 +31,15 @@ const server = http.createServer((req, res) => {
     pathname = "/index.html";
 
     // index.htmlが存在しない場合はディレクトリ一覧を表示
-    const indexPath = path.join(__dirname, "index.html");
+    const indexPath = path.join(__dirname, "..", "index.html");
     if (!fs.existsSync(indexPath)) {
       serveDirectoryListing(req, res);
       return;
     }
   }
 
-  // ファイルパスを構築
-  const filePath = path.join(__dirname, pathname);
+  // ファイルパスを構築 (server/フォルダから親ディレクトリを指す)
+  const filePath = path.join(__dirname, "..", pathname);
 
   // ディレクトリの場合はディレクトリ一覧を表示
   if (fs.existsSync(filePath) && fs.statSync(filePath).isDirectory()) {
@@ -79,7 +79,7 @@ const server = http.createServer((req, res) => {
 
 // ディレクトリ一覧を表示する関数
 function serveDirectoryListing(req, res, pathname = "/") {
-  const dirPath = path.join(__dirname, pathname);
+  const dirPath = path.join(__dirname, "..", pathname);
 
   fs.readdir(dirPath, { withFileTypes: true }, (err, files) => {
     if (err) {

@@ -1,0 +1,1239 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>VS Code Agent Skills カスタマイズガイド - 日本語版</title>
+    <link rel="stylesheet" href="../assets/css/print.css" />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family:
+          "Meiryo UI", "Meiryo", "MS PGothic", "MS Gothic", sans-serif;
+        line-height: 1.8;
+        color: #000;
+        background-color: #f5f5f5;
+        padding: 20px;
+      }
+
+      .container {
+        max-width: 210mm;
+        margin: 0 auto;
+        background: white;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .page {
+        padding: 25mm 20mm;
+        min-height: 297mm;
+        background: white;
+        page-break-after: always;
+      }
+
+      .page:last-child {
+        page-break-after: auto;
+      }
+
+      /* 表紙 */
+      .cover-page {
+        display: flex;
+        flex-direction: column;
+        min-height: 297mm;
+        padding: 0;
+        position: relative;
+      }
+
+      .cover-header {
+        text-align: right;
+        padding: 25mm 20mm 0 20mm;
+        font-size: 12px;
+        color: #666;
+      }
+
+      .cover-main {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: 0 40mm;
+      }
+
+      .cover-category {
+        font-size: 14px;
+        color: #666;
+        margin-bottom: 30px;
+        letter-spacing: 2px;
+      }
+
+      .cover-title {
+        font-size: 28px;
+        font-weight: bold;
+        color: #000;
+        margin-bottom: 10px;
+        padding: 0 20px 15px;
+        border-bottom: 2px solid #000;
+      }
+
+      .cover-subtitle {
+        font-size: 16px;
+        color: #333;
+        margin-top: 20px;
+      }
+
+      .cover-info-table {
+        margin-top: 60px;
+        width: 100%;
+        max-width: 450px;
+        border-collapse: collapse;
+        text-align: left;
+      }
+
+      .cover-info-table th,
+      .cover-info-table td {
+        border: 1px solid #000;
+        padding: 12px 15px;
+        font-size: 14px;
+      }
+
+      .cover-info-table th {
+        background-color: #f0f0f0;
+        font-weight: bold;
+        width: 120px;
+      }
+
+      /* 章番号付きセクション */
+      .chapter {
+        margin-bottom: 35px;
+        page-break-inside: avoid;
+      }
+
+      .chapter-number {
+        font-size: 24px;
+        font-weight: bold;
+        color: #000;
+        margin-bottom: 15px;
+        padding-bottom: 8px;
+        border-bottom: 2px solid #000;
+      }
+
+      .chapter-title {
+        display: inline;
+        margin-left: 15px;
+      }
+
+      .chapter-content {
+        margin-top: 20px;
+        text-indent: 1em;
+        text-align: justify;
+      }
+
+      /* サブセクション */
+      .subsection {
+        margin: 25px 0 20px 20px;
+      }
+
+      .subsection-title {
+        font-size: 16px;
+        font-weight: bold;
+        color: #000;
+        margin-bottom: 12px;
+        padding-left: 10px;
+        border-left: 4px solid #333;
+      }
+
+      .subsection-content {
+        margin-left: 15px;
+        text-indent: 1em;
+      }
+
+      /* テーブル */
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+        font-size: 13px;
+        page-break-inside: avoid;
+      }
+
+      table caption {
+        caption-side: top;
+        text-align: left;
+        font-weight: bold;
+        margin-bottom: 8px;
+        font-size: 14px;
+      }
+
+      th,
+      td {
+        border: 1px solid #000;
+        padding: 10px 12px;
+        text-align: left;
+      }
+
+      th {
+        background-color: #e8e8e8;
+        font-weight: bold;
+      }
+
+      /* 箇条書き */
+      ul,
+      ol {
+        margin: 15px 0 15px 40px;
+      }
+
+      li {
+        margin-bottom: 8px;
+        text-align: justify;
+      }
+
+      /* コードブロック */
+      .code-block {
+        background-color: #f5f5f5;
+        border-left: 4px solid #333;
+        padding: 15px;
+        margin: 15px 0;
+        font-family: "Courier New", monospace;
+        font-size: 12px;
+        overflow-x: auto;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+      }
+
+      /* 参考資料セクション */
+      .references-section {
+        margin-top: 40px;
+        page-break-inside: avoid;
+        background-color: #f9f9f9;
+        padding: 15px;
+        border-left: 4px solid #666;
+      }
+
+      .references-title {
+        font-size: 16px;
+        font-weight: bold;
+        color: #000;
+        margin-bottom: 12px;
+      }
+
+      .references-list {
+        margin: 0 0 0 20px;
+        font-size: 12px;
+        line-height: 1.6;
+      }
+
+      .ref-item {
+        margin-bottom: 10px;
+      }
+
+      .ref-label {
+        font-weight: bold;
+        color: #333;
+      }
+
+      /* フッター */
+      .formal-footer {
+        text-align: center;
+        font-size: 11px;
+        color: #666;
+        padding-top: 10px;
+        border-top: 1px solid #ccc;
+        margin-top: auto;
+      }
+
+      @media print {
+        body {
+          padding: 0;
+          background: white;
+        }
+
+        .container {
+          box-shadow: none;
+        }
+
+        .page {
+          padding: 0;
+        }
+
+        .chapter,
+        .subsection,
+        table,
+        .references-section {
+          page-break-inside: avoid;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <!-- 表紙 -->
+      <div class="page cover-page">
+        <div class="cover-header">
+          作成日：2026年4月5日<br />
+          基準版：VS Code 公式ドキュメント （2026年4月）
+        </div>
+
+        <div class="cover-main">
+          <p class="cover-category">VS Code 公式ドキュメント 日本語要約版</p>
+          <h1 class="cover-title">
+            VS Code で Agent Skills を<br />
+            活用する
+          </h1>
+          <p class="cover-subtitle">
+            専門的なタスク実行能力を GitHub Copilot に拡張する方法
+          </p>
+
+          <table class="cover-info-table">
+            <tr>
+              <th>対象者</th>
+              <td>VS Code ユーザー</td>
+            </tr>
+            <tr>
+              <th>所要時間</th>
+              <td>20分</td>
+            </tr>
+            <tr>
+              <th>前提知識</th>
+              <td>Agent Skills の基本概念</td>
+            </tr>
+            <tr>
+              <th>更新日</th>
+              <td>2026年4月5日</td>
+            </tr>
+            <tr>
+              <th>機密区分</th>
+              <td>公開</td>
+            </tr>
+          </table>
+        </div>
+
+        <div class="formal-footer">
+          <p>
+            このドキュメントは
+            <a href="https://code.visualstudio.com/docs/copilot/customization/agent-skills"
+              >VS Code 公式ドキュメント</a
+            >
+            の日本語要約版です。<br />
+            詳細は公式ドキュメントを参照してください。
+          </p>
+        </div>
+      </div>
+
+      <!-- 目次 -->
+      <div class="page">
+        <section class="chapter">
+          <h2 style="font-size: 28px; font-weight: bold; text-align: center; margin-bottom: 40px;">📑 目次</h2>
+          <ol style="margin: 30px 0 30px 60px; font-size: 14px; line-height: 2.2;">
+            <li><a href="#chapter-1">Agent Skills とは</a></li>
+            <li><a href="#chapter-2">Skill を作成する</a></li>
+            <li><a href="#chapter-3">SKILL.md ファイルフォーマット</a></li>
+            <li><a href="#chapter-4">Skill として活用する</a></li>
+            <li><a href="#chapter-5">共有 Skill を活用する</a></li>
+            <li><a href="#chapter-6">拡張機能から Skill を提供する</a></li>
+            <li><a href="#appendix-a">付録 A: YAML フロントマター詳細解説</a></li>
+          </ol>
+        </section>
+      </div>
+
+      <!-- 第1章 概要 -->
+      <div class="page">
+        <section class="chapter" id="chapter-1">
+          <h2 class="chapter-number">
+            1.<span class="chapter-title">Agent Skills とは</span>
+          </h2>
+          <div class="chapter-content">
+            <p>
+              <strong>Agent Skills</strong> は、フォルダに格納された指示、スクリプト、およびリソースの集合です。GitHub Copilot が関連タスクを実行する際に自動的に読み込むことで、Copilot の能力を拡張できます。
+            </p>
+            <p style="margin-top: 1em">
+              Agent Skills は<strong>オープン標準</strong>で、VS Code の GitHub Copilot、GitHub Copilot CLI、GitHub Copilot コーディングエージェントなど、複数の AI エージェント間で活用できます。
+            </p>
+          </div>
+
+          <div class="subsection">
+            <h3 class="subsection-title">1.1 Agent Skills の主な利点</h3>
+            <ul>
+              <li><strong>Copilot を特化させる：</strong> 繰り返しのコンテキスト入力なしに、ドメイン固有のタスクに対応</li>
+              <li><strong>繰り返しを削減：</strong> 作成した Skill は、すべての会話で自動的に活用</li>
+              <li><strong>能力を組み合わせる：</strong> 複数の Skill を組み合わせることで、複雑なワークフローを構築</li>
+              <li><strong>効率的に読み込む：</strong> 関連するコンテンツだけが文脈に読み込まれるため、コンテキストウィンドウを効率的に利用</li>
+            </ul>
+          </div>
+
+          <div class="subsection">
+            <h3 class="subsection-title">1.2 Agent Skills と カスタム指示の違い</h3>
+            <table>
+              <thead>
+                <tr>
+                  <th>項目</th>
+                  <th>Agent Skills</th>
+                  <th>カスタム指示</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>目的</strong></td>
+                  <td>専門的な能力とワークフローを教える</td>
+                  <td>コーディング標準とガイドラインを定義</td>
+                </tr>
+                <tr>
+                  <td><strong>適用範囲</strong></td>
+                  <td>複数の AI ツール間で利用可能</td>
+                  <td>VS Code と GitHub.com のみ</td>
+                </tr>
+                <tr>
+                  <td><strong>内容</strong></td>
+                  <td>指示、スクリプト、例、リソース</td>
+                  <td>指示のみ</td>
+                </tr>
+                <tr>
+                  <td><strong>読み込み方式</strong></td>
+                  <td>タスク関連時にオンデマンド読み込み</td>
+                  <td>常に適用（またはグロブパターン）</td>
+                </tr>
+                <tr>
+                  <td><strong>標準</strong></td>
+                  <td>オープン標準（agentskills.io）</td>
+                  <td>VS Code 固有</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="subsection">
+            <h3 class="subsection-title">1.3 いつ Agent Skills を使うべきか</h3>
+            <p><strong>Agent Skills を用いる場面：</strong></p>
+            <ul>
+              <li>複数の AI ツール間で再利用可能な能力を作成したい</li>
+              <li>スクリプト、例、またはその他のリソースを指示と一緒に含めたい</li>
+              <li>テスト実行、デバッグ、デプロイメント など、特殊なワークフローを定義したい</li>
+              <li>AI コミュニティと能力を共有したい</li>
+            </ul>
+            <p style="margin-top: 1em"><strong>カスタム指示を用いる場面：</strong></p>
+            <ul>
+              <li>プロジェクト固有のコーディング標準を定義したい</li>
+              <li>言語またはフレームワークの慣例を設定したい</li>
+              <li>コードレビューまたはコミットメッセージのガイドラインを指定したい</li>
+              <li>ファイルタイプに基づくルールを適用したい</li>
+            </ul>
+          </div>
+        </section>
+      </div>
+
+      <!-- 第2章 Skill の作成 -->
+      <div class="page">
+        <section class="chapter" id="chapter-2">
+          <h2 class="chapter-number">
+            2.<span class="chapter-title">Skill を作成する</span>
+          </h2>
+          <div class="chapter-content">
+            <p>
+              Skill は、SKILL.md ファイルを含むディレクトリとして構成されます。VS Code は 2 つのタイプの Skill をサポートしています。
+            </p>
+          </div>
+
+          <div class="subsection">
+            <h3 class="subsection-title">2.1 Skill の保存場所</h3>
+            <table>
+              <thead>
+                <tr>
+                  <th>Skill の種類</th>
+                  <th>保存場所</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>プロジェクト Skill</strong></td>
+                  <td>
+                    <code>.github/skills/</code><br />
+                    <code>.claude/skills/</code><br />
+                    <code>.agents/skills/</code>
+                  </td>
+                </tr>
+                <tr>
+                  <td><strong>個人 Skill</strong></td>
+                  <td>
+                    <code>~/.copilot/skills/</code><br />
+                    <code>~/.claude/skills/</code><br />
+                    <code>~/.agents/skills/</code>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <p style="margin-top: 1em">
+              <strong>カスタマイズ：</strong>
+              <code>chat.skillsLocations</code> 設定を使用することで、プロジェクト Skill の追加の保存場所を構成できます。これは、異なるフォルダ構造で Skill を組織化する、または複数の Skill ディレクトリを持つ場合に有用です。
+            </p>
+          </div>
+
+          <div class="subsection">
+            <h3 class="subsection-title">2.2 Skill を作成するための手順</h3>
+            <ol>
+              <li>Chat ビューで「Configure Chat」（歯車アイコン）を選択して、Chat Customizations エディタを開きます。</li>
+              <li>「Skills」タブから、「New Skill (Workspace)」または「New Skill (User)」を選択します。Skill を保存する場所に応じて選択してください。</li>
+              <li>Skill の保存場所を選択し、Skill の名前を入力します。</li>
+              <li>YAML フロントマターを記入し、ファイルの本文に指示を追加して、<code>SKILL.md</code> ファイルを完成させます。</li>
+              <li>
+                （オプション）スクリプト、例、またはその他のリソースを Skill ディレクトリに追加します。
+              </li>
+            </ol>
+          </div>
+
+          <div class="subsection">
+            <h3 class="subsection-title">2.3 AI による Skill 生成</h3>
+            <p>
+              チャットで <code>/create-skill</code> を入力し、作成したい Skill の機能を説明することで、AI が Skill を生成できます。例えば：
+            </p>
+            <ul>
+              <li>「統合テストを実行およびデバッグするための Skill」</li>
+              <li>複雑な問題をデバッグした多段階プロセスから Skill を抽出する</li>
+            </ul>
+            <p style="margin-top: 1em">
+              Copilot は明確化に関する質問を行い、ディレクトリ構造、指示、およびフロントマターを備えた SKILL.md ファイルを生成します。
+            </p>
+          </div>
+        </section>
+      </div>
+
+      <!-- 第3章 SKILL.md ファイルフォーマット -->
+      <div class="page">
+        <section class="chapter" id="chapter-3">
+          <h2 class="chapter-number">
+            3.<span class="chapter-title">SKILL.md ファイルフォーマット</span>
+          </h2>
+          <div class="chapter-content">
+            <p>
+              <code>SKILL.md</code> ファイルは、YAML フロントマターを備えたマークダウンファイルで、Skill のメタデータと動作を定義します。
+            </p>
+          </div>
+
+          <div class="subsection">
+            <h3 class="subsection-title">3.1 ヘッダー（YAML フロントマター）</h3>
+            <p>ヘッダーは <code>---</code> で囲まれた YAML フロントマターであり、Skill のメタデータを定義します。ここで定義される情報が Copilot による Skill の検出と動作制御に直接影響します。</p>
+            
+            <p style="margin-top: 1em"><strong>必須フィールド</strong></p>
+            <table>
+              <thead>
+                <tr>
+                  <th>フィールド</th>
+                  <th>説明・ガイドライン</th>
+                  <th>例</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>name</code><br /><small>（必須）</small></td>
+                  <td>
+                    <strong>Skill の一意識別子。</strong>小文字のみ使用。スペースはハイフンに置き換え。最大 64 文字。<br /><br />
+                    <strong>重要：親ディレクトリ名と完全に一致する必要があります。</strong>例えば、ディレクトリが <code>skills/react-performance/</code> なら、name は <code>react-performance</code> である必要があります。一致していない場合、Skill は読み込まれません。<br /><br />
+                    <strong>命名のコツ：</strong>動詞 + 対象（例：<code>test-react-components</code>, <code>debug-api-calls</code>, <code>deploy-to-vercel</code>）
+                  </td>
+                  <td><code>react-performance</code><br /><code>test-integration</code><br /><code>debug-api-calls</code></td>
+                </tr>
+                <tr>
+                  <td><code>description</code><br /><small>（必須）</small></td>
+                  <td>
+                    <strong>Skill の機能と用途についての説明。最大 1024 文字。</strong><br /><br />
+                    「何ができるのか」「どんな時に使うのか」を具体的に記述してください。Copilot はこの説明を読んで、ユーザーのリクエストに関連するかを判断し、自動的に読み込むかどうかを決定します。<br /><br />
+                    <strong>効果的な説明の傍訳例：</strong><br />
+                    ❌ 「React コードを書く」<br />
+                    ✅ 「React コンポーネントをテストするための Jest テストスイートを生成します。useContext、Props、State の各動作をテストします。<code>/test-react-components [component file]</code> で実行」
+                  </td>
+                  <td>「React のパフォーマンス最適化に関するベストプラクティスを適用します。不要な再レンダリングを防止し、メモ化戦略を提案します。」</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <p style="margin-top: 1.5em"><strong>オプショナルフィールド</strong></p>
+            <table>
+              <thead>
+                <tr>
+                  <th>フィールド</th>
+                  <th>説明・デフォルト値</th>
+                  <th>用途</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>argument-hint</code></td>
+                  <td>
+                    Skill をスラッシュコマンド（<code>/my-skill</code>）で呼び出す際、ユーザーに表示されるヒントテキスト。<br />
+                    形式：<code>[引数1] [引数2]</code>
+                  </td>
+                  <td>
+                    例：<code>[test file] [coverage target]</code><br />
+                    ユーザーが <code>/</code> 入力時に表示され、何を指定すべきか分かりやすくなります。
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>user-invocable</code></td>
+                  <td>
+                    此の Skill をスラッシュメニュー（<code>/</code>）に表示するか。デフォルト：<code>true</code><br />
+                    <code>false</code> に設定すると、/ メニューから隠れます。ただ、Copilot は関連タスクで自動読み込みは可能です。
+                  </td>
+                  <td>
+                    背景知識 Skill（プロジェクト規約など）は <code>false</code> に設定し、自動読み込みのみにすることで、メニューをシンプルに保つ。
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>disable-model-invocation</code></td>
+                  <td>
+                    Copilot が関連性に基づいて自動読み込みするかを制御。デフォルト：<code>false</code>（自動読み込み有効）<br />
+                    <code>true</code> に設定すると、ユーザーが明示的にスラッシュコマンドで呼び出す場合のみ読み込まれます。
+                  </td>
+                  <td>
+                    特殊なコマンドのみ実行する Skill（例：<code>/deploy-production</code>）は <code>true</code> に設定し、誤った自動読み込みを防止。
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="subsection">
+            <h3 class="subsection-title">3.2 本文（マークダウン形式の詳細指示）</h3>
+            <p>
+              YAML フロントマター（<code>---</code> の後）の <code># My Skill</code> 以降が本文です。ここに、Copilot が実行すべき具体的な指示を記述します。
+            </p>
+
+            <p style="margin-top: 1em"><strong>本文に含めるべき要素（推奨順）：</strong></p>
+            <ol>
+              <li>
+                <strong>大見出し（# タイトル）：</strong> Skill の名前を簡潔に記述
+              </li>
+              <li>
+                <strong>概要段落（1-2文）：</strong>「このスキルは何をするか」を１文で説明
+              </li>
+              <li>
+                <strong>使用場面（## When to Use）：</strong> どのような状況で使うべきかを列挙
+              </li>
+              <li>
+                <strong>ステップバイステップ手順（## How to Use または ## Steps）：</strong> 実行すべき手順を番号付きリストで記述
+              </li>
+              <li>
+                <strong>具体例（## Examples）：</strong> 入力と出力のサンプルを示す
+              </li>
+              <li>
+                <strong>ルール・ガイドライン（## Rules または ## Guidelines）：</strong> 従うべき基準や制約条件
+              </li>
+              <li>
+                <strong>リソースへの参照（## Resources）：</strong> 含まれるスクリプトやテンプレートへのリンク
+              </li>
+            </ol>
+
+            <p style="margin-top: 1.5em"><strong>ファイル参照の方法：</strong></p>
+            <p>Skill ディレクトリ内のスクリプトやリソースを参照する場合、相対パスを使用します。</p>
+            <div class="code-block"><!-- 例 -->
+[test template](./test-template.js)
+[deployment script](./scripts/deploy.sh)
+[configuration guide](./docs/config.md)</div>
+
+            <p style="margin-top: 1em"><strong>マークダウン形式のベストプラクティス：</strong></p>
+            <ul>
+              <li><strong>見出しレベルの一貫性：</strong> <code>#</code>（大）→ <code>##</code>（中）→ <code>###</code>（小）を正しく使用</li>
+              <li><strong>コードブロック：</strong> <code>```javascript</code> のように言語名を指定すると、シンタックスハイライトが有効になります。</li>
+              <li><strong>リスト形式：</strong> 複数の選択肢や手順は箇条書き（<code>-</code> または番号 <code>1.</code>）で記述</li>
+              <li><strong>強調：</strong> 重要な部分は <code>**太字**</code> または <code>_斜体_</code> で強調</li>
+              <li><strong>前後の文脈：</strong> 技術的な用語は最初に定義し、その後、既知として使用</li>
+            </ul>
+          </div>
+
+          <div class="subsection">
+            <h3 class="subsection-title">3.3 完全な SKILL.md の実装例</h3>
+            
+            <p><strong>例1：React テスティング Skill</strong></p>
+            <div class="code-block">---
+name: react-component-testing
+description: Generate comprehensive Jest test suites for React components. Tests cover props, state, hooks (useState, useContext, useEffect), event handling, and edge cases. Use when you need to write robust tests for React components.
+argument-hint: [component file path] [test coverage %]
+user-invocable: true
+disable-model-invocation: false
+---
+
+# React Component Testing Skill
+
+This skill generates production-ready Jest test suites for React components.
+
+## When to Use
+
+- Writing unit tests for new React components
+- Adding test coverage to existing components
+- Testing complex component logic (hooks, state management)
+- Ensuring edge cases are covered
+
+## How to Use
+
+1. Specify the React component file to test
+2. Define the desired test coverage percentage (e.g., 80%, 100%)
+3. List any external dependencies or custom hooks used
+4. The skill generates a complete test file with describe blocks and test cases
+
+## Example Input
+
+```
+File: ./src/components/UserCard.jsx
+Coverage target: 85%
+Custom hooks: useUser, usePermissions
+```
+
+## Example Output
+
+```javascript
+import { render, screen, fireEvent } from '@testing-library/react';
+import UserCard from './UserCard';
+
+describe('UserCard Component', () => {
+  test('renders user name correctly', () => {
+    // Test implementation
+  });
+  // More tests...
+});
+```
+
+## Guidelines
+
+- Always include tests for success and error paths
+- Use descriptive test names following "should..." pattern
+- Mock external API calls and dependencies
+- Include tests for user interactions (click, input, etc.)
+- Cover all conditional branches in the component
+
+## Resources
+
+- [Jest Testing Framework](./docs/jest-guide.md)
+- [Testing Library Best Practices](./docs/testing-library.md)
+- [Example test template](./templates/test-template.js)</div>
+
+            <p style="margin-top: 1.5em"><strong>例2：バックグラウンド知識 Skill</strong></p>
+            <div class="code-block">---
+name: react-project-coding-standards
+description: React プロジェクトの社内コーディング標準。命名規則、フォルダ構造、ベストプラクティスを定義します。すべての React コード生成時に自動的に適用されます。
+user-invocable: false
+disable-model-invocation: false
+---
+
+# React プロジェクト コーディング標準
+
+このスキルは、すべての React コードが従うべき標準を定義します。
+
+## 命名規則
+
+- **コンポーネント：** PascalCase（例：UserCard、LoginForm）
+- **カスタムフック：** camelCase で 'use' で始まる（例：useUser、useAuth）
+- **定数：** UPPER_SNAKE_CASE（例：API_URL、MAX_RETRIES）
+- **ファイル名：** エクスポート名と同じ
+
+## フォルダ構成
+
+```
+src/
+├── components/    # 再利用可能なReactコンポーネント
+├── hooks/         # カスタムReactフック
+├── utils/         # ユーティリティ関数
+├── types/         # TypeScript型定義
+├── services/      # API呼び出しとビジネスロジック
+└── constants/     # アプリケーション全体の定数
+```
+
+## React ベストプラクティス
+
+- **関数型コンポーネント使用：** クラス型ではなく、関数型コンポーネントと Hooks を使用
+- **Props Drilling 回避：** 深いコンポーネント階層での状態共有には Context API を使用
+- **単一責任の原則：** コンポーネントは 1 つの役割に絞る
+- **重い計算の最適化：** useMemo、useCallback でメモ化して不要な再計算を防ぐ
+- **キーの使用：** リスト要素にはインデックスではなく一意の ID を key として使用
+- **エラーハンドリング：** Error Boundary でエラーキャッチし、フォールバック UI を提供</div>
+
+            <p style="margin-top: 1.5em"><strong>よくある間違いと対策：</strong></p>
+            <ul>
+              <li>
+                <strong>❌ ディレクトリ名と name が一致していない</strong><br />
+                ✅ 解決：ディレクトリ名と SKILL.md の name を完全に一致させる
+              </li>
+              <li>
+                <strong>❌ description が曖昧または短すぎる</strong><br />
+                ✅ 解決：「何ができるか」「いつ使うか」を具体的に 1 段落で記述
+              </li>
+              <li>
+                <strong>❌ 本文が指示ではなく、単なるドキュメント</strong><br />
+                ✅ 解決：Copilot が実行すべきアクションを形式で記述（「...する」という命令形）
+              </li>
+              <li>
+                <strong>❌ 大文字と小文字の混在</strong><br />
+                ✅ 解決：YAML フロントマターのフィールド名はすべて小文字（user-invocable ✓、User-Invocable ✗）
+              </li>
+            </ul>
+          </div>
+        </section>
+      </div>
+
+      <!-- 第4章 Skill の使用 -->
+      <div class="page">
+        <section class="chapter" id="chapter-4">
+          <h2 class="chapter-number">
+            4.<span class="chapter-title">Skill として活用する</span>
+          </h2>
+          <div class="chapter-content">
+            <p>
+              Skill は、チャットの他のプロンプトファイルとともに、スラッシュコマンドとして使用できます。チャット入力フィールドで「/」を入力すると、利用可能な Skill とプロンプトのリストが表示されます。
+            </p>
+          </div>
+
+          <div class="subsection">
+            <h3 class="subsection-title">4.1 スラッシュコマンドでの使用</h3>
+            <p>Skill を呼び出すには、スラッシュコマンドを使用します。チャット入力フィールドで「/」を入力してください。</p>
+            <p style="margin-top: 1em">例えば：</p>
+            <ul>
+              <li><code>/webapp-testing for the login page</code></li>
+              <li><code>/github-actions-debugging PR #42</code></li>
+            </ul>
+          </div>
+
+          <div class="subsection">
+            <h3 class="subsection-title">4.2 Skill メニューの表示制御</h3>
+            <p>
+              <code>user-invocable</code> と <code>disable-model-invocation</code> を使用して、Skill へのアクセス方法を制御できます。
+            </p>
+            <table>
+              <thead>
+                <tr>
+                  <th>設定</th>
+                  <th>/ メニューに表示</th>
+                  <th>自動読み込み</th>
+                  <th>用途</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>デフォルト（未指定）</td>
+                  <td>はい</td>
+                  <td>はい</td>
+                  <td>汎用 Skill</td>
+                </tr>
+                <tr>
+                  <td><code>user-invocable: false</code></td>
+                  <td>いいえ</td>
+                  <td>はい</td>
+                  <td>バックグラウンド知識 Skill</td>
+                </tr>
+                <tr>
+                  <td><code>disable-model-invocation: true</code></td>
+                  <td>はい</td>
+                  <td>いいえ</td>
+                  <td>オンデマンド Skill</td>
+                </tr>
+                <tr>
+                  <td>両方設定</td>
+                  <td>いいえ</td>
+                  <td>いいえ</td>
+                  <td>無効 Skill</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="subsection">
+            <h3 class="subsection-title">4.3 Copilot が Skill を活用する方法</h3>
+            <p>Skill はコンテキストを効率的に保つため、段階的にコンテンツを読み込みます。以下に例を示します。</p>
+            <ol>
+              <li>
+                <strong>検出：</strong> Copilot は YAML フロントマターから Skill の名前と説明を読み込みます。「ログインページをテストしたい」と要求すると、Copilot はこれを<code>webapp-testing</code> Skill にマッチングします。
+              </li>
+              <li>
+                <strong>指示読み込み：</strong> Copilot は SKILL.md の本文を文脈に読み込み、詳細なテスト手順とガイドラインにアクセスします。または、チャットで<code>/webapp-testing</code> を入力することで、この段階を直接トリガーできます。
+              </li>
+              <li>
+                <strong>リソースアクセス：</strong> Copilot がテスト手順を実行する際、<code>test-template.js</code> やシナリオ例などの追加ファイルにアクセスします。ただし、参照されていないファイルは読み込まれません。
+              </li>
+            </ol>
+          </div>
+        </section>
+      </div>
+
+      <!-- 第5章 共有 Skill の使用 -->
+      <div class="page">
+        <section class="chapter" id="chapter-5">
+          <h2 class="chapter-number">
+            5.<span class="chapter-title">共有 Skill を活用する</span>
+          </h2>
+          <div class="chapter-content">
+            <p>
+              他者が作成した Skill を活用して、Copilot の能力を拡張できます。<a href="https://github.com/github/awesome-copilot">github/awesome-copilot</a> リポジトリには、Skill、カスタムエージェント、指示、およびプロンプトのコミュニティコレクションが含まれています。
+            </p>
+          </div>
+
+          <div class="subsection">
+            <h3 class="subsection-title">5.1 共有 Skill のインストール手順</h3>
+            <ol>
+              <li>リポジトリ内で利用可能な Skill を参照します。</li>
+              <li>Skill ディレクトリを <code>.github/skills/</code> フォルダにコピーします。</li>
+              <li>
+                <code>SKILL.md</code> ファイルを確認し、必要に応じてカスタマイズします。
+              </li>
+              <li>必要に応じて、リソースを修正または追加します。</li>
+            </ol>
+            <p style="margin-top: 1em">
+              <strong>セキュリティに関する注意：</strong> 共有 Skill を使用する前に、必ず確認してください。これは要件とセキュリティ基準を満たしていることを確認するためです。
+            </p>
+          </div>
+
+          <div class="subsection">
+            <h3 class="subsection-title">5.2 推奨される Skill リポジトリ</h3>
+            <ul>
+              <li>
+                <strong>github/awesome-copilot：</strong>
+                <a href="https://github.com/github/awesome-copilot">https://github.com/github/awesome-copilot</a>
+                <br />
+                <small>Skill、カスタムエージェント、指示、プロンプトのコミュニティコレクション</small>
+              </li>
+              <li>
+                <strong>anthropics/skills：</strong>
+                <a href="https://github.com/anthropics/skills">https://github.com/anthropics/skills</a>
+                <br />
+                <small>リファレンス Skill の追加コレクション</small>
+              </li>
+              <li>
+                <strong>Vercel Agent Skills：</strong>
+                <a href="https://github.com/vercel-labs/agent-skills">https://github.com/vercel-labs/agent-skills</a>
+                <br />
+                <small>React Best Practices、Deploy to Vercel などの実装例</small>
+              </li>
+            </ul>
+          </div>
+        </section>
+      </div>
+
+      <!-- 第6章 拡張機能による Skill 追加 -->
+      <div class="page">
+        <section class="chapter" id="chapter-6">
+          <h2 class="chapter-number">
+            6.<span class="chapter-title">拡張機能から Skill を提供する</span>
+          </h2>
+          <div class="chapter-content">
+            <p>
+              VS Code の拡張機能は、<code>package.json</code> の貢献ポイントを使用して、Skill を提供できます。
+            </p>
+          </div>
+
+          <div class="subsection">
+            <h3 class="subsection-title">6.1 必要なフォルダ構造</h3>
+            <div class="code-block">extension-root/
+└── skills/
+    └── my-skill/           # ディレクトリ名は SKILL.md の `name` フィールドと一致
+        └── SKILL.md         # 必須</div>
+          </div>
+
+          <div class="subsection">
+            <h3 class="subsection-title">6.2 package.json での登録</h3>
+            <p>
+              拡張機能の <code>package.json</code> に、<code>chatSkills</code> コントリビューションポイントを追加します。<code>path</code> プロパティは対応する <code>SKILL.md</code> ファイルへのパスを指す必要があります。
+            </p>
+            <div class="code-block">{
+  "contributes": {
+    "chatSkills": [
+      {
+        "path": "./skills/my-skill/SKILL.md"
+      }
+    ]
+  }
+}</div>
+            <p style="margin-top: 1em">
+              <strong>重要：</strong> <code>SKILL.md</code> のフロントマターの <code>name</code> フィールドは、親ディレクトリ名と一致する必要があります。例えば、ディレクトリが <code>skills/my-skill/</code> の場合、<code>name</code> 値は <code>my-skill</code> である必要があります。
+            </p>
+          </div>
+        </section>
+      </div>
+
+      <!-- 第7章 参考資料 -->
+      <div class="page">
+        <section class="references-section">
+          <h2 class="references-title">📚 一次情報・参考資料</h2>
+          <div class="references-list">
+            <div class="ref-item">
+              <span class="ref-label">🌐 VS Code 公式ドキュメント：</span>&nbsp;
+              <a href="https://code.visualstudio.com/docs/copilot/customization/agent-skills">Use Agent Skills in VS Code</a>
+              <br />
+              <small>このドキュメントの原典。詳細はこちらを参照</small>
+            </div>
+
+            <div class="ref-item">
+              <span class="ref-label">🌐 Agent Skills 公式標準：</span>&nbsp;
+              <a href="https://agentskills.io/">https://agentskills.io/</a>
+              <br />
+              <small>Agent Skills のオープン標準仕様</small>
+            </div>
+
+            <div class="ref-item">
+              <span class="ref-label">🌐 Awesome Copilot コレクション：</span>&nbsp;
+              <a href="https://github.com/github/awesome-copilot">https://github.com/github/awesome-copilot</a>
+              <br />
+              <small>コミュニティによる Skill、カスタムエージェント、指示、プロンプト</small>
+            </div>
+
+            <div class="ref-item">
+              <span class="ref-label">🌐 Anthropic Reference Skills：</span>&nbsp;
+              <a href="https://github.com/anthropics/skills">https://github.com/anthropics/skills</a>
+              <br />
+              <small>実装参考例の Skill 集</small>
+            </div>
+
+            <div class="ref-item">
+              <span class="ref-label">🌐 VS Code カスタマイズ概要：</span>&nbsp;
+              <a href="https://code.visualstudio.com/docs/copilot/customization/overview">Customize AI responses overview</a>
+              <br />
+              <small>Agent Skills 以外のカスタマイズ方法（カスタム指示、プロンプトファイル等）</small>
+            </div>
+
+            <div class="ref-item">
+              <span class="ref-label">📝 本ワークスペース参照：</span>&nbsp;
+              <a href="./skills-overview.html">Agent Skillsとは - 初心者向けガイド</a>
+              <br />
+              <small>Agent Skills の基本概念、実生活での例、ツール選択ガイド</small>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- 付録 A: YAML フロントマター詳細解説 -->
+      <div class="page">
+        <section class="chapter" id="appendix-a">
+          <h2 class="chapter-number">
+            A.<span class="chapter-title">YAML フロントマター詳細解説</span>
+          </h2>
+          <div class="chapter-content">
+            <p>
+              <strong>YAML フロントマター</strong>は、マークダウンファイルの先頭に配置されるメタデータ定義ブロックです。ここに定義された情報は、プログラムやシステムが自動的に読み込み、ファイルの処理方法や表示方法を決定するために使用されます。
+            </p>
+          </div>
+
+          <div class="subsection">
+            <h3 class="subsection-title">A.1 基本的な構成</h3>
+            <p>YAML フロントマターは、常に次の形式で構成されます。</p>
+            <div class="code-block">---
+key1: value1
+key2: value2
+key3: value3
+---
+
+# ここからが本文
+マークダウンコンテンツ...</div>
+            
+            <p style="margin-top: 1em"><strong>各要素の説明：</strong></p>
+            <ul>
+              <li><strong>開始区切り：</strong> <code>---</code>（3つのハイフン）— フロントマターの開始を示す</li>
+              <li><strong>キー-バリューペア：</strong> <code>key: value</code> — メタデータの定義。コロン後に必ず空白が必要</li>
+              <li><strong>終了区切り：</strong> <code>---</code>（3つのハイフン）— フロントマターの終了を示す</li>
+              <li><strong>本文：</strong> その後のマークダウンコンテンツ</li>
+            </ul>
+          </div>
+
+          <div class="subsection">
+            <h3 class="subsection-title">A.2 YAML の記法ルール</h3>
+            
+            <p><strong>1. キーと値の区切り</strong></p>
+            <div class="code-block">✅ 正しい形式
+name: my-skill
+description: This is a description
+
+❌ 間違った形式
+name:my-skill          # コロン後に空白がない
+name :my-skill         # コロン前に空白がある
+name = my-skill        # 等号記号を使用（YAML ではない）</div>
+
+            <p style="margin-top: 1em"><strong>2. 文字列値の引用符</strong></p>
+            <div class="code-block">✅ すべて有効
+description: Simple description
+description: "Quoted description"
+description: 'Single quoted'
+
+⚠️ 特殊文字を含む場合は引用符必須
+description: "This has a: colon in it"
+description: "This has # a hash character"</div>
+
+            <p style="margin-top: 1em"><strong>3. ブール値（真偽値）</strong></p>
+            <div class="code-block">✅ すべて有効（true として認識）
+user-invocable: true
+user-invocable: True
+user-invocable: yes
+
+✅ すべて有効（false として認識）
+user-invocable: false
+user-invocable: False
+user-invocable: no
+
+❌ 引用符がないと文字列として認識される可能性
+user-invocable: "true"  # 文字列になる可能性がある</div>
+
+            <p style="margin-top: 1em"><strong>4. ネストされたリスト（配列）</strong></p>
+            <div class="code-block">✅ ハイフン形式
+tags:
+  - react
+  - testing
+  - automation
+
+✅ ブラケット形式
+tags: [react, testing, automation]</div>
+
+            <p style="margin-top: 1em"><strong>5. ネストされたオブジェクト</strong></p>
+            <div class="code-block">author:
+  name: John Doe
+  email: john@example.com
+  organization: Company Name</div>
+          </div>
+
+          <div class="subsection">
+            <h3 class="subsection-title">A.3 Agent Skills での YAML フロントマター</h3>
+            
+            <p><strong>必須フィールド：</strong></p>
+            <table>
+              <thead>
+                <tr>
+                  <th>フィールド</th>
+                  <th>型</th>
+                  <th>説明</th>
+                  <th>例</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>name</code></td>
+                  <td>文字列</td>
+                  <td>Skill の一意識別子。小文字 + ハイフン。ディレクトリ名と完全一致。64文字以内。</td>
+                  <td><code>react-component-testing</code></td>
+                </tr>
+                <tr>
+                  <td><code>description</code></td>
+                  <td>文字列</td>
+                  <td>Skill の機能説明。「何ができるか」「いつ使うか」を明確に。1024文字以内。</td>
+                  <td><code>"Jest テストスイートを生成します"</code></td>
+                </tr>
+              </tbody>
+            </table>
+
+            <p style="margin-top: 1em"><strong>オプショナルフィールド：</strong></p>
+            <table>
+              <thead>
+                <tr>
+                  <th>フィールド</th>
+                  <th>型</th>
+                  <th>デフォルト</th>
+                  <th>説明</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>argument-hint</code></td>
+                  <td>文字列</td>
+                  <td>（なし）</td>
+                  <td>スラッシュコマンド実行時のヒント表示。例：<code>[file path] [options]</code></td>
+                </tr>
+                <tr>
+                  <td><code>user-invocable</code></td>
+                  <td>ブール</td>
+                  <td><code>true</code></td>
+                  <td><code>/</code> メニューに表示するか</td>
+                </tr>
+                <tr>
+                  <td><code>disable-model-invocation</code></td>
+                  <td>ブール</td>
+                  <td><code>false</code></td>
+                  <td>Copilot の自動読み込みを無効化するか</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <p style="margin-top: 1em"><strong>実践例：</strong></p>
+            <div class="code-block">---
+name: react-component-testing
+description: Jest テストスイートを生成します。Props、State、Hooks、イベントハンドリング、エッジケースをカバーします。
+argument-hint: [component file] [coverage target]
+user-invocable: true
+disable-model-invocation: false
+---
+
+# React Component Testing Skill
+
+詳細な指示...</div>
+          </div>
+
+          <div class="subsection">
+            <h3 class="subsection-title">A.4 よくあるエラーと対処法</h3>
+            
+            <p><strong>エラー 1: コロンの直後に空白がない</strong></p>
+            <div class="code-block">❌ エラー
+name:my-skill
+
+✅ 正しい
+name: my-skill</div>
+
+            <p style="margin-top: 1em"><strong>エラー 2: 大文字と小文字の混在</strong></p>
+            <div class="code-block">❌ エラー
+Name: my-skill
+Description: Description here
+User-Invocable: true
+
+✅ 正しい
+name: my-skill
+description: Description here
+user-invocable: true</div>
+
+            <p style="margin-top: 1em"><strong>エラー 3: ディレクトリ名と name が一致していない</strong></p>
+            <div class="code-block">❌ エラー（読み込まれない）
+ディレクトリ: skills/react-testing/
+name: my-skill  # ディレクトリ名と異なる
+
+✅ 正しい
+ディレクトリ: skills/react-testing/
+name: react-testing  # ディレクトリ名と同じ</div>
+
+            <p style="margin-top: 1em"><strong>エラー 4: タブとスペースの混在</strong></p>
+            <div class="code-block">❌ エラー（YAML はスペースのみ）
+name: my-skill
+→description: Description  # タブ文字を使用
+
+✅ 正しい（常にスペース 2 個）
+name: my-skill
+  description: Nested description  # スペース 2 個</div>
+
+            <p style="margin-top: 1em"><strong>エラー 5: フロントマターの区切りが不完全</strong></p>
+            <div class="code-block">❌ エラー（開始区切りがない）
+name: my-skill
+description: Description
+---
+
+✅ 正しい（開始と終了の両方が必要）
+---
+name: my-skill
+description: Description
+---</div>
+          </div>
+
+          <div class="subsection">
+            <h3 class="subsection-title">A.5 YAML フロントマター検証ツール</h3>
+            
+            <p>YAML ファイルの構文が正しいかをオンラインで検証できます。</p>
+            <ul>
+              <li>
+                <strong>YAML Validator：</strong>
+                <a href="https://www.yamllint.com/">https://www.yamllint.com/</a>
+                <br />
+                <small>YAML 構文の検証。エラー位置を詳しく表示</small>
+              </li>
+              <li>
+                <strong>Online YAML Parser：</strong>
+                <a href="https://yaml-online-parser.appspot.com/">https://yaml-online-parser.appspot.com/</a>
+                <br />
+                <small>YAML をパースして JSON に変換。構造確認に便利</small>
+              </li>
+            </ul>
+          </div>
+        </section>
+      </div>
+    </div>
+  </body>
+</html>
